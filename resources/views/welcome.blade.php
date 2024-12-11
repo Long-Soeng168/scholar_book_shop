@@ -72,7 +72,7 @@
                     <a href="{{ url('admin/dashboard') }}">Dashboard</a>
                     <a href="{{ url('/logout') }}">Logout</a>
                 @else
-                    <a href="{{ url('publisher_login') }}">Log in</a>
+                    <a href="{{ url('admin_login') }}">Log in</a>
 
                     {{-- @if (Route::has('register'))
                         <a href="{{ route('register') }}">Register</a>

@@ -373,14 +373,14 @@
     <main class="flex overflow-x-hidden">
         <div class="flex-col items-center justify-center flex-1 hidden gap-6 bg-white md:flex">
             <h2 class="text-4xl lg:text-6xl text-[#5D54A4] max-w-[60ch] text-center font-bold">
-                {{ __('messages.isbnSystem') }}
+                Login
             </h2>
-            <img class="w-[60ch] px-8" src="{{ asset('assets/icons/isbnimage.jpg') }}" alt="">
+            <img class="w-[40ch] px-8" src="{{ asset('assets/images/website_infos/logo.png') }}" alt="">
         </div>
         <div class="flex flex-col items-center flex-1 gap-4 shrink-0 container_login_form">
             <div class="screen">
                 <div class="relative screen__content">
-                    <form class="login" method="POST" action="{{ url('/publisher_login') }}">
+                    <form class="login" method="POST" action="{{ url('/admin_login') }}">
                         @csrf
                         <div class="login__field">
                             <i class="login__icon fas fa-user"></i>
@@ -399,13 +399,13 @@
                             <i class="button__icon fas fa-chevron-right"></i>
                         </button>
                     </form>
-                    <h3 class="absolute bottom-8 right-8">
+                    {{-- <h3 class="absolute bottom-8 right-8">
                         <a class="flex gap-2 text-sm min-[1333px]:text-lg text-white rounded-md focus:outline-none whitespace-nowrap"
                             href="{{ url('publisher_register') }}">
                             <span>{{ __('messages.dontHasAccount') }} </span>
                             <strong class="underline hover:underline-offset-4">{{ __('messages.signUp') }}</strong>
                         </a>
-                    </h3>
+                    </h3> --}}
                     {{-- <div class="social-login">
                         <h3>log in via</h3>
                         <div class="social-icons">

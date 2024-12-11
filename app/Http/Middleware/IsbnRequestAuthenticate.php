@@ -12,6 +12,6 @@ class IsbnRequestAuthenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : url('/publisher_login');
+        return $request->expectsJson() ? null : url('/admin_login');
     }
 }

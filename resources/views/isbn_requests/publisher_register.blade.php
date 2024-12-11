@@ -313,7 +313,7 @@
                     </form>
                     <h3 class="flex justify-end px-8 mt-10">
                         <a class="flex gap-2 text-sm text-purple-900 rounded-md focus:outline-none whitespace-nowrap"
-                            href="{{ url('publisher_login') }}">
+                            href="{{ url('admin_login') }}">
                             <span>{{ __('messages.alreadyHasAccount') }} </span>
                             <strong class="underline hover:underline-offset-4"> {{ __('messages.login') }}</strong>
                         </a>

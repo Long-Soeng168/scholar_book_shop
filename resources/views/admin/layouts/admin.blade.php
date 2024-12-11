@@ -389,7 +389,7 @@
                     <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/books') }}"
                             class="{{ request()->is('admin/books*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/book.png') }}" alt="icon"
+                            <img src="{{ asset('assets/icons/books.png') }}" alt="icon"
                                 class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
                             <span class="ml-3">Books</span>
                         </x-sidebar-item>
@@ -413,7 +413,7 @@
                     <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/promotions') }}"
                             class="{{ request()->is('admin/promotions*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
+                            <img src="{{ asset('assets/icons/promotions.png') }}" alt="icon"
                                 class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
                             <span class="ml-3">Promotions</span>
                         </x-sidebar-item>
@@ -432,7 +432,7 @@
                                 class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
                                 :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
-                                <img src="{{ asset('assets/icons/menu.png') }}" alt="icon"
+                                <img src="{{ asset('assets/icons/book_categories.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
                                 <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Categories</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
@@ -472,7 +472,7 @@
                                 class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/bulletins*') || request()->is('admin/bulletins_categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
                                 :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
-                                <img src="{{ asset('assets/icons/menu.png') }}" alt="icon"
+                                <img src="{{ asset('assets/icons/news.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
                                 <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">News</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"

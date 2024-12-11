@@ -116,8 +116,7 @@ Route::group([
 });
 
 Route::group([
-    'middleware' => 'setLang',
-    'middleware' => 'auth',
+    'middleware' => ['setLang', 'auth'],
 ], function () {
     Route::get('/', function () {
         // return redirect('/isbn_requests');
@@ -131,10 +130,10 @@ Route::group([
     'middleware' => 'setLang',
 ], function () {
     Route::get('publisher/{id}', [IsbnRequestController::class, 'publisher']);
-    Route::get('publisher_login', [IsbnRequestController::class, 'publisher_login']);
-    Route::post('publisher_login', [IsbnRequestController::class, 'store_publisher_login']);
-    Route::get('publisher_register', [IsbnRequestController::class, 'publisher_register']);
-    Route::post('publisher_register', [IsbnRequestController::class, 'store_publisher_register']);
+    Route::get('admin_login', [IsbnRequestController::class, 'admin_login']);
+    Route::post('admin_login', [IsbnRequestController::class, 'store_admin_login']);
+    // Route::get('publisher_register', [IsbnRequestController::class, 'publisher_register']);
+    // Route::post('publisher_register', [IsbnRequestController::class, 'store_publisher_register']);
 });
 
 /*

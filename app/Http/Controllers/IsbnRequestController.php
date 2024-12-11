@@ -43,12 +43,12 @@ class IsbnRequestController extends Controller
         return view('isbn_requests.publisher_register');
      }
 
-     public function publisher_login()
+     public function admin_login()
      {
-        return view('isbn_requests.publisher_login');
+        return view('isbn_requests.admin_login');
      }
 
-     public function store_publisher_login(Request $request)
+     public function store_admin_login(Request $request)
     {
         // Validate the email and password inputs
         $request->validate([

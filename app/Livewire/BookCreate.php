@@ -15,6 +15,7 @@ use Image;
 class BookCreate extends Component
 {
     use WithFileUploads;
+    public $file;
 
     public $image;
 
@@ -113,9 +114,10 @@ class BookCreate extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
-            'discount' => 'required',
+            'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'image' => 'required|image|max:2048',
+            'file' => 'nullable|file|max:51200',
             'authors' => 'nullable|string|max:255',
             'number_of_pages' => 'nullable|int',
             'format' => 'nullable|string|max:255',
@@ -139,6 +141,13 @@ class BookCreate extends Component
             }
         }
 
+        if (!empty($this->file)) {
+            // $filename = time() . '_' . $this->file->getClientOriginalName();
+            $filename = time() . str()->random(10) . '.' . $this->file->getClientOriginalExtension();
+            $this->file->storeAs('books', $filename, 'publicForPdf');
+            $validated['file'] = $filename;
+        }
+
         if (!empty($this->image)) {
             // $filename = time() . '_' . $this->image->getClientOriginalName();
             $filename = time() . str()->random(10) . '.' . $this->image->getClientOriginalExtension();
@@ -157,7 +166,16 @@ class BookCreate extends Component
         // dd($createdPublication);
         return redirect('/admin/books')->with('success', 'Successfully Created!');
 
-        session()->flash('success', 'Successfully Submit!');
+        // session()->flash('success', 'Successfully Submit!');
+    }
+
+    public function updatedFile()
+    {
+        $this->validate([
+            'file' => 'file|max:51200', // 2MB Max
+        ]);
+
+        session()->flash('success', 'file successfully uploaded!');
     }
 
     public function render()

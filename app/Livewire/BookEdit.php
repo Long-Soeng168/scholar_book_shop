@@ -19,6 +19,9 @@ class BookEdit extends Component
     public $item;
     public $image;
 
+    public $file;
+
+
     public $title = null;
     public $authors = null;
     public $author_id = null;
@@ -189,12 +192,37 @@ class BookEdit extends Component
             }
         }
 
+        if (!empty($this->file)) {
+            // $filename = time() . '_' . $this->file->getClientOriginalName();
+            $filename = time() . str()->random(10) . '.' . $this->file->getClientOriginalExtension();
+            $this->file->storeAs('books', $filename, 'publicForPdf');
+            $validated['file'] = $filename;
+
+            if (!empty($this->item->file)) {
+                $filePath = public_path('assets/pdf/books/' . $this->item->file);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+
+            }
+        }
+
         $createdPublication = $this->item->update($validated);
 
         // dd($createdPublication);
         return redirect('/admin/books')->with('success', 'Successfully Created!');
 
-        session()->flash('success', 'Successfully Submit!');
+        // session()->flash('success', 'Successfully Submit!');
+    }
+
+    public function updatedFile()
+    {
+        $this->validate([
+            'file' => 'file|max:51200', // 2MB Max
+        ]);
+
+        session()->flash('success', 'file successfully uploaded!');
     }
 
     public function render()

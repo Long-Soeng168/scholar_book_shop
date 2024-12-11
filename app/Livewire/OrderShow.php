@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use App\Models\Book;
 use App\Models\Order;
 use App\Models\OrderItem;
 
@@ -42,7 +43,10 @@ class OrderShow extends Component
 
         // Update related order items if status is 1
         if ($status == 1) {
-            OrderItem::where('order_id', $itemId)->increment('order_approved', 1);
+            $items = OrderItem::where('order_id', $itemId)->get();
+            foreach ($items as $item) {
+                Book::where('id', $item->id)->increment('order_approved', 1);
+            }
         }
 
         // Set a flash message

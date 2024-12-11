@@ -65,7 +65,7 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        $news = News::find($id);
+        $news = News::findOrFail($id);
         return response()->json($news);
     }
     public function categories()

@@ -27,9 +27,9 @@ class BookController extends Controller
         $randomOrder = $request->randomOrder ?? 0;
         $orderBy = $request->orderBy ?? 'id';
         $orderDir = strtolower($request->orderDir) === 'asc' ? 'asc' : 'desc'; // Ensure 'asc' or 'desc'
-    
+
         $query = Book::query();
-    
+
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
                 $sub_query->where('title', 'LIKE', '%' . $search . '%')
@@ -38,48 +38,48 @@ class BookController extends Controller
                     ->orWhere('short_description', 'LIKE', '%' . $search . '%');
             });
         }
-    
+
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
-    
+
         if ($subCategoryId) {
             $query->where('sub_category_id', $subCategoryId);
         }
-    
+
         if ($priceFrom) {
             $query->where('price', '>=', $priceFrom);
         }
-    
+
         if ($priceTo) {
             $query->where('price', '<=', $priceTo);
         }
-    
+
         if ($yearFrom) {
             $query->where('year', '>=', $yearFrom);
         }
-    
+
         if ($yearTo) {
             $query->where('year', '<=', $yearTo);
         }
-    
+
         if ($authorId) {
             $query->where('author_id', $authorId);
         }
-    
+
         if ($publisherId) {
             $query->where('publisher_id', $publisherId);
         }
-    
+
         if ($randomOrder == 1) {
             $query->inRandomOrder();
         } else {
             $query->orderBy($orderBy, $orderDir);
         }
-    
+
         // Paginate results with the specified number per page
         $books = $query->paginate($perPage);
-    
+
         return response()->json($books);
     }
 
@@ -101,10 +101,10 @@ class BookController extends Controller
     {
         $limit = $request->limit;
         // First set of 10 books ordered by ID in descending order
-        $first_set = Book::query()->inRandomOrder()->limit($limit ?? 10)->get();
+        $first_set = Book::query()->orderBy('order_approved', 'DESC')->limit($limit ?? 10)->get();
 
         // Second set of 10 books ordered by ID in descending order, offset by 10
-        $second_set = Book::query()->inRandomOrder()->offset(10)->limit($limit ?? 10)->get();
+        $second_set = Book::query()->orderBy('order_approved', 'DESC')->offset(10)->limit($limit ?? 10)->get();
 
         return response()->json([
             'first_set' => $first_set,

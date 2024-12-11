@@ -45,7 +45,7 @@ class OrderShow extends Component
         if ($status == 1) {
             $items = OrderItem::where('order_id', $itemId)->get();
             foreach ($items as $item) {
-                Book::where('id', $item->id)->increment('order_approved', 1);
+                Book::where('id', $item->product_id)->increment('order_approved', 1);
             }
         }
 

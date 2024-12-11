@@ -49,6 +49,7 @@ return [
     'language' => 'ភាសា',
     'pages' => 'ទំព័រ',
     'isbn' => 'ISBN',
+    'tsin' => 'TSIN',
     'duration' => 'រយៈពេល',
     'minutes' => 'នាទី',
     'location' => 'ទីតាំង',
@@ -117,5 +118,10 @@ return [
     'individual' => 'បុគ្គល',
     'lessThan1' => 'តិចជាង 1',
     'moreThan10' => 'ច្រើនជាង 10',
+
+    'note' => 'ចំណាំ',
+    'subTotal' => 'សរុប',
+    'shipping' => 'សេវាដឹក',
+    'total' => 'សរុប',
 
 ];

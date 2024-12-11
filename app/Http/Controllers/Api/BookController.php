@@ -111,6 +111,18 @@ class BookController extends Controller
             'second_set' => $second_set,
         ]);
     }
+    public function kid_books(Request $request)
+    {
+        $limit = $request->limit;
+        // First set of 10 books ordered by ID in descending order
+        $items = Book::query()->where('category_id', 83)->limit($limit ?? 10)->get();
+
+
+
+        return response()->json(
+            $items,
+        );
+    }
 
 
     /**

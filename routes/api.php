@@ -47,3 +47,4 @@ Route::get('books', [BookController::class,'index']);
 Route::get('books/{id}', [BookController::class,'show']);
 Route::get('books_new_arrival', [BookController::class, 'new_arrival']);
 Route::get('books_best_selling', [BookController::class, 'best_selling']);
+Route::get('kid_books', [BookController::class, 'kid_books']);

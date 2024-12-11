@@ -142,7 +142,7 @@ class BookEdit extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
-            'discount' => 'required',
+            'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'authors' => 'nullable|string|max:255',
             'number_of_pages' => 'nullable|int',

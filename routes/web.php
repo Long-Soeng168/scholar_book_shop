@@ -26,9 +26,10 @@ use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\PublisherController;
 
+use App\Http\Controllers\Admin\OrderController;
 
 
-
+ 
 /*
 |--------------------------------------------------------------------------
 */
@@ -59,7 +60,9 @@ Route::group([
     'prefix' => 'admin',
     'as' => 'admin.'
 ], function() {
-
+    
+   
+    
     Route::resource('bulletins', NewsController::class);
     Route::get('bulletins_types', [NewsController::class, 'types']);
     Route::get('bulletins_categories', [NewsController::class, 'categories']);
@@ -108,6 +111,7 @@ Route::group([
 ], function () {
     Route::resource('isbn_requests', IsbnRequestController::class);
     Route::resource('admin/books', BookController::class);
+     Route::resource('admin/orders', OrderController::class );
     Route::get('admin/categories', [BookController::class, 'categories']);
     Route::get('admin/sub_categories', [BookController::class, 'sub_categories']);
 

@@ -56,6 +56,7 @@ class BookSubCategoryTableData extends Component
     }
 
      // ==========Add New SubCategory============
+     public $newDdc = null;
      public $newName = null;
      public $newName_kh = null;
      public $new_category_id = null;
@@ -67,9 +68,11 @@ class BookSubCategoryTableData extends Component
                  'newName' => 'required|string|max:255|unique:sub_categories,name',
                  'newName_kh' => 'required|string|max:255',
                  'new_category_id' => 'required',
+                 'newDdc' => 'nullable|string|max:255',
              ]);
 
              SubCategory::create([
+                 'ddc' => $this->newDdc,
                  'name' => $this->newName,
                  'name_kh' => $this->newName_kh,
                  'category_id' => $this->new_category_id,
@@ -85,6 +88,7 @@ class BookSubCategoryTableData extends Component
      }
 
      public $editId = null;
+      public $ddc;
      public $name;
      public $name_kh;
      public $category_id;
@@ -92,6 +96,7 @@ class BookSubCategoryTableData extends Component
      public function setEdit($id) {
         $subCategory = SubCategory::find($id);
         $this->editId = $id;
+        $this->ddc = $subCategory->ddc;
         $this->name = $subCategory->name;
         $this->name_kh = $subCategory->name_kh;
         $this->category_id = $subCategory->category_id;
@@ -99,6 +104,7 @@ class BookSubCategoryTableData extends Component
 
      public function cancelUpdate() {
         $this->editId = null;
+        $this->ddc = null;
         $this->name = null;
         $this->name_kh = null;
         $this->gender = null;
@@ -111,18 +117,20 @@ class BookSubCategoryTableData extends Component
                 'name' => 'required|string|max:255',
                 'name_kh' => 'required|string|max:255',
                 'category_id' => 'required',
+                'ddc' => 'nullable|string|max:255',
             ]);
 
             $subCategory = SubCategory::find($id);
             $subCategory->update([
                 'name' => $this->name,
                 'name_kh' => $this->name_kh,
-                'category_id' => $this->category_id
+                'category_id' => $this->category_id,
+                'ddc' => $this->ddc,
             ]);
 
             session()->flash('success', 'Sub-Category successfully edited!');
 
-            $this->reset(['name', 'name_kh', 'editId']);
+            $this->reset(['name', 'name_kh', 'editId', 'ddc']);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', $e->validator->errors()->all());

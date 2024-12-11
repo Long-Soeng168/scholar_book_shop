@@ -127,6 +127,16 @@
                                 <input type="file" wire:model='image'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </div>
+                              <div class="grid grid-cols-2 gap-4 mb-4 ">
+                                <div class="col-span-2">
+                                    <label for="ddc"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DDC Code</label>
+                                    <input wire:key="{{ rand() }}" type="text" name="ddc"
+                                        id="ddc" wire:model='newDdc'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="DDC Code">
+                                </div>
+                            </div>
                             <div class="grid grid-cols-2 gap-4 mb-4 ">
                                 <div class="col-span-2">
                                     <label for="name"
@@ -190,7 +200,8 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-4 py-3">No</th>
-                    <th scope="col" class="px-4 py-3">Image</th>
+                    <th scope="col" class="px-4 py-3">Image</th> 
+                    <th scope="col" class="px-4 py-3">DDC Code</th>
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("name")'>
                         <div class="flex items-center cursor-pointer">
 
@@ -204,8 +215,7 @@
                             Name
                         </div>
                     </th>
-                    <th scope="col" class="px-4 py-3">Name KH</th>
-                    <th scope="col" class="px-4 py-3">Created At</th>
+                    <th scope="col" class="px-4 py-3">Name KH</th> 
                     <th scope="col" class="py-3 text-center w-[300px]">Action</th>
                 </tr>
             </thead>
@@ -215,11 +225,15 @@
                         class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 {{ $editId == $item->id ? 'bg-gray-50' : '' }}">
                         <td class="w-4 px-4 py-3">
                             {{ $loop->iteration }}
-                        </td>
+                        </td> 
 
                         @if ($editId == $item->id)
                             <td>
                                 <input type="file" wire:model='image'
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </td>
+                            <td>
+                                <input type="text" wire:model='editDdc'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </td>
                             <td>
@@ -229,8 +243,7 @@
                             <td>
                                 <input type="text" wire:model='name_kh'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            </td>
-                            <td></td>
+                            </td> 
                         @else
                             <th scope="row"
                                 class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
@@ -239,15 +252,14 @@
                                         alt="iMac Front Image" class="object-contain h-10 mr-3 aspect-[1/1]">
                                 </a>
                             </th>
-
+                            <x-table-data value="{{ $item->ddc }}" />
                             <x-table-data value="{{ $item->name }}" />
                             <x-table-data>
                                 <span
                                     class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap">
                                     {{ $item->name_kh ? $item->name_kh : 'N/A' }}
                                 </span>
-                            </x-table-data>
-                            <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
+                            </x-table-data> 
                         @endif
 
                         <td class="px-6 py-4 ">

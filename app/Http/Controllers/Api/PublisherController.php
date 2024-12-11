@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Publisher;
 
 class PublisherController extends Controller
 {
@@ -19,11 +19,11 @@ class PublisherController extends Controller
     {
         $search = $request->search;
         $role = $request->role;
-        $perPage = $request->perPage ?? 24; // Set a default perPage value
+        $perPage = $request->perPage ?? 200; // Set a default perPage value
         $orderBy = $request->orderBy ?? 'id';
         $orderDir = strtolower($request->orderDir) === 'asc' ? 'asc' : 'desc';
 
-        $query = User::query();
+        $query = Publisher::query();
 
         if ($search) {
             $query->where('name', 'like', '%' . $search . '%');
@@ -32,9 +32,7 @@ class PublisherController extends Controller
             $query->role($role);
         }
 
-        $users = $query->where('status', 1)
-                       ->orderBy($orderBy, $orderDir)
-                       ->with('roles');
+        $users = $query->orderBy($orderBy, $orderDir);
 
         $users = $users->paginate($perPage);
 

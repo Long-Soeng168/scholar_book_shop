@@ -75,6 +75,7 @@ class BookCategoryTableData extends Component
     }
 
     // ==========Add New Category============
+    public $newDdc = null;
     public $newName = null;
     public $newName_kh = null;
 
@@ -84,6 +85,7 @@ class BookCategoryTableData extends Component
             $validated = $this->validate([
                 'newName' => 'required|string|max:255|unique:categories,name',
                 'newName_kh' => 'required|string|max:255',
+                'newDdc' => 'nullable|string|max:255',
             ]);
 
             if (!empty($this->image)) {
@@ -96,6 +98,7 @@ class BookCategoryTableData extends Component
             }
 
             Category::create([
+                'ddc' => $this->newDdc,
                 'name' => $this->newName,
                 'name_kh'=> $this->newName_kh,
                 'image' => $filename ?? '',
@@ -103,13 +106,14 @@ class BookCategoryTableData extends Component
 
             session()->flash('success', 'Add New Category successfully!');
 
-            $this->reset(['newName', 'newName_kh']);
+            $this->reset(['newName', 'newName_kh', 'ddc']);
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', $e->validator->errors()->all());
         }
     }
 
     public $editId = null;
+    public $ddc;
     public $name;
     public $name_kh;
 
@@ -117,6 +121,7 @@ class BookCategoryTableData extends Component
     {
         $category = Category::find($id);
         $this->editId = $id;
+        $this->ddc = $category->ddc;
         $this->name = $category->name;
         $this->name_kh = $category->name_kh;
     }
@@ -124,6 +129,7 @@ class BookCategoryTableData extends Component
     public function cancelUpdate()
     {
         $this->editId = null;
+        $this->ddc = null;
         $this->name = null;
         $this->name_kh = null;
         $this->gender = null;
@@ -135,6 +141,7 @@ class BookCategoryTableData extends Component
             $validated = $this->validate([
                 'name' => 'required|string|max:255|unique:categories,name,' . $id,
                 'name_kh' => 'required|string|max:255',
+                'ddc' => 'nullable|string|max:255',
             ]);
 
             if (!empty($this->image)) {
@@ -152,7 +159,7 @@ class BookCategoryTableData extends Component
 
             session()->flash('success', 'Category successfully edited!');
 
-            $this->reset(['name', 'name_kh', 'editId']);
+            $this->reset(['name', 'name_kh', 'editId', 'ddc']);
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', $e->validator->errors()->all());
         }

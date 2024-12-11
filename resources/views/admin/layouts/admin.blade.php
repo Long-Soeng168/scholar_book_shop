@@ -358,7 +358,7 @@
         <aside
             class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700 "
             aria-label="Sidenav" id="drawer-navigation">
-            <a href="{{ url('isbn_requests') }}" class="flex items-center justify-center p-3.5 border-b dark:border-b-slate-600">
+            <a href="{{ url('/') }}" class="flex items-center justify-center p-3.5 border-b dark:border-b-slate-600">
                 @if ($websiteInfo->image)
                     <img src="{{ asset('assets/images/website_infos/logo192.png') }}"
                         class="object-cover h-8 mr-3 rounded-full aspect-square" alt="Flowbite Logo" />
@@ -550,7 +550,14 @@
                         </li>
                     @endcan
 
-
+                    <li class="mt-2">
+                        <x-sidebar-item href="{{ url('admin/orders') }}"
+                            class="{{ request()->is('admin/orders*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/book.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Orders</span>
+                        </x-sidebar-item>
+                    </li>
                 </ul>
 
                 @can('view setting')

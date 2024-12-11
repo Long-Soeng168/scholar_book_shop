@@ -17,42 +17,69 @@ class BookController extends Controller
         $perPage = $request->perPage ?? 12;
         $search = $request->search;
         $categoryId = $request->categoryId;
+        $priceFrom = $request->priceFrom;
+        $priceTo = $request->priceTo;
+        $yearFrom = $request->yearFrom;
+        $yearTo = $request->yearTo;
+        $authorId = $request->authorId;
+        $publisherId = $request->publisherId;
         $subCategoryId = $request->subCategoryId;
         $randomOrder = $request->randomOrder ?? 0;
         $orderBy = $request->orderBy ?? 'id';
         $orderDir = strtolower($request->orderDir) === 'asc' ? 'asc' : 'desc'; // Ensure 'asc' or 'desc'
-
+    
         $query = Book::query();
-
+    
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
                 $sub_query->where('title', 'LIKE', '%' . $search . '%')
-                    ->orWhere('authors', 'LIKE', '%' . $search . '%')
                     ->orWhere('isbn', 'LIKE', '%' . $search . '%')
-                    ->orWhere('publisher_name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('description', 'LIKE', '%' . $search . '%');
+                    ->orWhere('year', 'LIKE', '%' . $search . '%')
+                    ->orWhere('short_description', 'LIKE', '%' . $search . '%');
             });
         }
-
+    
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
-
+    
         if ($subCategoryId) {
             $query->where('sub_category_id', $subCategoryId);
         }
-
+    
+        if ($priceFrom) {
+            $query->where('price', '>=', $priceFrom);
+        }
+    
+        if ($priceTo) {
+            $query->where('price', '<=', $priceTo);
+        }
+    
+        if ($yearFrom) {
+            $query->where('year', '>=', $yearFrom);
+        }
+    
+        if ($yearTo) {
+            $query->where('year', '<=', $yearTo);
+        }
+    
+        if ($authorId) {
+            $query->where('author_id', $authorId);
+        }
+    
+        if ($publisherId) {
+            $query->where('publisher_id', $publisherId);
+        }
+    
         if ($randomOrder == 1) {
             $query->inRandomOrder();
         } else {
             $query->orderBy($orderBy, $orderDir);
         }
-
-        // Apply ordering
-
+    
         // Paginate results with the specified number per page
         $books = $query->paginate($perPage);
-
+    
         return response()->json($books);
     }
 

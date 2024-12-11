@@ -13,40 +13,48 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $limit = $request->limit;
-        $withSub = $request->withSub;
-        $orderBy = $request->orderBy ?? 'order_index';
-        $orderDir = strtolower($request->orderDir) === 'desc' ? 'desc' : 'asc'; // Ensure 'asc' or 'desc'
-
-        $query = BookCategory::query();
-
-        // Apply ordering
-        $query->orderBy($orderBy, $orderDir);
-
+        $limit = $request->input('limit');
+        $withSub = $request->input('withSub', 0);
+        $orderBy = $request->input('orderBy', 'order_index');
+        $orderDir = strtolower($request->input('orderDir', 'asc')) === 'desc' ? 'desc' : 'asc'; // Ensure 'asc' or 'desc'
+    
+        // Base query for book categories
+        $query = BookCategory::query()
+            ->orderBy($orderBy, $orderDir)
+            ->withCount('books'); // Get the total count of books for each category
+    
+        // Conditionally load sub-categories and books
+        if ($withSub == 1) {
+            $query->with(['subCategories' => function ($subQuery) {
+                $subQuery->withCount('books') // Count books in each sub-category
+                    ->with(['books' => function ($bookQuery) {
+                        $bookQuery->limit(10); // Optional: Limit books per sub-category
+                    }]);
+            }]);
+        }
+    
         // Apply limit if provided
         if ($limit) {
             $query->limit($limit);
         }
-        if ($withSub == 1) {
-            $query->with('subCategories');
-        }
-
-        $categories = $query->withCount('books')->get();
-
+    
+        $categories = $query->get();
+    
         return response()->json($categories);
     }
 
-    public function getCategoryWithMostBooks()
-{
-    $category = BookCategory::withCount('books')
-        ->with(['books' => function ($query) {
-            $query->limit(5); // Limit books to 4
-        }])
-        ->orderBy('books_count', 'desc')
-        ->first(); // Get the category with the most books
 
-    return response()->json($category);
-}
+    public function getCategoryWithMostBooks()
+    {
+        $category = BookCategory::withCount('books')
+            ->with(['books' => function ($query) {
+                $query->limit(5); // Limit books to 4
+            }])
+            ->orderBy('books_count', 'desc')
+            ->first(); // Get the category with the most books
+    
+        return response()->json($category);
+    }
 
 
 

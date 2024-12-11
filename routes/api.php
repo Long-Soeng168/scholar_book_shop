@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\FooterController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\PublisherController;
 use App\Http\Controllers\Api\LinkController;
@@ -20,6 +21,10 @@ use App\Http\Controllers\Api\AboutController;
 |--------------------------------------------------------------------------
 */
 
+use App\Http\Controllers\Api\OrderController;
+
+Route::post('/orders', [OrderController::class, 'store']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -27,6 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('publishers', [PublisherController::class, 'publishers']);
 Route::get('links', [LinkController::class, 'index']);
+Route::get('authors', [AuthorController::class, 'index']);
 Route::get('footer', [FooterController::class, 'index']);
 Route::get('slides', [SlideController::class, 'index']);
 Route::resource('news', NewsController::class);

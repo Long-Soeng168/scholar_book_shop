@@ -48,8 +48,6 @@
 
                     {{ session()->forget('errors') }}
 
-
-
                 </div>
                 <button type="button" @click="show = false"
                     class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
@@ -126,6 +124,14 @@
                         <div class="p-4 lg:p-5">
                             <div class="grid grid-cols-2 gap-4 mb-4 ">
                                 <div class="col-span-2">
+                                    <label for="ddc"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DDC Code</label>
+                                    <input wire:key="{{ rand() }}" type="text" name="ddc"
+                                        id="ddc" wire:model='newDdc'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="DDC Code">
+                                </div>
+                                <div class="col-span-2">
                                     <label for="name"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                                     <input wire:key="{{ rand() }}" type="text" name="name"
@@ -149,7 +155,7 @@
                                         <option wire:key="selectCate" {{ !$new_category_id ? 'selected' : '' }} value="">Select Category</option>
                                         @foreach ($categories as $index => $category)
                                             <option wire:key='{{ 'selectCate'.$index - $category->id }}' value="{{ $category->id }}">
-                                            {{ $category->name }} {{ ' / ' . $category->name_kh }}</option>
+                                            {{ $category->ddc }} {{ $category->name }} {{ ' / ' . $category->name_kh }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -197,6 +203,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-4 py-3">No</th>
+                     <th scope="col" class="px-4 py-3">DDC Code</th>
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("name")'>
                         <div class="flex items-center cursor-pointer">
 
@@ -211,8 +218,7 @@
                         </div>
                     </th>
                     <th scope="col" class="px-4 py-3">Name KH</th>
-                    <th scope="col" class="px-4 py-3">Category</th>
-                    <th scope="col" class="px-4 py-3">Created At</th>
+                    <th scope="col" class="px-4 py-3">Category</th> 
                     <th scope="col" class="py-3 text-center w-[300px]">Action</th>
                 </tr>
             </thead>
@@ -225,6 +231,10 @@
                         </td>
 
                         @if ($editId == $item->id)
+                            <td>
+                                <input type="text" wire:model='ddc'
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </td>
                             <td>
                                 <input type="text" wire:model='name'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -242,9 +252,9 @@
                                         {{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                            </td>
-                            <td></td>
+                            </td> 
                         @else
+                            <x-table-data value="{{ $item->ddc }}" />
                             <x-table-data value="{{ $item->name }}" />
                             <x-table-data>
                                 <span
@@ -252,8 +262,7 @@
                                     {{ $item->name_kh ? $item->name_kh : 'N/A' }}
                                 </span>
                             </x-table-data>
-                            <x-table-data value="{{ $item->category?->name ? $item->category?->name : 'N/A' }}" />
-                            <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
+                            <x-table-data value="{{ $item->category?->name ? $item->category?->name : 'N/A' }}" /> 
                         @endif
 
                         <td class="px-6 py-4 ">

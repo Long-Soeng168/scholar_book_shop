@@ -16,4 +16,9 @@ class BookSubCategory extends Model
     {
         return $this->belongsTo(BookCategory::class, 'category_id', 'id');
     }
+    
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'sub_category_id', 'id');
+    }
 }

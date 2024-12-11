@@ -81,7 +81,7 @@
                 <x-input-error :messages="$errors->get('name_kh')" class="mt-2" />
             </div>
         </div>
-        <div class="grid grid-cols-2 gap-5 mb-5 lg:grid-cols-3">
+        {{-- <div class="grid grid-cols-2 gap-5 mb-5 lg:grid-cols-3">
             <!-- Start Name -->
             <div class="">
                 <x-input-label for="primary" :value="__('Main Color')" /><span class="text-red-500">*</span>
@@ -165,7 +165,7 @@
 
             <!-- End Name -->
 
-        </div>
+        </div> --}}
 
         {{-- <div class="grid gap-5 mb-5 lg:grid-cols-2 lg:gap-6">
             <!-- Start Pages -->
@@ -258,65 +258,10 @@
         {{-- End Logo --}}
 
         {{-- Start Banner --}}
-        <div class="mb-5">
-            {{-- Start Image Upload --}}
-            <div class="items-center gap-5 mb-5 lg:flex space-4" wire:key='uploadbanner'>
-                <div class="flex flex-col flex-1">
-                    <label class='mb-4 text-sm font-medium text-gray-600 dark:text-white'>
-                        Upload Banner (Max: 2MB) (Recommend : 40x9 or 1440x324 pixels) <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative flex items-center justify-center w-full -mt-3 overflow-hidden">
-                        <label for="dropzone-file"
-                            class="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                        class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or GIF (MAX. 2MB)</p>
 
-                            </div>
-                            <input wire:model="banner" accept="image/png, image/jpeg, image/gif" id="dropzone-file"
-                                type="file" class="absolute h-[140%] w-[100%]" />
-                        </label>
-                    </div>
-                    <div wire:loading wire:target="banner" class="text-blue-700">
-                        <span>
-                            <img class="inline w-6 h-6 text-white me-2 animate-spin" src="{{ asset('assets/images/reload.png') }}" alt="reload-icon">
-                            Uploading...
-                        </span>
-                    </div>
-                    <x-input-error :messages="$errors->get('banner')" class="mt-2" />
-                </div>
-                @if ($banner)
-                    <div class="flex-1 pt-5">
-                        <img src="{{ $banner->temporaryUrl() }}" alt="Banner Image"
-                            class="object-contain max-w-full max-h-40" />
-                    </div>
-                @elseif($item->banner)
-                    <div class="flex-1 pt-5">
-                        <img src="{{ asset('assets/images/website_infos/'.$item->banner) }}" alt="Banner Image"
-                            class="object-contain w-full max-h-40" />
-                    </div>
-                @endif
-            </div>
-            {{-- End Image Upload --}}
-
-        </div>
         {{-- End Banner --}}
 
-        <div class="absolute bottom-0 right-0 flex items-center justify-center gap-2 text-blue-600 hover:underline dark:text-white">
-            <a target="_blank" href="https://www.canva.com/design/DAGLu5qz3w4/0sg-8UOUVqHCp_JIyXUMlw/view?utm_content=DAGLu5qz3w4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview">Banner Template</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-out-up-right">
-                <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"></path>
-                <path d="m21 3-9 9"></path>
-                <path d="M15 3h6v6"></path>
-            </svg>
-        </div>
+
 
         {{-- <div class="mb-5" wire:ignore>
             <x-input-label for="description" :value="__('Description')" />

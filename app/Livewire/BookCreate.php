@@ -34,6 +34,7 @@ class BookCreate extends Component
     public $description = null;
 
     public $isbn = null;
+    public $tsin = null;
     public $language = 'khmer';
 
     public $category_id = null;
@@ -126,6 +127,7 @@ class BookCreate extends Component
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'isbn' => 'nullable|string|max:255',
+            'tsin' => 'nullable|string|max:255',
             'author_id' => 'nullable',
             'publisher_id' => 'nullable',
             'category_id' => 'nullable',

@@ -280,6 +280,13 @@
                             autocomplete="isbn" />
                         <x-input-error :messages="$errors->get('isbn')" class="mt-2" />
                     </div>
+                    <div>
+                        <x-input-label wire:model='tsin' for="tsin" :value="__('messages.tsin')" />
+                        <x-text-input wire:model='tsin' id="tsin" class="block w-full mt-1" type="text"
+                            name="tsin" placeholder='Example: 9780596520687' :value="old('tsin')"
+                            autocomplete="tsin" />
+                        <x-input-error :messages="$errors->get('tsin')" class="mt-2" />
+                    </div>
                     <div class="">
                         <x-input-label for="numberOfPages" :value="__('messages.numberOfPages')" />
                         <x-text-input wire:model='number_of_pages' id="numberOfPages" class="block w-full mt-1"

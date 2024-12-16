@@ -48,3 +48,16 @@ Route::get('books/{id}', [BookController::class,'show']);
 Route::get('books_new_arrival', [BookController::class, 'new_arrival']);
 Route::get('books_best_selling', [BookController::class, 'best_selling']);
 Route::get('kid_books', [BookController::class, 'kid_books']);
+
+
+// Auth
+
+use App\Http\Controllers\Api\AuthController;
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('/email/verification-notification', [AuthController::class, 'resendEmailVerification'])->middleware('auth:sanctum');

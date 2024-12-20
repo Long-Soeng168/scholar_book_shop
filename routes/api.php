@@ -22,8 +22,10 @@ use App\Http\Controllers\Api\AboutController;
 */
 
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\InvoiceController;
 
 Route::post('/orders', [OrderController::class, 'store']);
+Route::post('/invoices', [InvoiceController::class, 'store'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -39,12 +41,12 @@ Route::resource('news', NewsController::class);
 Route::get('news_categories', [NewsController::class, 'categories']);
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('categories_most_books', [CategoryController::class, 'getCategoryWithMostBooks']);
-Route::get('promotions', [PromotionController::class,'index']);
-Route::get('features', [FeatureController::class,'index']);
-Route::get('contact', [ContactController::class,'index']);
-Route::get('about', [AboutController::class,'index']);
-Route::get('books', [BookController::class,'index']);
-Route::get('books/{id}', [BookController::class,'show']);
+Route::get('promotions', [PromotionController::class, 'index']);
+Route::get('features', [FeatureController::class, 'index']);
+Route::get('contact', [ContactController::class, 'index']);
+Route::get('about', [AboutController::class, 'index']);
+Route::get('books', [BookController::class, 'index']);
+Route::get('books/{id}', [BookController::class, 'show']);
 Route::get('books_new_arrival', [BookController::class, 'new_arrival']);
 Route::get('books_best_selling', [BookController::class, 'best_selling']);
 Route::get('kid_books', [BookController::class, 'kid_books']);

@@ -17,32 +17,21 @@ class InvoiceController extends Controller
         // Validate the incoming request
         // return response()->json($request->all());
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'note' => 'nullable|string|max:500',
+            'customerId' => 'nullable',
+            'paymentId' => 'nullable',
+            'total' => 'nullable',
+            'userId' => 'required|exists:users,id',
             'items' => 'required|array',
             'items.*.id' => 'required|integer|exists:books,id',
             'items.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // Calculate the total, subtotal, and shipping (example)
-        $subtotal = 0;
-        foreach ($request->items as $item) {
-            $afterDiscount = $item['price'] - ($item['discount'] / 100) * $item['price'];
-            $subtotal += $afterDiscount * $item['quantity'];
-        }
-
-        $shipping = 0.00;
-        $total = $subtotal + $shipping;
-
         // Create the invoice
         $invoice = Invoice::create([
-            'name' => $validated['name'],
-            'phone' => $validated['phone'],
-            'note' => $validated['note'] ?? null,
-            'subtotal' => $subtotal,
-            'shipping' => $shipping,
-            'total' => $total,
+            'customerId' => $validated['customerId'],
+            'paymentId' => $validated['paymentId'],
+            'total' => $validated['total'],
+            'userId' => $validated['userId'],
         ]);
         // $invoice = Invoice::create([
         //     'name' => $validated['name'],
@@ -63,6 +52,7 @@ class InvoiceController extends Controller
                 'discount' => $item['discount'],
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
+                'type' => $item['type'],
             ]);
         }
 

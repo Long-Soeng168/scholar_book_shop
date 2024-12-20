@@ -22,8 +22,6 @@ class InvoiceController extends Controller
             'total' => 'nullable',
             'userId' => 'required|exists:users,id',
             'items' => 'required|array',
-            'items.*.id' => 'required|integer|exists:books,id',
-            'items.*.quantity' => 'required|integer|min:1',
         ]);
 
         // Create the invoice
@@ -31,7 +29,7 @@ class InvoiceController extends Controller
             'customerId' => $validated['customerId'] ?? null,
             'paymentId' => $validated['paymentId'] ?? null,
             'total' => $validated['total'] ?? 0,
-            'userId' => $validated['userId'],
+            'userId' => $validated['userId'] ?? 0,
         ]);
 
         foreach ($validated['items'] as $item) {

@@ -15,14 +15,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         // Validate the incoming request
-        // return response()->json($request->all()); 
+        // return response()->json($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'note' => 'nullable|string|max:500',
             'items' => 'required|array',
-            'items.*.id' => 'required|integer|exists:books,id',
-            'items.*.quantity' => 'required|integer|min:1',
+            // 'items.*.id' => 'required|integer|exists:books,id',
+            // 'items.*.quantity' => 'required|integer|min:1',
         ]);
 
         // Calculate the total, subtotal, and shipping (example)
@@ -63,9 +63,9 @@ class OrderController extends Controller
                 'discount' => $item['discount'],
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
-            ]); 
+            ]);
         }
-        
+
         try {
         Notification::route('telegram', config('services.telegram_chat_id'))
                 ->notify(new MyTelegramBotNotification($order));

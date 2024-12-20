@@ -25,7 +25,8 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\InvoiceController;
 
 Route::post('/orders', [OrderController::class, 'store']);
-Route::post('/invoices', [InvoiceController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/invoices', [InvoiceController::class, 'store']);
+// ->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -28,31 +28,22 @@ class InvoiceController extends Controller
 
         // Create the invoice
         $invoice = Invoice::create([
-            'customerId' => $validated['customerId'],
-            'paymentId' => $validated['paymentId'],
-            'total' => $validated['total'],
+            'customerId' => $validated['customerId'] ?? null,
+            'paymentId' => $validated['paymentId'] ?? null,
+            'total' => $validated['total'] ?? 0,
             'userId' => $validated['userId'],
         ]);
-        // $invoice = Invoice::create([
-        //     'name' => $validated['name'],
-        //     'phone' => $validated['phone'],
-        //     'note' => $validated['note'] ?? null,
-        //     'subtotal' => 1,
-        //     'shipping' => 1,
-        //     'total' => 1,
-        // ]);
 
-        // Create the invoice items
-        foreach ($request->items as $item) {
-            $createdItem = InvoiceItem::create([
+        foreach ($validated['items'] as $item) {
+            InvoiceItem::create([
                 'invoice_id' => $invoice->id,
                 'product_id' => $item['id'],
-                'title' => $item['title'],
-                'image' => $item['image'],
-                'discount' => $item['discount'],
+                'title' => $item['title'] ?? '',
+                'image' => $item['image'] ?? '',
+                'discount' => $item['discount'] ?? 0,
                 'price' => $item['price'],
                 'quantity' => $item['quantity'],
-                'type' => $item['type'],
+                'type' => $item['type'] ?? null,
             ]);
         }
 

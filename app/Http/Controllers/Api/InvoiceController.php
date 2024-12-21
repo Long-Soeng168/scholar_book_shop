@@ -23,6 +23,8 @@ class InvoiceController extends Controller
             'discountType' => 'nullable',
             'subtotal' => 'nullable',
             'total' => 'nullable',
+            'total_recieved_dollar' => 'nullable',
+            'exchange_rate' => 'nullable',
             'userId' => 'required|exists:users,id',
             'items' => 'required|array',
         ]);
@@ -35,6 +37,8 @@ class InvoiceController extends Controller
             'discountType' => $validated['discountType'] ?? null,
             'subtotal' => $validated['subtotal'] ?? 0,
             'total' => $validated['total'] ?? 0,
+            'total_recieved_dollar' => $validated['total'] ?? 0,
+            'exchange_rate' => $validated['total'] ?? null,
             'userId' => $validated['userId'] ?? 0,
         ]);
 

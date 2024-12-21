@@ -30,6 +30,8 @@ class InvoiceController extends Controller
         $invoice = Invoice::create([
             'customerId' => $validated['customerId'] ?? null,
             'paymentTypId' => $validated['paymentTypId'] ?? null,
+            'discount' => $validated['discount'] ?? 0,
+            'discountType' => $validated['discountType'] ?? null,
             'total' => $validated['total'] ?? 0,
             'userId' => $validated['userId'] ?? 0,
         ]);

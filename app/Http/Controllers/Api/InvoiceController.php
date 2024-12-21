@@ -18,7 +18,7 @@ class InvoiceController extends Controller
         // return response()->json($request->all());
         $validated = $request->validate([
             'customerId' => 'nullable',
-            'paymentTypId' => 'nullable',
+            'paymentTypeId' => 'nullable',
             'discount' => 'nullable',
             'discountType' => 'nullable',
             'subtotal' => 'nullable',
@@ -32,7 +32,7 @@ class InvoiceController extends Controller
         // Create the invoice
         $invoice = Invoice::create([
             'customerId' => $validated['customerId'] ?? null,
-            'paymentTypId' => $validated['paymentTypId'] ?? null,
+            'paymentTypeId' => $validated['paymentTypeId'] ?? null,
             'discount' => $validated['discount'] ?? 0,
             'discountType' => $validated['discountType'] ?? null,
             'subtotal' => $validated['subtotal'] ?? 0,

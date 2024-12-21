@@ -38,7 +38,7 @@ class InvoiceController extends Controller
             'subtotal' => $validated['subtotal'] ?? 0,
             'total' => $validated['total'] ?? 0,
             'total_recieved_dollar' => $validated['total_recieved_dollar'] ?? 0,
-            'exchange_rate' => $validated['total'] ?? null,
+            'exchange_rate' => $validated['exchange_rate'] ?? null,
             'userId' => $validated['userId'] ?? 0,
         ]);
 

@@ -21,6 +21,7 @@ class InvoiceController extends Controller
             'paymentTypId' => 'nullable',
             'discount' => 'nullable',
             'discountType' => 'nullable',
+            'subtotal' => 'nullable',
             'total' => 'nullable',
             'userId' => 'required|exists:users,id',
             'items' => 'required|array',
@@ -32,6 +33,7 @@ class InvoiceController extends Controller
             'paymentTypId' => $validated['paymentTypId'] ?? null,
             'discount' => $validated['discount'] ?? 0,
             'discountType' => $validated['discountType'] ?? null,
+            'subtotal' => $validated['subtotal'] ?? 0,
             'total' => $validated['total'] ?? 0,
             'userId' => $validated['userId'] ?? 0,
         ]);

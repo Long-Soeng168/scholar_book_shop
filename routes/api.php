@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\PublisherController;
 use App\Http\Controllers\Api\LinkController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\AboutController;
@@ -37,6 +38,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('publishers', [PublisherController::class, 'publishers']);
 Route::get('links', [LinkController::class, 'index']);
 Route::get('payments', [PaymentController::class, 'index']);
+Route::get('customers', [CustomerController::class, 'index']);
 Route::get('authors', [AuthorController::class, 'index']);
 Route::get('footer', [FooterController::class, 'index']);
 Route::get('slides', [SlideController::class, 'index']);

@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\InvoiceController;
 
 Route::post('/orders', [OrderController::class, 'store']);
+Route::get('/holds', [InvoiceController::class, 'holds']);
 Route::post('/invoices', [InvoiceController::class, 'store']);
 // ->middleware('auth:sanctum');
 

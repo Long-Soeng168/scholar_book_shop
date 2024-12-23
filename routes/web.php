@@ -29,12 +29,12 @@ use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\OrderController;
 
 
- 
+
 /*
 |--------------------------------------------------------------------------
 */
 
-Route::get('/fetch_book_cover', [HomeController::class, 'fetchAndSaveBookCover']);
+// Route::get('/fetch_book_cover', [HomeController::class, 'fetchAndSaveBookCover']);
 
 Route::get('/expired', function () {
     return view('auth.expired');
@@ -60,9 +60,9 @@ Route::group([
     'prefix' => 'admin',
     'as' => 'admin.'
 ], function() {
-    
-   
-    
+
+
+
     Route::resource('bulletins', NewsController::class);
     Route::get('bulletins_types', [NewsController::class, 'types']);
     Route::get('bulletins_categories', [NewsController::class, 'categories']);

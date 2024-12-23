@@ -12,6 +12,11 @@ use App\Notifications\MyTelegramBotNotification;
 
 class InvoiceController extends Controller
 {
+
+    public function holds(Request $request){
+        $items = Invoice::where('status', 0)->get();
+        return response()->json($items);
+    }
     public function store(Request $request)
     {
         // Validate the incoming request

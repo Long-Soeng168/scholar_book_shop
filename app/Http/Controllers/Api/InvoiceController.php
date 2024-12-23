@@ -14,7 +14,7 @@ class InvoiceController extends Controller
 {
 
     public function holds(Request $request){
-        $items = Invoice::where('status', 0)->get();
+        $items = Invoice::where('status', 0)->with('items', 'customer')->get();
         return response()->json($items);
     }
     public function store(Request $request)

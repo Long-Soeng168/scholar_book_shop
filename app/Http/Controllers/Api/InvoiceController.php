@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Invoice;
@@ -13,10 +14,24 @@ use App\Notifications\MyTelegramBotNotification;
 class InvoiceController extends Controller
 {
 
-    public function holds(Request $request){
+    public function holds(Request $request)
+    {
         $items = Invoice::where('status', 0)->with('items', 'customer')->get();
         return response()->json($items);
     }
+    public function delete($id)
+    {
+        try {
+            $invoice = Invoice::findOrFail($id);
+            $invoice->delete();
+            return response()->json(['message' => 'delete success'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while deleting the invoice'], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         // Validate the incoming request

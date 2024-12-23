@@ -27,7 +27,10 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\InvoiceController;
 
 Route::post('/orders', [OrderController::class, 'store']);
+
 Route::get('/holds', [InvoiceController::class, 'holds']);
+Route::delete('/holds/{id}', [InvoiceController::class, 'delete'])->middleware('auth:sanctum');
+
 Route::post('/invoices', [InvoiceController::class, 'store']);
 // ->middleware('auth:sanctum');
 

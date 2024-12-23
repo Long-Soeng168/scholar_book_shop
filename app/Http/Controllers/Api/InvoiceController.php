@@ -46,6 +46,7 @@ class InvoiceController extends Controller
             'total_recieved_dollar' => 'nullable',
             'exchange_rate' => 'nullable',
             'userId' => 'required|exists:users,id',
+            'note' => 'nullable',
             'status' => 'nullable',
             'items' => 'required|array',
         ]);
@@ -62,6 +63,7 @@ class InvoiceController extends Controller
             'exchange_rate' => $validated['exchange_rate'] ?? null,
             'userId' => $validated['userId'] ?? 0,
             'status' => $validated['status'] ?? 0,
+            'note' => $validated['note'] ?? null,
         ]);
 
         foreach ($validated['items'] as $item) {

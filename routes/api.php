@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\FeatureController;
 use App\Http\Controllers\Api\PublisherController;
 use App\Http\Controllers\Api\LinkController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PromotionController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\AboutController;

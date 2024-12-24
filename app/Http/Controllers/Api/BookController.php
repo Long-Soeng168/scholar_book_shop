@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Book;
-
+use App\Models\BookCategory;
 
 class BookController extends Controller
 {
@@ -96,6 +96,33 @@ class BookController extends Controller
             'second_set' => $second_set,
         ]);
     }
+
+    public function new_products(Request $request)
+    {
+        // First set of 10 books ordered by ID in descending order
+        $products = Book::query()->orderBy('id', 'DESC')->limit(12)->get();
+
+        return response()->json($products);
+    }
+
+    public function category_with_products()
+    {
+        $categories = BookCategory::with('books')
+            ->withCount('books')
+            ->orderBy('books_count', 'desc')
+            ->take(10)
+            ->get();
+
+        // Limit books to 10 per category
+        $categories->map(function ($category) {
+            $category->setRelation('books', $category->books->take(10));
+            return $category;
+        });
+
+        return response()->json($categories);
+    }
+
+
 
     public function best_selling(Request $request)
     {

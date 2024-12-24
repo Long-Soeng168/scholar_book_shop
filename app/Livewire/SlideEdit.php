@@ -20,6 +20,7 @@ class SlideEdit extends Component
     public $name = null;
     public $position = null;
     public $order_index = null;
+    public $link = null;
 
     public function mount(Slide $item)
     {
@@ -27,6 +28,7 @@ class SlideEdit extends Component
         $this->name = $item->name;
         $this->order_index = $item->order_index;
         $this->position = $item->position;
+        $this->link = $item->link;
     }
 
     public function updatedImage()
@@ -60,6 +62,7 @@ class SlideEdit extends Component
             'name' => 'required|string|max:255',
             'order_index' => 'nullable|int',
             'position' => 'nullable',
+            'link' => 'nullable|max:255',
         ]);
 
         // dd($validated);

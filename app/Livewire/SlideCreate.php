@@ -18,6 +18,7 @@ class SlideCreate extends Component
     public $name = null;
     public $position = null;
     public $order_index = null;
+    public $link = null;
 
     public function updatedImage()
     {
@@ -50,6 +51,7 @@ class SlideCreate extends Component
             'name' => 'required|string|max:255',
             'order_index' => 'nullable|int',
             'position' => 'nullable|max:255',
+            'link' => 'nullable|max:255',
             'image' => 'required|image|max:2048',
         ]);
 

@@ -89,6 +89,12 @@
                 </x-select-option>
                 <x-input-error :messages="$errors->get('position')" class="mt-2" />
             </div>
+            <div>
+                <x-input-label for="link" :value="__('Link')" />
+                <x-text-input id="link" class="block w-full mt-1" type="text" name="link" wire:model='link'
+                    required autofocus placeholder="Link" />
+                <x-input-error :messages="$errors->get('link')" class="mt-2" />
+            </div>
             <!-- End Name -->
 
         </div>

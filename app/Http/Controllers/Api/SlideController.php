@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Models\Slide;
@@ -18,9 +19,8 @@ class SlideController extends Controller
             $query->where('position', $position);
         }
 
-        $slides = $query->orderBy('order_index')->get();
+        $slides = $query->orderBy('order_index', 'asc')->get();
 
         return response()->json($slides);
     }
-
 }

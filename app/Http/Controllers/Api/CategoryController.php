@@ -17,12 +17,12 @@ class CategoryController extends Controller
         $withSub = $request->input('withSub', 0);
         $orderBy = $request->input('orderBy', 'order_index');
         $orderDir = strtolower($request->input('orderDir', 'asc')) === 'desc' ? 'desc' : 'asc'; // Ensure 'asc' or 'desc'
-    
+
         // Base query for book categories
         $query = BookCategory::query()
             ->orderBy($orderBy, $orderDir)
             ->withCount('books'); // Get the total count of books for each category
-    
+
         // Conditionally load sub-categories and books
         if ($withSub == 1) {
             $query->with(['subCategories' => function ($subQuery) {
@@ -31,15 +31,17 @@ class CategoryController extends Controller
                         $bookQuery->limit(10); // Optional: Limit books per sub-category
                     }]);
             }]);
+        }else if($withSub == 2){
+            $query->with('subCategories');
         }
-    
+
         // Apply limit if provided
         if ($limit) {
             $query->limit($limit);
         }
-    
+
         $categories = $query->get();
-    
+
         return response()->json($categories);
     }
 
@@ -52,7 +54,7 @@ class CategoryController extends Controller
             }])
             ->orderBy('books_count', 'desc')
             ->first(); // Get the category with the most books
-    
+
         return response()->json($category);
     }
 

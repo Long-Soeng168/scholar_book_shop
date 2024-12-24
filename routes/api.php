@@ -38,14 +38,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group([
+    'middleware' => 'auth:sanctum'
+], function () {
+});
 
+
+Route::get('slides', [SlideController::class, 'index']);
 Route::get('publishers', [PublisherController::class, 'publishers']);
 Route::get('links', [LinkController::class, 'index']);
 Route::get('payments', [PaymentController::class, 'index']);
 Route::get('customers', [CustomerController::class, 'index']);
 Route::get('authors', [AuthorController::class, 'index']);
 Route::get('footer', [FooterController::class, 'index']);
-Route::get('slides', [SlideController::class, 'index']);
 Route::resource('news', NewsController::class);
 Route::get('news_categories', [NewsController::class, 'categories']);
 Route::get('categories', [CategoryController::class, 'index']);
@@ -55,11 +60,16 @@ Route::get('features', [FeatureController::class, 'index']);
 Route::get('contact', [ContactController::class, 'index']);
 Route::get('about', [AboutController::class, 'index']);
 Route::get('books', [BookController::class, 'index']);
+Route::get('products', [BookController::class, 'index']);
 Route::get('books/{id}', [BookController::class, 'show']);
+Route::get('products/{id}', [BookController::class, 'show']);
 Route::get('books_new_arrival', [BookController::class, 'new_arrival']);
 Route::get('books_best_selling', [BookController::class, 'best_selling']);
 Route::get('kid_books', [BookController::class, 'kid_books']);
 
+Route::get('new_products', [BookController::class, 'new_products']);
+Route::get('category_with_products', [BookController::class, 'category_with_products']);
+Route::get('best_selling', [BookController::class, 'best_selling']);
 
 // Auth
 

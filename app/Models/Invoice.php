@@ -20,7 +20,7 @@ class Invoice extends Model
     }
     public function payment()
     {
-        return $this->belongsTo(Customer::class, 'paymentTypeId', 'id');
+        return $this->belongsTo(Payment::class, 'paymentTypeId', 'id');
     }
     public function user()
     {

@@ -96,6 +96,11 @@ class AuthController extends Controller
                 $query->where('token', hash('sha256', $token)); // Verify the hashed token
             })->first();
 
+            if (!$user) {
+                return response()->json(['isSuccess' => false], 200); // Return empty response in case of error
+
+            }
+
             // Return the authenticated user's data
             return response()->json(['isSuccess' => true, 'user' => $user]);
         } catch (\Exception $e) {

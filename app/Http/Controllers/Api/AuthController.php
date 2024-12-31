@@ -80,15 +80,15 @@ class AuthController extends Controller
      * Retrieve the authenticated user.
      */
     public function user(Request $request)
-{
-    if (!$request->user()) {
-        // Return the empty response with 401 status
-        return response()->json([], 401);
-    }
+    {
+        if (!$request->user()) {
+            // Return the empty response with 401 status
+            return response()->json([], 401);
+        }
 
-    // Return the authenticated user data if available
-    return response()->json($request->user(), 200);
-}
+        // Return the authenticated user data if available
+        return response()->json($request->user(), 200);
+    }
 
 
     /**

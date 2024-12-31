@@ -81,14 +81,35 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        if (!$request->user()) {
-            // Return the empty response with 401 status
-            return response()->json([], 401);
+        // Get the token from the request header
+        $token = $request->bearerToken(); // Assuming the token is passed as a Bearer token
+
+        if (!$token) {
+            // If no token is provided, return an empty response (or any appropriate response)
+            return response()->json([], 200);
         }
 
-        // Return the authenticated user data if available
-        return response()->json($request->user(), 200);
+        // Manually check if the token is valid
+        try {
+            // Use Sanctum's personal access token to verify the user
+            $user = User::whereHas('tokens', function ($query) use ($token) {
+                $query->where('token', hash('sha256', $token)); // Verify the hashed token
+            })->first();
+
+            if (!$user) {
+                // If the token is invalid or does not belong to a user, return empty response
+                return response()->json([], 200);
+            }
+
+            // Return the authenticated user's data
+            return response()->json($user);
+
+        } catch (\Exception $e) {
+            // Handle any errors (e.g., token verification errors)
+            return response()->json([], 200); // Return empty response in case of error
+        }
     }
+
 
 
     /**

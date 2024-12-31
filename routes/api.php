@@ -36,13 +36,16 @@ Route::post('/invoices', [InvoiceController::class, 'store']);
 
 Route::get('/user', function (Request $request) {
     // Check if the user is authenticated
-    if ($request->user()) {
-        return $request->user(); // Return the authenticated user
+    $user = Auth::user(); // Get authenticated user via Auth facade
+
+    if (!$user) {
+        // If no user, return an empty object
+        return response()->json([]);
     }
 
-    // Return an empty object if the user is not authenticated
-    return response()->json([]);
-})->middleware('auth:sanctum');
+    // Return the authenticated user data if available
+    return response()->json($user);
+});
 
 Route::group([
     'middleware' => 'auth:sanctum'

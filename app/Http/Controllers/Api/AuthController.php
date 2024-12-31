@@ -86,7 +86,7 @@ class AuthController extends Controller
 
         if (!$token) {
             // If no token is provided, return an empty response (or any appropriate response)
-            return response()->json(['message' => 'Fail'], 200);
+            return response()->json(['isSuccess' => false], 200);
         }
 
         // Manually check if the token is valid
@@ -97,11 +97,10 @@ class AuthController extends Controller
             })->first();
 
             // Return the authenticated user's data
-            return response()->json($user);
-
+            return response()->json(['isSuccess' => true, 'user' => $user]);
         } catch (\Exception $e) {
             // Handle any errors (e.g., token verification errors)
-            return response()->json(['message' => 'Fail'], 200); // Return empty response in case of error
+            return response()->json(['isSuccess' => false], 200); // Return empty response in case of error
         }
     }
 

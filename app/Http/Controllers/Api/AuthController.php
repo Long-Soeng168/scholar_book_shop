@@ -87,7 +87,7 @@ class AuthController extends Controller
     }
 
     // Return the authenticated user data if available
-    return response()->json($request->user());
+    return response()->json($request->user(), 200);
 }
 
 

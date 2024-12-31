@@ -34,10 +34,6 @@ Route::delete('/holds/{id}', [InvoiceController::class, 'delete'])->middleware('
 Route::post('/invoices', [InvoiceController::class, 'store']);
 // ->middleware('auth:sanctum');
 
-// Return an empty object if the user is not authenticated
-return response()->json([]);
-})->middleware('auth:sanctum');
-
 Route::group([
     'middleware' => 'auth:sanctum'
 ], function () {

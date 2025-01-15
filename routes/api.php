@@ -25,8 +25,27 @@ use App\Http\Controllers\Api\AboutController;
 
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Notifications\MyTelegramMessage;
+use Illuminate\Support\Facades\Notification;
 
 Route::post('/orders', [OrderController::class, 'store']);
+
+// http://127.0.0.1:8000/api/telegram_message?name=long&phone=087678912&message=letstalk
+Route::get('/telegram_message', function(Request $request){
+    $name = $request->name;
+    $phone = $request->phone;
+    $message = $request->message;
+    // dd($request->all());
+    try {
+        Notification::route('telegram', config('-1002219528184'))
+            ->notify(new MyTelegramMessage($phone, $name, $message));
+    } catch (\Exception $e) {
+        // // Log::error('Notification failed: ' . $e->getMessage());
+        // return 'Error Sent notification to telegram';
+        return response()->json(['message' => 'unsuccess', 'error' => 'Error Sent notification to telegram' . $e], 500);
+    }
+    return response()->json(['message' => 'success'], 200);
+});
 
 Route::get('/holds', [InvoiceController::class, 'holds']);
 Route::delete('/holds/{id}', [InvoiceController::class, 'delete'])->middleware('auth:sanctum');

@@ -70,6 +70,16 @@ class BookTableData extends Component
         $this->resetPage();
     }
 
+    public function updateStatus($id, $status) {
+        $getedItem = Book::findOrFail($id);
+        $getedItem->update([
+            'status' => $status,
+        ]);
+
+        session()->flash('success', 'Update Successfully!');
+    }
+
+
     public function render()
     {
 

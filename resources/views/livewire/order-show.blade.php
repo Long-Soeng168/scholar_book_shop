@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-700 dark:text-gray-50"> 
+<div class="bg-white dark:bg-gray-700 dark:text-gray-50">
   @if (session('success'))
         <div class="fixed top-[5rem] right-4 z-[999999] " wire:key="{{ rand() }}" x-data="{ show: true }"
             x-init="setTimeout(() => show = false, 7000)">
@@ -29,9 +29,9 @@
     <!-- Profile Details Section -->
     <div class="w-full mx-auto mt-4 rounded-lg ">
         <div class="flex">
-            
 
-            <div class="px-4 mb-4 text-gray-600 dark:text-gray-50"> 
+
+            <div class="px-4 mb-4 text-gray-600 dark:text-gray-50">
                 <div class="flex flex-col items-start justify-start ">
                     <div class="flex items-start justify-start gap-2 ">
                         <strong>{{ __('messages.name') }}:</strong>
@@ -69,9 +69,9 @@
                            $ {{ $order->total }}
                         </p>
                     </div>
-                   
+
                     <div>
-                         
+
                     <button key={{$order}} id="dropdownDefaultButton" data-dropdown-toggle="dropdown-{{$order->id}}"
                         class="{{ $order->status == 1 ? 'text-green-500' : ($order->status == 0 ? 'text-yellow-700' : 'text-red-500') }} py-2.5 px-5 me-2 mb-2 text-sm flex gap-1 items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         {{ $order->status == 1 ? 'Completed' : ($order->status == 0 ? 'In-Progress' : 'Reject') }}
@@ -82,24 +82,24 @@
                            <div id="dropdown-{{$order->id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton-{{$order->id}}">
                                   <li>
-                                     <button wire:click="updateStatus({{$order->id}}, 1)" 
+                                     <button wire:click="updateStatus({{$order->id}}, 1)"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
                                         Complete
                                     </button>
                                   </li>
                                    <li>
-                                     <button wire:click="updateStatus({{$order->id}}, 0)" 
+                                     <button wire:click="updateStatus({{$order->id}}, 0)"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
                                         In-Progress
                                     </button>
                                   </li>
                                    <li>
-                                     <button wire:click="updateStatus({{$order->id}}, -1)" 
+                                     <button wire:click="updateStatus({{$order->id}}, -1)"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
                                         Reject
                                     </button>
                                   </li>
-                                
+
                                 </ul>
                             </div>
                     </div>
@@ -115,9 +115,9 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">No</th>
-                            <th scope="col" class="px-4 py-3">Image</th> 
-                            <th scope="col" class="px-4 py-3">Title</th> 
-                            <th scope="col" class="px-4 py-3">Price</th> 
+                            <th scope="col" class="px-4 py-3">Image</th>
+                            <th scope="col" class="px-4 py-3">Title</th>
+                            <th scope="col" class="px-4 py-3">Price</th>
                             <th scope="col" class="px-4 py-3 text-center">Quantity</th>
                             <th scope="col" class="px-4 py-3 text-center">SubTotal</th>
                             <th scope="col" class="py-3 text-center">Action</th>
@@ -140,14 +140,14 @@
                                 <x-table-data value="{{ $item->title }}" />
                                 <x-table-data >
                                     @if($item->discount > 0)
-                                        <span class="line-through">{{$item->price}}</span> 
+                                        <span class="line-through">{{$item->price}}</span>
                                         <span class="text-red-400">$ {{ $item->price - ($item->discount / 100) * $item->price }}</span>
                                     @else
                                      <span class="text-red-400">$ {{$item->price}}</span>
                                     @endif
                                 </x-table-data>
-                                <x-table-data class="text-center" value="{{ $item->quantity }}" /> 
-                                  <x-table-data class="text-center"> 
+                                <x-table-data class="text-center" value="{{ $item->quantity }}" />
+                                  <x-table-data class="text-center">
                                     <span>
                                         $ {{ ( $item->price - ($item->discount / 100) * $item->price) * $item->quantity }}
                                     </span>
@@ -159,7 +159,7 @@
 
                                         <div class="pb-1" x-data="{ tooltip: false }">
                                             <!-- Modal toggle -->
-                                            <a href="https://thnal.com/products/{{$item->product_id}}?productTitle={{$item->title}}"
+                                            <a href="https://thnal.org/products/{{$item->product_id}}?productTitle={{$item->title}}"
                                                 @mouseenter="tooltip = true" @mouseleave="tooltip = false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -192,7 +192,7 @@
                 </table>
 
                 <div class="p-4">
-                     
+
                     <div>{{ $items->links() }}</div>
                 </div>
             </div>

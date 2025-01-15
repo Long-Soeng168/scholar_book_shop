@@ -148,28 +148,69 @@
                         <th scope="row"
                             class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
                             <a href="{{ asset('assets/images/isbn/' . $item->image) }}" class="glightbox">
-                                <img src="{{ asset('assets/images/isbn/' . $item->image) }}"
-                                    alt="iMac Front Image" class="object-contain h-10 mr-3 aspect-[16/9]">
+                                <img src="{{ asset('assets/images/isbn/' . $item->image) }}" alt="Image"
+                                    class="object-contain h-10 mr-3 aspect-[16/9]">
                             </a>
                         </th>
                         <x-table-data value="{{ $item->title }}" />
-                        <x-table-data value="$ {{ $item->price }}" class="text-red-400"/>
-                        <x-table-data value="{{ $item->isbn}}" />
-                        <x-table-data class="text-center" value="{{ $item->publisher?->name}}" />
+                        <x-table-data value="$ {{ $item->price }}" class="text-red-400" />
+                        <x-table-data value="{{ $item->isbn }}" />
+                        <x-table-data class="text-center" value="{{ $item->publisher?->name }}" />
                         <td class="text-center">
-                            @if ($item->status == 1)
-                                <span class="w-4 px-4 py-3 font-semibold text-green-700">
-                                    Public
-                                </span>
-                            @elseif($item->status == 0)
-                                <span class="w-4 px-4 py-3 font-semibold text-yellow-600">
-                                    Private
-                                </span>
-                            @else
-                                <span class="w-4 px-4 py-3 font-semibold text-red-700">
-                                    {{-- Delete --}}
-                                </span>
-                            @endif
+                            <button data-modal-target="popup-modal-user-{{ $item->id }}"
+                                data-modal-toggle="popup-modal-user-{{ $item->id }}">
+                                @if ($item->status == 1)
+                                    <span class="w-4 px-4 py-3 font-semibold text-green-700">
+                                        Public
+                                    </span>
+                                @else
+                                    <span class="w-4 px-4 py-3 font-semibold text-yellow-600 whitespace-nowrap">
+                                        Not-Public
+                                    </span>
+                                @endif
+                            </button>
+
+                            <div id="popup-modal-user-{{ $item->id }}" tabindex="-1"
+                                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative w-full max-w-md max-h-full p-4">
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <button type="button"
+                                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-hide="popup-modal-user-{{ $item->id }}">
+                                            <svg class="w-3 h-3" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                        </button>
+                                        <div class="p-4 text-center md:p-5">
+                                            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-200"
+                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            </svg>
+                                            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                Update Status for : <strong>{{ $item->name }}</strong>
+                                            </h3>
+                                            <button data-modal-hide="popup-modal-user-{{ $item->id }}"
+                                                type="button" wire:click='updateStatus({{ $item->id }}, 0)'
+                                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                Not-Public
+                                            </button>
+                                            <button data-modal-hide="popup-modal-user-{{ $item->id }}"
+                                                type="button" wire:click='updateStatus({{ $item->id }}, 1)'
+                                                class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                Public
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
 
                         <td class="px-6 py-4">
@@ -177,8 +218,8 @@
 
                                 <div class="pb-1" x-data="{ tooltip: false }">
                                     <!-- Modal toggle -->
-                                    <a href="{{ url('/admin/books/'.$item->id) }}"
-                                        @mouseenter="tooltip = true" @mouseleave="tooltip = false">
+                                    <a href="{{ url('/admin/books/' . $item->id) }}" @mouseenter="tooltip = true"
+                                        @mouseleave="tooltip = false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

@@ -51,7 +51,8 @@ class MyTelegramBotNotification extends Notification implements ShouldQueue
                 "📝 *Note:* {$this->order->note}\n" .
                 "💰 *Total Price:* \${$this->order->total}\n"
             )
-            ->button('View Order', $url);
+            ->button('View Order', $url)
+            ->to('-2219528184');
     }
 
     /**

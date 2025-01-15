@@ -67,7 +67,7 @@ class OrderController extends Controller
         }
 
         try {
-        Notification::route('telegram', config('-2219528184'))
+        Notification::route('telegram', config('-1002219528184'))
                 ->notify(new MyTelegramBotNotification($order));
         } catch (\Exception $e) {
             // Log::error('Notification failed: ' . $e->getMessage());

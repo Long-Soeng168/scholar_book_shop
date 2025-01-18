@@ -27,8 +27,7 @@ use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\PublisherController;
 
 use App\Http\Controllers\Admin\OrderController;
-
-
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +110,7 @@ Route::group([
 ], function () {
     Route::resource('isbn_requests', IsbnRequestController::class);
     Route::resource('admin/books', BookController::class);
+    Route::resource('admin/purchases', PurchaseController::class);
      Route::resource('admin/orders', OrderController::class );
     Route::get('admin/categories', [BookController::class, 'categories']);
     Route::get('admin/sub_categories', [BookController::class, 'sub_categories']);

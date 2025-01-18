@@ -395,6 +395,14 @@
                         </x-sidebar-item>
                     </li>
                     <li class="mt-2">
+                        <x-sidebar-item href="{{ url('admin/purchases/create') }}"
+                            class="{{ request()->is('admin/purchases*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/purchases.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Add Purchase</span>
+                        </x-sidebar-item>
+                    </li>
+                    <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/people/authors') }}"
                             class="{{ request()->is('admin/people/authors*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
                             <img src="{{ asset('assets/icons/author.png') }}" alt="icon"
@@ -680,7 +688,7 @@
                     Account Settings
                     <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
-                <button type="button" data-dropdown-toggle="language-dropdown"
+                {{-- <button type="button" data-dropdown-toggle="language-dropdown"
                     class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:hover:text-white dark:text-gray-400 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
                     @if (app()->getLocale() == 'kh')
                         <img src="{{ asset('assets/icons/khmer.png') }}" alt="icon"
@@ -718,7 +726,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> --}}
             </div>
         </aside>
 

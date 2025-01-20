@@ -29,6 +29,7 @@ class BookEdit extends Component
     public $number_of_pages = null;
     public $format = null;
     public $price = null;
+    public $cost = null;
     public $discount = null;
     public $publication_date = null;
     public $year = null;
@@ -53,6 +54,7 @@ class BookEdit extends Component
         $this->number_of_pages = $this->item->number_of_pages;
         $this->format = $this->item->format;
         $this->price = $this->item->price;
+        $this->cost = $this->item->cost;
         $this->publication_date = $this->item->publication_date;
         $this->edition = $this->item->edition;
         $this->description = $this->item->description;
@@ -144,6 +146,7 @@ class BookEdit extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
+            'cost' => 'required',
             'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'authors' => 'nullable|string|max:255',
@@ -162,7 +165,7 @@ class BookEdit extends Component
         ]);
 
         // dd($validated);
-        $validated['publisher_id'] = request()->user()->id;
+        $validated['last_edit_user_id'] = request()->user()->id;
 
         foreach ($validated as $key => $value) {
             if (is_null($value) || $value === '') {

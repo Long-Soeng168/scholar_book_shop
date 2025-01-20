@@ -26,6 +26,7 @@ class BookCreate extends Component
     public $number_of_pages = null;
     public $format = null;
     public $price = null;
+    public $cost = null;
     public $discount = null;
     public $publication_date = null;
     public $year = null;
@@ -115,6 +116,7 @@ class BookCreate extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
+            'cost' => 'required',
             'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'image' => 'required|image|max:2048',
@@ -135,7 +137,7 @@ class BookCreate extends Component
         ]);
 
         // dd($validated);
-        $validated['publisher_id'] = request()->user()->id;
+        $validated['user_id'] = request()->user()->id;
 
         foreach ($validated as $key => $value) {
             if (is_null($value) || $value === '') {

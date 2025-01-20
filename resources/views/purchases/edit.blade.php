@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="p-4">
-    @livewire('book-edit', [
+    <x-page-header :value="__('Purchase Edit')" />
+    @livewire('purchase-edit', [
         'id' => $id
     ])
 </div>

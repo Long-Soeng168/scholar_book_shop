@@ -401,6 +401,12 @@
                                 class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
                             <span class="ml-3">Add Purchase</span>
                         </x-sidebar-item>
+                        <x-sidebar-item href="{{ url('admin/purchases') }}"
+                            class="{{ request()->is('admin/purchases*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/purchases.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Purchase</span>
+                        </x-sidebar-item>
                     </li>
                     <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/people/authors') }}"

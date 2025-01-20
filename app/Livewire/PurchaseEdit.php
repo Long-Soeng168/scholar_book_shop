@@ -11,18 +11,41 @@ use App\Models\Supplier;
 use Carbon\Carbon;
 use Image;
 
-class PurchaseCreate extends Component
+class PurchaseEdit extends Component
 {
     use WithFileUploads;
+    public $purchase_item;
     public $product_id = [];
     public $supplier_id = null;
     public $status = 1;
+    public $init_status = 1;
     public $selectedProducts = [];
     public $purchase_date = null;
     public $total_amount = 0;
-    public function mount()
+
+    public function mount($id)
     {
-        $this->purchase_date = Carbon::today()->toDateString();
+        $this->purchase_item = Purchase::findOrFail($id);
+        // if(request()->user()->id !== $this->item->publisher_id && !request()->user()->hasRole(['super-admin', 'admin'])){
+        //     return redirect('admin/books')->with('error', ['Only Onwer or Admin can update!']);
+        // }
+
+        $this->purchase_date = $this->purchase_item->purchase_date ?? null;
+        $this->supplier_id = $this->purchase_item->supplier_id ?? null;
+        $this->status = $this->purchase_item->status ?? 1;
+        $this->init_status = $this->purchase_item->status ?? 0;
+
+        $purchase_items = PurchaseItem::where('purchase_id', $id)->with('product')->get();
+        foreach ($purchase_items as $key => $value) {
+            if (!collect($this->selectedProducts)->contains('id', $id)) {
+                array_unshift($this->selectedProducts, [
+                    'id' => $value->product_id,
+                    'title' => $value->product?->title,
+                    'quantity' => $value->quantity, // Default value
+                    'price' => $value->price > 0 ? $value->price : 0,
+                ]);
+            }
+        }
     }
 
     public function handleSelectProduct($id)
@@ -82,22 +105,31 @@ class PurchaseCreate extends Component
             $this->total_amount += $subtotal;
         }
 
-        $purchase = Purchase::create([
+        $this->purchase_item->update([
             'supplier_id' => $this->supplier_id,
             'status' => $this->status,
-            'user_id' => request()->user()->id,
+            'updated_user_id' => request()->user()->id,
             'purchase_date' => $this->purchase_date,
             'total_amount' => $this->total_amount,
         ]);
 
-        if (!empty($purchase)) {
+        $purchaseItems = PurchaseItem::where('purchase_id', $this->purchase_item->id)->get();
+
+        foreach ($purchaseItems as $key => $value) {
+            if ($this->init_status == 1) {
+                $book = Book::find($value->product_id);
+                $book->update([
+                    'quantity' => $book->quantity - $value->quantity,
+                ]);
+            }
+            $value->delete();
         }
 
         // dd($purchase);
 
         foreach ($this->selectedProducts as $product) {
             PurchaseItem::create([
-                'purchase_id' => $purchase->id,
+                'purchase_id' => $this->purchase_item->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity'],
                 'price' => $product['price'],

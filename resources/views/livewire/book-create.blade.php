@@ -77,7 +77,7 @@
                         <x-input-error :messages="$errors->get('title')" class="mt-2" />
                     </div>
                     <div class="md:col-span-2">
-                        <x-input-label for="short_description" :value="__('messages.shortDescription')" />
+                        <x-input-label for="short_description" :value="__('Short Description')" />
                         <textarea wire:model='short_description' class="w-full p-2 mt-1 border rounded bg-gray-50"
                             placeholder="Enter Short Description">{{ $short_description }}</textarea>
                         <x-input-error :messages="$errors->get('short_description')" class="mt-2" />
@@ -294,14 +294,22 @@
                             :value="old('numberOfPages')" autocomplete="numberOfPages" />
                         <x-input-error :messages="$errors->get('number_of_pages')" class="mt-2" />
                     </div>
-                    <div class="">
-                        <x-input-label for="price" :value="__('messages.price') . ' ($)'" /><span class="text-red-400">*</span>
-                        <x-text-input wire:model='price' id="price" class="block w-full mt-1" type="number"
-                            name="price" placeholder='Example : 7$' :value="old('price')" autocomplete="price" />
-                        <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <x-input-label for="cost" :value="__('Cost') . ' ($)'" /><span class="text-red-400">*</span>
+                            <x-text-input wire:model='cost' id="cost" class="block w-full mt-1" type="number"
+                                name="cost" placeholder='Example : 7$' :value="old('cost')" autocomplete="cost" />
+                            <x-input-error :messages="$errors->get('cost')" class="mt-2" />
+                        </div>
+                        <div class="flex-1">
+                            <x-input-label for="price" :value="__('messages.price') . ' ($)'" /><span class="text-red-400">*</span>
+                            <x-text-input wire:model='price' id="price" class="block w-full mt-1" type="number"
+                                name="price" placeholder='Example : 7$' :value="old('price')" autocomplete="price" />
+                            <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                        </div>
                     </div>
                     <div class="">
-                        <x-input-label for="discount" :value="__('messages.discount')" />
+                        <x-input-label for="discount" :value="__('Discount')" />
                         <x-text-input wire:model='discount' id="discount" class="block w-full mt-1" type="number"
                             name="discount" placeholder='Example: 30%' :value="old('discount')" autocomplete="discount" />
                         <x-input-error :messages="$errors->get('discount')" class="mt-2" />
@@ -595,6 +603,11 @@
                 $('.author-select').on('change', function(event) {
                     let data = $(this).val();
                     @this.set('author_id', data);
+                });
+                $('.publisher-select').select2();
+                $('.publisher-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('publisher_id', data);
                 });
 
                 $('.year-select').select2();

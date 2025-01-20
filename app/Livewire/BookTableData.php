@@ -84,9 +84,9 @@ class BookTableData extends Component
     {
 
         $items = Book::where('title', 'LIKE', "%$this->search%")
-            ->when(!request()->user()->hasRole(['admin', 'super-admin']), function ($query) {
-                $query->where('publisher_id', request()->user()->id);
-            })
+            // ->when(!request()->user()->hasRole(['admin', 'super-admin']), function ($query) {
+            //     $query->where('publisher_id', request()->user()->id);
+            // })
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 

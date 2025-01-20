@@ -93,7 +93,7 @@
                                     <tr class="bg-gray-200">
                                         <th class="px-4 py-2 text-left border border-gray-300">Title</th>
                                         <th class="px-4 py-2 text-left border border-gray-300">Quantity</th>
-                                        <th class="px-4 py-2 text-left border border-gray-300">Unit Price</th>
+                                        <th class="px-4 py-2 text-left border border-gray-300">Unit Cost</th>
                                         <th class="px-4 py-2 text-left border border-gray-300">Subtotal</th>
                                         <th class="px-4 py-2 text-left border border-gray-300">Action</th>
                                     </tr>
@@ -123,9 +123,10 @@
                                             </td>
                                             <td class="px-4 py-2 font-semibold border border-gray-200">
                                                 ${{ number_format($subtotal, 2) }}</td>
-                                            <td><button type="button"
-                                                wire:key='removeProduct-{{ $index }}'
-                                                    wire:click="removeProduct({{ $index }})">Remove</button>
+                                            <td class="px-4 py-2 font-semibold border border-gray-200"><button
+                                                    type="button" wire:key='removeProduct-{{ $index }}'
+                                                    wire:click="removeProduct({{ $index }})"
+                                                    class="text-red-500">Remove</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -133,7 +134,7 @@
                                     <tr class="text-sm font-bold text-gray-800 bg-gray-100">
                                         <td colspan="3" class="px-4 py-2 text-right border border-gray-200">Total:
                                         </td>
-                                        <td class="px-4 py-2 border border-gray-200">
+                                        <td colspan="2" class="px-4 py-2 border border-gray-200">
                                             ${{ number_format($total, 2) }}</td>
                                     </tr>
                                 </tfoot>
@@ -146,22 +147,22 @@
                     </div>
                     {{-- End Products Select --}}
                     <div class="relative w-full mt-5 group">
-                        <x-input-label for="publisher" :value="__('Supplier')" />
+                        <x-input-label for="supplier" :value="__('Supplier')" />
                         <div class="flex flex-1 gap-1 mt-1">
-                            <div class="flex justify-start flex-1">
-                                <x-select-option wire:model.live='publisher_id' id="publisher" name="publisher_id"
+                            <div class="flex justify-start flex-1 h-11">
+                                <x-select-option wire:model.live='supplier_id' id="supplier" name="supplier_id"
                                     class="supplier-select">
-                                    <option wire:key='publisher' value="">Select Supplier...</option>
-                                    @forelse ($publishers as $publisher)
-                                        <option wire:key='{{ $publisher->id }}' value="{{ $publisher->id }}">
-                                            {{ $publisher->name }}</option>
+                                    <option wire:key='supplier' value="">Select Supplier...</option>
+                                    @forelse ($suppliers as $supplier)
+                                        <option wire:key='{{ $supplier->id }}' value="{{ $supplier->id }}">
+                                            {{ $supplier->name }}</option>
                                     @empty
-                                        <option wire:key='nopublisher' value=""> --No Supplier--</option>
+                                        <option wire:key='nosupplier' value=""> --No Supplier--</option>
                                     @endforelse
                                 </x-select-option>
                             </div>
                         </div>
-                        <x-input-error :messages="$errors->get('publisher_id')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('supplier_id')" class="mt-2" />
                     </div>
 
                     <!-- Status Selection -->
@@ -178,17 +179,18 @@
                         </div>
                         <x-input-error :messages="$errors->get('status')" class="mt-2" />
                     </div>
+
+                    <div>
+                        <x-input-label for="purchase_date" :value="__('Purchase Date')" /><span class="text-red-400">*</span>
+                        <x-text-input wire:model='purchase_date' id="purchase_date" class="block w-full mt-1"
+                            type="date" name="purchase_date" :value="old('purchase_date')" autocomplete="purchase_date" />
+                        <x-input-error :messages="$errors->get('purchase_date')" class="mt-2" />
+                    </div>
                 </div>
 
-                <div class="">
-                    <x-input-label for="purchase_date" :value="__('Purchase Date')" /><span class="text-red-400">*</span>
-                    <x-text-input wire:model='purchase_date' id="purchase_date" class="block w-full mt-1"
-                        type="date" name="purchase_date" :value="old('purchase_date')" autocomplete="purchase_date" />
-                    <x-input-error :messages="$errors->get('purchase_date')" class="mt-2" />
-                </div>
 
             </section>
-            {{-- Start Publisher Select --}}
+            {{-- Start supplier Select --}}
 
 
 
@@ -201,7 +203,8 @@
                 Go back
             </x-outline-button>
             <button wire:loading.class="cursor-not-allowed" wire:click.prevent="save"
-                wire:target="save, image, file, handleSelectProduct, updateProduct, removeProduct" wire:loading.attr="disabled"
+                wire:target="save, image, file, handleSelectProduct, updateProduct, removeProduct"
+                wire:loading.attr="disabled"
                 class = 'text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
                 Save
             </button>
@@ -239,7 +242,7 @@
                 $('.supplier-select').select2();
                 $('.supplier-select').on('change', function(event) {
                     let data = $(this).val();
-                    @this.set('sub_category_id', data);
+                    @this.set('supplier_id', data);
                 });
 
                 $('.product-select').select2();

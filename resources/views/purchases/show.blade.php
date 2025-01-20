@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-4">
-    @livewire('book-show', [
+    @livewire('purchase-show', [
         'id' => $id
     ])
 </div>

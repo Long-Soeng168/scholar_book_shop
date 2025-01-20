@@ -10,4 +10,8 @@ class PurchaseItem extends Model
     use HasFactory;
     protected $table = 'purchase_items';
     protected $guarded = [];
+    public function product()
+    {
+        return $this->belongsTo(Book::class, 'product_id', 'id');
+    }
 }

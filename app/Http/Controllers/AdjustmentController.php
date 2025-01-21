@@ -8,42 +8,38 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class PurchaseController extends Controller
+class AdjustmentController extends Controller
 {
      // Display all ISBN Requests
      public function index()
      {
-         return view('purchases.index');
-     }
-     public function stocks()
-     {
-         return view('purchases.stock');
+         return view('adjustments.index');
      }
 
      // Show the form for creating a new ISBN request
      public function create()
      {
-         return view('purchases.create');
+         return view('adjustments.create');
      }
 
      public function show($id)
      {
-         return view('purchases.show', compact('id'));
+         return view('adjustments.show', compact('id'));
      }
 
      public function edit($id)
      {
-        return view('purchases.edit', compact('id'));
+        return view('adjustments.edit', compact('id'));
      }
 
      public function categories()
     {
-        return view('admin.purchases.category');
+        return view('admin.adjustments.category');
     }
 
     public function sub_categories()
     {
-        return view('admin.purchases.sub_category');
+        return view('admin.adjustments.sub_category');
     }
 
 

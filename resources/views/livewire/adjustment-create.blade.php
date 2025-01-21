@@ -66,7 +66,6 @@
     @endif
     <form class="w-full" enctype="multipart/form-data">
         @csrf
-
         <div class="">
             <section class="mt-8">
                 <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
@@ -88,41 +87,19 @@
                             </div>
                         </div>
                         <div>
-                            <table
-                                class="w-full border border-collapse border-gray-300 table-auto dark:border-gray-600">
+                            <table class="w-full border border-collapse border-gray-300 table-auto dark:border-gray-600">
                                 <thead>
                                     <tr class="bg-gray-200 dark:bg-gray-700">
-                                        <th
-                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                            Title</th>
-                                        <th
-                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                            Quantity</th>
-                                        <th
-                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                            Unit Cost</th>
-                                        <th
-                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                            Subtotal</th>
-                                        <th
-                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                            Action</th>
+                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Title</th>
+                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Quantity</th>
+                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Action Type</th>
+                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $total = 0;
-                                    @endphp
                                     @foreach ($selectedProducts as $index => $item)
-                                        @php
-                                            $subtotal = $item['price'] * $item['quantity'];
-                                            $total += $subtotal;
-                                        @endphp
-                                        <tr wire:key="{{ $item['id'] }}"
-                                            class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            <td
-                                                class="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-gray-200">
-                                                {{ $item['title'] }}</td>
+                                        <tr wire:key="{{ $item['id'] }}" class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-gray-200">{{ $item['title'] }}</td>
                                             <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">
                                                 <input type="number"
                                                     wire:change="updateProduct({{ $item['id'] }}, 'quantity', $event.target.value)"
@@ -130,17 +107,14 @@
                                                     class="w-full px-2 py-1 border rounded focus:ring focus:ring-blue-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">
                                             </td>
                                             <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">
-                                                <input type="text"
-                                                    wire:change="updateProduct({{ $item['id'] }}, 'price', $event.target.value)"
-                                                    value="{{ $item['price'] }}" placeholder="Unit Price"
+                                                <select name="action" id="action"
+                                                    wire:change="updateProduct({{ $item['id'] }}, 'action', $event.target.value)"
                                                     class="w-full px-2 py-1 border rounded focus:ring focus:ring-blue-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">
+                                                    <option value="add" {{ $item['action'] == 'add' ? 'selected' : '' }}>Add (+)</option>
+                                                    <option value="minus" {{ $item['action'] == 'minus' ? 'selected' : '' }}>Minus (-)</option>
+                                                </select>
                                             </td>
-                                            <td
-                                                class="px-4 py-2 font-semibold border border-gray-200 dark:border-gray-600 dark:text-gray-200">
-                                                ${{ number_format($subtotal, 2) }}
-                                            </td>
-                                            <td
-                                                class="px-4 py-2 font-semibold border border-gray-200 dark:border-gray-600">
+                                            <td class="px-4 py-2 font-semibold border border-gray-200 dark:border-gray-600">
                                                 <button type="button" wire:key='removeProduct-{{ $index }}'
                                                     wire:click="removeProduct({{ $index }})"
                                                     class="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">Remove</button>
@@ -148,62 +122,17 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr
-                                        class="text-sm font-bold text-gray-800 bg-gray-100 dark:bg-gray-700 dark:text-gray-200">
-                                        <td colspan="3"
-                                            class="px-4 py-2 text-right border border-gray-200 dark:border-gray-600">
-                                            Total:</td>
-                                        <td colspan="2"
-                                            class="px-4 py-2 border border-gray-200 dark:border-gray-600">
-                                            ${{ number_format($total, 2) }}
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
 
                         </div>
-                    </div>
-                    {{-- End Products Select --}}
-                    <div class="relative w-full mt-5 group">
-                        <x-input-label for="supplier" :value="__('Supplier')" />
-                        <div class="flex flex-1 gap-1 mt-1">
-                            <div class="flex justify-start flex-1 h-11">
-                                <x-select-option wire:model.live='supplier_id' id="supplier" name="supplier_id"
-                                    class="supplier-select">
-                                    <option wire:key='supplier' value="">Select Supplier...</option>
-                                    @forelse ($suppliers as $supplier)
-                                        <option wire:key='{{ $supplier->id }}' value="{{ $supplier->id }}">
-                                            {{ $supplier->name }}</option>
-                                    @empty
-                                        <option wire:key='nosupplier' value=""> --No Supplier--</option>
-                                    @endforelse
-                                </x-select-option>
-                            </div>
-                        </div>
-                        <x-input-error :messages="$errors->get('supplier_id')" class="mt-2" />
-                    </div>
-
-                    <!-- Status Selection -->
-                    <div class="relative w-full mt-5 group">
-                        <x-input-label for="status" :value="__('Status')" />
-                        <div class="flex flex-1 gap-1 mt-1">
-                            <div class="flex justify-start flex-1">
-                                <x-select-option wire:model.live='status' id="status" name="status"
-                                    class="status-select">
-                                    <option wire:key='received' value="1">Received</option>
-                                    <option wire:key='not-received' value="0">Not-Received</option>
-                                </x-select-option>
-                            </div>
-                        </div>
-                        <x-input-error :messages="$errors->get('status')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('selectedProducts')" class="mt-2" />
                     </div>
 
                     <div>
-                        <x-input-label for="purchase_date" :value="__('Purchase Date')" /><span class="text-red-400">*</span>
-                        <x-text-input wire:model='purchase_date' id="purchase_date" class="block w-full mt-1"
-                            type="date" name="purchase_date" :value="old('purchase_date')" autocomplete="purchase_date" />
-                        <x-input-error :messages="$errors->get('purchase_date')" class="mt-2" />
+                        <x-input-label for="adjustment_date" :value="__('Adjustment Date')" /><span class="text-red-400">*</span>
+                        <x-text-input wire:model='adjustment_date' id="adjustment_date" class="block w-full mt-1"
+                            type="date" name="adjustment_date" :value="old('adjustment_date')" autocomplete="adjustment_date" />
+                        <x-input-error :messages="$errors->get('adjustment_date')" class="mt-2" />
                     </div>
                 </div>
 
@@ -258,11 +187,6 @@
 
         function initSelect2() {
             $(document).ready(function() {
-                $('.supplier-select').select2();
-                $('.supplier-select').on('change', function(event) {
-                    let data = $(this).val();
-                    @this.set('supplier_id', data);
-                });
 
                 $('.product-select').select2();
                 $('.product-select').on('change', function(event) {

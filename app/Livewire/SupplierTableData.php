@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Publisher;
+use App\Models\Supplier;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class PublisherTableData extends Component
+class SupplierTableData extends Component
 {
     use WithPagination;
 
@@ -47,10 +47,10 @@ class PublisherTableData extends Component
 
     public function delete($id)
     {
-        $publisher = Publisher::find($id);
+        $publisher = Supplier::find($id);
         $publisher->delete();
 
-        session()->flash('success', 'Publisher successfully deleted!');
+        session()->flash('success', 'Supplier successfully deleted!');
     }
 
      // ==========Add New Publisher============
@@ -65,13 +65,12 @@ class PublisherTableData extends Component
                  'newPublisherName' => 'required|string|max:255',
              ]);
 
-             Publisher::create([
+             Supplier::create([
                  'name' => $this->newPublisherName,
-                 'gender' => $this->newPublisherGender,
                  'phone' => $this->newPublisherPhone,
              ]);
 
-             session()->flash('success', 'Add New Publisher successfully!');
+             session()->flash('success', 'Add New Supplier successfully!');
 
              $this->reset(['newPublisherName', 'newPublisherGender', 'newPublisherPhone']);
 
@@ -86,7 +85,7 @@ class PublisherTableData extends Component
      public $phone;
 
      public function setEdit($id) {
-        $publisher = Publisher::find($id);
+        $publisher = Supplier::find($id);
         $this->editId = $id;
         $this->name = $publisher->name;
         $this->gender = $publisher->gender;
@@ -106,14 +105,13 @@ class PublisherTableData extends Component
                 'name' => 'required|string|max:255',
             ]);
 
-            $publisher = Publisher::find($id);
+            $publisher = Supplier::find($id);
             $publisher->update([
                 'name' => $this->name,
-                'gender' => $this->gender,
                 'phone' => $this->phone,
             ]);
 
-            session()->flash('success', 'Publisher successfully edited!');
+            session()->flash('success', 'Supplier successfully edited!');
 
             $this->reset(['name', 'gender', 'editId']);
 
@@ -124,13 +122,13 @@ class PublisherTableData extends Component
 
     public function render(){
 
-        $items = Publisher::where(function($query){
+        $items = Supplier::where(function($query){
                                 $query->where('name', 'LIKE', "%$this->search%");
                             })
                             ->orderBy($this->sortBy, $this->sortDir)
                             ->paginate($this->perPage);
 
-        return view('livewire.publisher-table-data', [
+        return view('livewire.supplier-table-data', [
             'items' => $items,
         ]);
     }

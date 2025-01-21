@@ -37,4 +37,12 @@ class Book extends Model
     {
         return $this->hasMany(BookImage::class, 'book_id', 'id');
     }
+    public function purchases()
+    {
+        return $this->hasMany(PurchaseItem::class, 'product_id', 'id');
+    }
+    public function adjustments()
+    {
+        return $this->hasMany(AdjustmentItem::class, 'product_id', 'id');
+    }
 }

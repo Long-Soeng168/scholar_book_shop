@@ -358,7 +358,8 @@
         <aside
             class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700 "
             aria-label="Sidenav" id="drawer-navigation">
-            <a href="{{ url('/') }}" class="flex items-center justify-center p-3.5 border-b dark:border-b-slate-600">
+            <a href="{{ url('/') }}"
+                class="flex items-center justify-center p-3.5 border-b dark:border-b-slate-600">
                 @if ($websiteInfo->image)
                     <img src="{{ asset('assets/images/website_infos/logo192.png') }}"
                         class="object-cover h-8 mr-3 rounded-full aspect-square" alt="Flowbite Logo" />
@@ -370,44 +371,6 @@
             <div class="h-full px-3 py-5 overflow-y-auto bg-white dark:bg-gray-800 pb-[8rem]">
 
                 <ul>
-                    {{-- <li>
-                        <x-sidebar-item href="{{ route('admin.dashboard.index') }}"
-                            class="{{ request()->is('admin/dashboard*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/dashboard.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Dashboard</span>
-                        </x-sidebar-item>
-                    </li> --}}
-                    {{-- <li class="mt-2">
-                        <x-sidebar-item href="{{ url('isbn_requests') }}"
-                            class="{{ request()->is('isbn_requests*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/isbn.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">ISBN Requests</span>
-                        </x-sidebar-item>
-                    </li> --}}
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/books') }}"
-                            class="{{ request()->is('admin/books*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/books.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Books</span>
-                        </x-sidebar-item>
-                    </li>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/purchases/create') }}"
-                            class="{{ request()->is('admin/purchases*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/purchases.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Add Purchase</span>
-                        </x-sidebar-item>
-                        <x-sidebar-item href="{{ url('admin/purchases') }}"
-                            class="{{ request()->is('admin/purchases*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/purchases.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Purchase</span>
-                        </x-sidebar-item>
-                    </li>
                     <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/people/authors') }}"
                             class="{{ request()->is('admin/people/authors*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
@@ -425,6 +388,22 @@
                         </x-sidebar-item>
                     </li>
                     <li class="mt-2">
+                        <x-sidebar-item href="{{ url('admin/people/customers') }}"
+                            class="{{ request()->is('admin/people/customers*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Customers</span>
+                        </x-sidebar-item>
+                    </li>
+                    <li class="mt-2">
+                        <x-sidebar-item href="{{ url('admin/people/suppliers') }}"
+                            class="{{ request()->is('admin/people/suppliers*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Suppliers</span>
+                        </x-sidebar-item>
+                    </li>
+                    <li class="mt-2">
                         <x-sidebar-item href="{{ url('admin/promotions') }}"
                             class="{{ request()->is('admin/promotions*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
                             <img src="{{ asset('assets/icons/promotions.png') }}" alt="icon"
@@ -435,20 +414,20 @@
 
                     @if (request()->user()->hasRole(['super-admin', 'admin']))
                         <li x-data="{
-                            open: {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') ? 'true' : 'false' }},
+                            open: {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') || request()->is('admin/books*') ? 'true' : 'false' }},
                             init() {
-                                if ({{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') ? 'true' : 'false' }}) {
+                                if ({{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') || request()->is('admin/books*') ? 'true' : 'false' }}) {
                                     this.$nextTick(() => this.$refs.users.scrollIntoView({ behavior: 'smooth' }));
                                 }
                             }
                         }" x-ref="users" class="pt-1">
                             <button type="button"
-                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
+                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/books*') || request()->is('admin/categories*') || request()->is('admin/sub_categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
                                 :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
-                                <img src="{{ asset('assets/icons/book_categories.png') }}" alt="icon"
+                                <img src="{{ asset('assets/icons/books.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
-                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Categories</span>
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Books</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
                                     :class="{ 'rotate-180': open }" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -457,6 +436,12 @@
                                 </svg>
                             </button>
                             <ul x-show="open" x-transition class="py-2 ml-2 space-y-2">
+                                <li>
+                                    <a href="{{ url('admin/books') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/books*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                        Books
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{ url('admin/categories') }}"
                                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
@@ -467,6 +452,52 @@
                                     <a href="{{ url('admin/sub_categories') }}"
                                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/sub_categories*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
                                         Sub Categories
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+                        <li x-data="{
+                            open: {{ request()->is('admin/purchases*') || request()->is('admin/adjustments*') || request()->is('admin/stocks*') ? 'true' : 'false' }},
+                            init() {
+                                if ({{ request()->is('admin/purchases*') || request()->is('admin/adjustments*') || request()->is('admin/stocks*') ? 'true' : 'false' }}) {
+                                    this.$nextTick(() => this.$refs.users.scrollIntoView({ behavior: 'smooth' }));
+                                }
+                            }
+                        }" x-ref="users" class="pt-1">
+                            <button type="button"
+                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/stocks*') || request()->is('admin/purchases*') || request()->is('admin/adjustments*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
+                                :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
+                                @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
+                                <img src="{{ asset('assets/icons/book_categories.png') }}" alt="icon"
+                                    class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Stocks</span>
+                                <svg class="w-3 h-3 transition-transform duration-200 transform"
+                                    :class="{ 'rotate-180': open }" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-transition class="py-2 ml-2 space-y-2">
+                                <li>
+                                    <a href="{{ url('admin/stocks') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/stocks*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                        Stocks
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/purchases') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/purchases*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                        Purchases
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/adjustments') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/adjustments*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                        Adjustments
                                     </a>
                                 </li>
 

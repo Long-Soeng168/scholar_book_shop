@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\LinkController;
@@ -23,10 +24,12 @@ use App\Http\Controllers\IsbnRequestController;
 use App\Http\Controllers\BookController;
 
 use App\Http\Controllers\Admin\AuthorController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\PublisherController;
 
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\PurchaseController;
 
 /*
@@ -110,13 +113,17 @@ Route::group([
 ], function () {
     Route::resource('isbn_requests', IsbnRequestController::class);
     Route::resource('admin/books', BookController::class);
+    Route::get('admin/stocks', [PurchaseController::class, 'stocks']);
     Route::resource('admin/purchases', PurchaseController::class);
+    Route::resource('admin/adjustments', AdjustmentController::class);
      Route::resource('admin/orders', OrderController::class );
     Route::get('admin/categories', [BookController::class, 'categories']);
     Route::get('admin/sub_categories', [BookController::class, 'sub_categories']);
 
     Route::resource('admin/people/authors', AuthorController::class);
     Route::resource('admin/people/publishers', PublisherController::class);
+    Route::resource('admin/people/customers', CustomerController::class);
+    Route::resource('admin/people/suppliers', SupplierController::class);
 });
 
 Route::group([

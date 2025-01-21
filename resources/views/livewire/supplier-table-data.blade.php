@@ -88,18 +88,18 @@
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
             @can('create people')
-            <x-primary-button data-modal-target="author_modal" data-modal-toggle="author_modal">
+            <x-primary-button data-modal-target="Publisher_modal" data-modal-toggle="Publisher_modal">
                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd"
                         d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                 </svg>
-                Add Author
+                Add Supplier
             </x-primary-button>
             @endcan
 
-            <!-- Start Author modal -->
-            <div id="author_modal" tabindex="-1" aria-hidden="true"
+            <!-- Start Publisher modal -->
+            <div id="Publisher_modal" tabindex="-1" aria-hidden="true"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full lg:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative w-full max-w-md max-h-full p-4">
                     <!-- Modal content -->
@@ -108,11 +108,11 @@
                         <div
                             class="flex items-center justify-between p-4 border-b rounded-t lg:p-5 dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Create Author
+                                Create Supplier
                             </h3>
                             <button type="button"
                                 class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-toggle="author_modal">
+                                data-modal-toggle="Publisher_modal">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -128,26 +128,24 @@
                                     <label for="name"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                                     <input wire:key="{{ rand() }}" type="text" name="name"
-                                        id="name" wire:model='newAuthorName'
+                                        id="name" wire:model='newPublisherName'
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Name">
                                 </div>
 
-                                <div class="col-span-2 sm:col-span-2">
-                                    <label for="category"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
-                                    <select id="category" wire:model='newAuthorGender'
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option value="">Select gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="n/a">N/A</option>
-                                    </select>
+                                <div class="col-span-2">
+                                    <label for="phone"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                    <input wire:key="{{ rand() }}" type="text" name="phone"
+                                        id="phone" wire:model='newPublisherPhone'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="phone">
                                 </div>
+
                             </div>
                             <div class="text-right">
-                                <button data-modal-target="author_modal" data-modal-toggle="author_modal"
-                                    type="button" wire:click='saveNewAuthor' wire:target="saveNewAuthor"
+                                <button data-modal-target="Publisher_modal" data-modal-toggle="Publisher_modal"
+                                    type="button" wire:click='saveNewPublisher' wire:target="saveNewPublisher"
                                     wire:loading.attr="disabled"
                                     class="text-white mt-2 inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-5 h-5 me-1 -ms-1" fill="currentColor" viewBox="0 0 20 20"
@@ -163,7 +161,8 @@
                     </div>
                 </div>
             </div>
-            <!-- End Author modal -->
+            <!-- End Publisher modal -->
+
         </div>
     </div>
     <div class="overflow-x-auto">
@@ -184,7 +183,7 @@
                             Name
                         </div>
                     </th>
-                    <th scope="col" class="px-4 py-3">Gender</th>
+                    <th scope="col" class="px-4 py-3">Phone</th>
                     <th scope="col" class="px-4 py-3">Created At</th>
                     <th scope="col" class="py-3 text-center w-[300px]">Action</th>
                 </tr>
@@ -202,37 +201,33 @@
                                 <input type="text" wire:model='name'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </td>
+
                         @else
                             <x-table-data value="{{ $item->name }}" />
                         @endif
 
                         @if ($editId == $item->id)
                             <td>
-                                <select id="category" wire:model='gender'
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option value="">Select gender</option>
-                                    <option {{ $gender == 'male' ? 'selected' : '' }} value="male">Male</option>
-                                    <option {{ $gender == 'female' ? 'selected' : '' }} value="female">Female</option>
-                                    <option {{ $gender == 'n/a' ? 'selected' : '' }} value="n/a">N/A</option>
-                                </select>
+                                <input type="text" wire:model='phone'
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </td>
                             <td></td>
                         @else
-                            <x-table-data class="capitalize" value="{{ $item->gender ? $item->gender : 'N/A' }}" />
-                            <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
+                            <x-table-data class="capitalize" value="{{ !empty($item->phone) ? $item->phone : 'N/A' }}" />
+                            <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') ?? 'N/A' }}" />
                         @endif
 
 
                         <td class="px-6 py-4 ">
                             <div class="flex items-start justify-center gap-3">
                                 @if ($editId == $item->id)
-                                    <button wire:click='cancelUpdateAuthor()'
+                                    <button wire:click='cancelUpdatePublisher()'
                                         class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                         type="button">
                                         Cancel
                                     </button>
                                     <button wire:confirm='Are you sure? You want to update {{ $item->name }}'
-                                        wire:click='updateAuthor({{ $item->id }})'
+                                        wire:click='updatePublisher({{ $item->id }})'
                                         class = 'flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800'>
                                         Update
                                     </button>
@@ -271,7 +266,7 @@
                                     @can('update people')
                                     <div class="pb-1" x-data="{ tooltip: false }">
                                         <!-- Modal toggle -->
-                                        <a data-modal-target="edit_author_modal" data-modal-toggle="edit_author_modal"
+                                        <a data-modal-target="edit_Publisher_modal" data-modal-toggle="edit_Publisher_modal"
                                             @mouseenter="tooltip = true" @mouseleave="tooltip = false"
                                             wire:click='setEdit({{ $item->id }})'>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -319,7 +314,7 @@
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Record per
                     page : </label>
                 <select id="countries" wire:model.live='perPage'
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-10">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="20">20</option>

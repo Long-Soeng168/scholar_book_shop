@@ -2,47 +2,36 @@
 
 namespace App\Livewire;
 
+use App\Models\Adjustment;
+use App\Models\AdjustmentItem;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Book;
-use App\Models\Purchase;
-use App\Models\PurchaseItem;
-use App\Models\Supplier;
-use Carbon\Carbon;
-use Image;
 
-class PurchaseEdit extends Component
+class AdjustmentEdit extends Component
 {
     use WithFileUploads;
-    public $purchase_item;
-    public $product_id = [];
-    public $supplier_id = null;
-    public $status = 1;
-    public $init_status = 1;
     public $selectedProducts = [];
-    public $purchase_date = null;
-    public $total_amount = 0;
+    public $adjustment_item;
+    public $adjustment_date = null;
 
     public function mount($id)
     {
-        $this->purchase_item = Purchase::findOrFail($id);
+        $this->adjustment_item = Adjustment::findOrFail($id);
         // if(request()->user()->id !== $this->item->publisher_id && !request()->user()->hasRole(['super-admin', 'admin'])){
         //     return redirect('admin/books')->with('error', ['Only Onwer or Admin can update!']);
         // }
 
-        $this->purchase_date = $this->purchase_item->purchase_date ?? null;
-        $this->supplier_id = $this->purchase_item->supplier_id ?? null;
-        $this->status = $this->purchase_item->status ?? 1;
-        $this->init_status = $this->purchase_item->status ?? 0;
+        $this->adjustment_date = $this->adjustment_item->adjustment_date ?? null;
 
-        $purchase_items = PurchaseItem::where('purchase_id', $id)->with('product')->get();
-        foreach ($purchase_items as $key => $value) {
+        $adjustment_items = AdjustmentItem::where('adjustment_id', $id)->with('product')->get();
+        foreach ($adjustment_items as $key => $value) {
             if (!collect($this->selectedProducts)->contains('id', $id)) {
                 array_unshift($this->selectedProducts, [
                     'id' => $value->product_id,
                     'title' => $value->product?->title,
                     'quantity' => $value->quantity, // Default value
-                    'price' => $value->price > 0 ? $value->price : 0,
+                    'action' => $value->action,
                 ]);
             }
         }
@@ -59,7 +48,7 @@ class PurchaseEdit extends Component
                     'id' => $product->id,
                     'title' => $product->title,
                     'quantity' => 1, // Default value
-                    'price' => $product->cost > 0 ? $product->cost : 0,
+                    'action' => 'add',
                 ]);
             }
         }
@@ -100,26 +89,22 @@ class PurchaseEdit extends Component
             'selectedProducts' => 'required|array|min:1',
         ]);
 
-        foreach ($this->selectedProducts as $index => $item) {
-            $subtotal = $item['price'] * $item['quantity'];
-            $this->total_amount += $subtotal;
-        }
-
-        $this->purchase_item->update([
-            'supplier_id' => $this->supplier_id,
-            'status' => $this->status,
+        $this->adjustment_item->update([
             'updated_user_id' => request()->user()->id,
-            'purchase_date' => $this->purchase_date,
-            'total_amount' => $this->total_amount,
+            'adjustment_date' => $this->adjustment_date,
         ]);
 
-        $purchaseItems = PurchaseItem::where('purchase_id', $this->purchase_item->id)->get();
+        $purchaseItems = AdjustmentItem::where('adjustment_id', $this->adjustment_item->id)->get();
 
         foreach ($purchaseItems as $key => $value) {
-            if ($this->init_status == 1) {
-                $book = Book::find($value->product_id);
+            $book = Book::find($value->product_id);
+            if ($value->action == 'add') {
                 $book->update([
                     'quantity' => $book->quantity - $value->quantity,
+                ]);
+            } elseif ($value->action == 'minus') {
+                $book->update([
+                    'quantity' => $book->quantity + $value->quantity,
                 ]);
             }
             $value->delete();
@@ -128,26 +113,28 @@ class PurchaseEdit extends Component
         // dd($purchase);
 
         foreach ($this->selectedProducts as $product) {
-            PurchaseItem::create([
-                'purchase_id' => $this->purchase_item->id,
+            AdjustmentItem::create([
+                'adjustment_id' => $this->adjustment_item->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'subtotal' => $product['price'] * $product['quantity'],
+                'action' => $product['action'],
             ]);
 
-            if ($this->status == 1) {
-                $book = Book::find($product['id']);
+            $book = Book::find($product['id']);
+            if ($product['action'] == 'add') {
                 $book->update([
                     'quantity' => $book->quantity + $product['quantity'],
+                ]);
+            } elseif ($product['action'] == 'minus') {
+                $book->update([
+                    'quantity' => $book->quantity - $product['quantity'],
                 ]);
             }
         }
 
-        session()->flash('success', 'Purchase saved successfully!');
+        session()->flash('success', 'Adjustment updated successfully!');
         $this->reset(['selectedProducts']);
-        return redirect('/admin/purchases');
-
+        return redirect('admin/adjustments');
     }
 
 
@@ -163,12 +150,8 @@ class PurchaseEdit extends Component
     {
         $products = Book::orderBy('id', 'desc')->get();
         // dd($selectedProducts);
-
-        $suppliers = Supplier::orderBy('name')->get();
-
-        return view('livewire.purchase-create', [
+        return view('livewire.adjustment-create', [
             'products' => $products,
-            'suppliers' => $suppliers,
         ]);
     }
 }

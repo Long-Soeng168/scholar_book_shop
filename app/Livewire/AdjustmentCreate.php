@@ -2,27 +2,22 @@
 
 namespace App\Livewire;
 
+use App\Models\Adjustment;
+use App\Models\AdjustmentItem;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Book;
-use App\Models\Purchase;
-use App\Models\PurchaseItem;
-use App\Models\Supplier;
 use Carbon\Carbon;
 use Image;
 
-class PurchaseCreate extends Component
+class AdjustmentCreate extends Component
 {
     use WithFileUploads;
-    public $product_id = [];
-    public $supplier_id = null;
-    public $status = 1;
     public $selectedProducts = [];
-    public $purchase_date = null;
-    public $total_amount = 0;
+    public $adjustment_date = null;
     public function mount()
     {
-        $this->purchase_date = Carbon::today()->toDateString();
+        $this->adjustment_date = Carbon::today()->toDateString();
     }
 
     public function handleSelectProduct($id)
@@ -36,7 +31,7 @@ class PurchaseCreate extends Component
                     'id' => $product->id,
                     'title' => $product->title,
                     'quantity' => 1, // Default value
-                    'price' => $product->cost > 0 ? $product->cost : 0,
+                    'action' => 'add',
                 ]);
             }
         }
@@ -52,22 +47,13 @@ class PurchaseCreate extends Component
     public function updateProduct($productId, $field, $value)
     {
         foreach ($this->selectedProducts as $index => $product) {
-
             if ($product['id'] == $productId) {
-
                 $this->selectedProducts[$index][$field] = $value; // Update the value
                 // dd($this->selectedProducts[$index][$field]);
-
-                // break;
             }
         }
         $this->dispatch('livewire:updated');
-
         // dd($this->selectedProducts);
-
-
-
-        // session()->flash('success', 'Product updated successfully!');
     }
 
 
@@ -77,44 +63,38 @@ class PurchaseCreate extends Component
             'selectedProducts' => 'required|array|min:1',
         ]);
 
-        foreach ($this->selectedProducts as $index => $item) {
-            $subtotal = $item['price'] * $item['quantity'];
-            $this->total_amount += $subtotal;
-        }
+        // dd($this->selectedProducts);
 
-        $purchase = Purchase::create([
-            'supplier_id' => $this->supplier_id,
-            'status' => $this->status,
+        $adjustmentCreated = Adjustment::create([
             'user_id' => request()->user()->id,
-            'purchase_date' => $this->purchase_date,
-            'total_amount' => $this->total_amount,
+            'adjustment_date' => $this->adjustment_date,
         ]);
 
-        if (!empty($purchase)) {
-        }
-
-        // dd($purchase);
+        // dd($adjustmentCreated);
 
         foreach ($this->selectedProducts as $product) {
-            PurchaseItem::create([
-                'purchase_id' => $purchase->id,
+            AdjustmentItem::create([
+                'adjustment_id' => $adjustmentCreated->id,
                 'product_id' => $product['id'],
                 'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'subtotal' => $product['price'] * $product['quantity'],
+                'action' => $product['action'],
             ]);
 
-            if ($this->status == 1) {
-                $book = Book::find($product['id']);
+            $book = Book::find($product['id']);
+            if ($product['action'] == 'add') {
                 $book->update([
                     'quantity' => $book->quantity + $product['quantity'],
+                ]);
+            } elseif ($product['action'] == 'minus') {
+                $book->update([
+                    'quantity' => $book->quantity - $product['quantity'],
                 ]);
             }
         }
 
-        session()->flash('success', 'Purchase saved successfully!');
+        session()->flash('success', 'Adjustment saved successfully!');
         $this->reset(['selectedProducts']);
-        return redirect('/admin/purchases');
+        return redirect('/admin/adjustments');
     }
 
 
@@ -129,13 +109,9 @@ class PurchaseCreate extends Component
     public function render()
     {
         $products = Book::orderBy('id', 'desc')->get();
-        // dd($selectedProducts);
 
-        $suppliers = Supplier::orderBy('name')->get();
-
-        return view('livewire.purchase-create', [
+        return view('livewire.adjustment-create', [
             'products' => $products,
-            'suppliers' => $suppliers,
         ]);
     }
 }

@@ -71,7 +71,7 @@
     <div class="">
         @yield('content')
     </div>
-    <div class="fixed bottom-0 left-0 ">
+    {{-- <div class="fixed bottom-0 left-0 ">
         <button type="button" data-dropdown-toggle="language-dropdown"
             class="inline-flex justify-center p-2 m-1 text-white rounded cursor-pointer dark:hover:text-white dark:text-gray-400 hover:text-purple-950 hover:bg-gray-200 bg-purple-950 dark:hover:bg-gray-600">
             <span class="mr-2 ">
@@ -114,7 +114,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div> --}}
 
 </body>
 

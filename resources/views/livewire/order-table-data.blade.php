@@ -49,16 +49,18 @@
         <div
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
-            <!--@can('create setting')-->
-            <!--<x-primary-button href="{{ url('admin/settings/links/create') }}">-->
-            <!--    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"-->
-            <!--        aria-hidden="true">-->
-            <!--        <path clip-rule="evenodd" fill-rule="evenodd"-->
-            <!--            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />-->
-            <!--    </svg>-->
-            <!--    Add-->
-            <!--</x-primary-button>-->
-            <!--@endcan-->
+            <!--@can('create order')
+    -->
+                <!--<x-primary-button href="{{ url('admin/settings/links/create') }}">-->
+                <!--    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"-->
+                <!--        aria-hidden="true">-->
+                <!--        <path clip-rule="evenodd" fill-rule="evenodd"-->
+                <!--            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />-->
+                <!--    </svg>-->
+                <!--    Add-->
+                <!--</x-primary-button>-->
+                <!--
+@endcan-->
 
             {{-- <div class="flex items-center w-full space-x-3 md:w-auto">
                 <button id="filterDropdownButton"
@@ -109,41 +111,50 @@
                         <td class="w-4 px-4 py-3">
                             {{ $loop->iteration }}
                         </td>
-                        <x-table-data value="{{ $item->name }}" /> 
+                        <x-table-data value="{{ $item->name }}" />
                         <x-table-data value="{{ $item->phone }}" />
                         <x-table-data value="{{ $item->note }}" />
-                        <x-table-data value="$ {{  $item->total }}" /> 
-                         <td class="text-center" >
-                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown-{{$item->id}}"
+                        <x-table-data value="$ {{ $item->total }}" />
+                        <td class="text-center">
+                            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown-{{ $item->id }}"
                                 class="{{ $item->status == 1 ? 'text-green-500' : ($item->status == 0 ? 'text-yellow-700' : 'text-red-500') }} py-2.5 px-5 me-2 mb-2 text-sm flex gap-1 items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                 {{ $item->status == 1 ? 'Completed' : ($item->status == 0 ? 'In-Progress' : 'Reject') }}
-                                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
-                                </svg>
+                                @can('update order')
+                                    <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 10 6">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                    </svg>
+                                @endcan
                             </button>
-                                   <div id="dropdown-{{$item->id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton-{{$item->id}}">
-                                          <li>
-                                             <button wire:click="updateStatus({{$item->id}}, 1)" 
-                                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
+                            @can('update order')
+                                <div id="dropdown-{{ $item->id }}"
+                                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                        aria-labelledby="dropdownDefaultButton-{{ $item->id }}">
+                                        <li>
+                                            <button wire:click="updateStatus({{ $item->id }}, 1)"
+                                                class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                 Complete
                                             </button>
-                                          </li>
-                                           <li>
-                                             <button wire:click="updateStatus({{$item->id}}, 0)" 
-                                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
+                                        </li>
+                                        <li>
+                                            <button wire:click="updateStatus({{ $item->id }}, 0)"
+                                                class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                 In-Progress
                                             </button>
-                                          </li>
-                                           <li>
-                                             <button wire:click="updateStatus({{$item->id}}, -1)" 
-                                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full">
+                                        </li>
+                                        <li>
+                                            <button wire:click="updateStatus({{ $item->id }}, -1)"
+                                                class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                 Reject
                                             </button>
-                                          </li>
-                                        
-                                        </ul>
-                                    </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            @endcan
+
                         </td>
 
                         <td class="px-6 py-4">
@@ -151,7 +162,8 @@
 
                                 <div class="pb-1" x-data="{ tooltip: false }">
                                     <!-- Modal toggle -->
-                                    <a href="/admin/orders/{{$item->id}}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">
+                                    <a href="/admin/orders/{{ $item->id }}" @mouseenter="tooltip = true"
+                                        @mouseleave="tooltip = false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -169,13 +181,14 @@
                                     </div>
                                 </div>
 
-                                @can('delete setting')
-                                <div class="pb-1" x-data="{ tooltip: false }">
-                                    <!-- Modal toggle -->
-                                    <a wire:click="delete({{ $item->id }})"
-                                        wire:confirm="Are you sure? you want to delete : {{ $item->name }}"
-                                         @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="text-red-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                @can('delete order')
+                                    <div class="pb-1" x-data="{ tooltip: false }">
+                                        <!-- Modal toggle -->
+                                        <a wire:click="delete({{ $item->id }})"
+                                            wire:confirm="Are you sure? you want to delete : {{ $item->name }}"
+                                            @mouseenter="tooltip = true" @mouseleave="tooltip = false"
+                                            class="text-red-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                 class="lucide lucide-trash">
@@ -183,38 +196,40 @@
                                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                                                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
                                             </svg>
-                                    </a>
+                                        </a>
 
-                                    <!-- View tooltip -->
-                                    <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
-                                        class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
-                                        style="display: none;">
-                                        Delete
+                                        <!-- View tooltip -->
+                                        <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
+                                            class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
+                                            style="display: none;">
+                                            Delete
+                                        </div>
                                     </div>
-                                </div>
                                 @endcan
 
-                                <!--@can('update setting')-->
-                                <!--<div class="pb-1" x-data="{ tooltip: false }">-->
+                                <!--@can('update order')
+    -->
+                                    <!--<div class="pb-1" x-data="{ tooltip: false }">-->
                                     <!-- Modal toggle -->
-                                <!--    <a href="{{ url('admin/settings/links/'.$item->id.'/edit') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">-->
-                                <!--        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"-->
-                                <!--            viewBox="0 0 24 24" fill="none" stroke="currentColor"-->
-                                <!--            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"-->
-                                <!--            class="lucide lucide-file-pen-line">-->
-                                <!--            <path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" />-->
-                                <!--            <path d="M8 18h1" />-->
-                                <!--            <path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" />-->
-                                <!--        </svg>-->
-                                <!--    </a>-->
+                                    <!--    <a href="{{ url('admin/settings/links/' . $item->id . '/edit') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">-->
+                                    <!--        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"-->
+                                    <!--            viewBox="0 0 24 24" fill="none" stroke="currentColor"-->
+                                    <!--            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"-->
+                                    <!--            class="lucide lucide-file-pen-line">-->
+                                    <!--            <path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" />-->
+                                    <!--            <path d="M8 18h1" />-->
+                                    <!--            <path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" />-->
+                                    <!--        </svg>-->
+                                    <!--    </a>-->
                                     <!-- View tooltip -->
-                                <!--    <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"-->
-                                <!--        class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"-->
-                                <!--        style="display: none;">-->
-                                <!--        Edit-->
-                                <!--    </div>-->
-                                <!--</div>-->
-                                <!--@endcan-->
+                                    <!--    <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"-->
+                                    <!--        class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"-->
+                                    <!--        style="display: none;">-->
+                                    <!--        Edit-->
+                                    <!--    </div>-->
+                                    <!--</div>-->
+                                    <!--
+@endcan-->
 
                             </div>
                         </td>

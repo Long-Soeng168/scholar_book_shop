@@ -34,27 +34,51 @@
             <div class="px-4 mb-4 text-gray-600 dark:text-gray-50">
                 <div class="flex flex-col items-start justify-start ">
                     <div class="flex items-start justify-start gap-2 ">
-                        <strong>{{ __('Supplier : ') }}</strong>
+                        <strong>{{ __('#Invoice : ') }}</strong>
                         <p class="text-start ">
-                            {{ $order->supplier?->name ?? 'N/A' }}
+                            #{{ $order->id ?? 'N/A' }}
                         </p>
                     </div>
                     <div class="flex items-start justify-start gap-2 ">
-                        <strong>{{ __('Total Amount : ') }}</strong>
+                        <strong>{{ __('Sub-Total : ') }}</strong>
                         <p class="text-red-500 text-start">
-                            $ {{ $order->total_amount ?? 'N/A' }}
+                            $ {{ $order->subtotal ?? 'N/A' }}
+                        </p>
+                    </div>
+                    <div class="flex items-start justify-start gap-2 ">
+                        <strong>{{ __('Discount : ') }}</strong>
+                        <p class="text-red-500 text-start">
+                             {{ $order->discount ?? 'N/A' }} {{ $order->discountType == 'percentage' ? ' %' : ' $' }}
+                        </p>
+                    </div>
+                    <div class="flex items-start justify-start gap-2 ">
+                        <strong>{{ __('Total : ') }}</strong>
+                        <p class="text-red-500 text-start">
+                            $ {{ $order->total ?? 'N/A' }}
+                        </p>
+                    </div>
+                    <div class="flex items-start justify-start gap-2 ">
+                        <strong>{{ __('Customer : ') }}</strong>
+                        <p class="text-start ">
+                            {{ $order->customer?->name ?? 'N/A' }}
+                        </p>
+                    </div>
+                    <div class="flex items-start justify-start gap-2 ">
+                        <strong>{{ __('Pay by : ') }}</strong>
+                        <p class="text-start ">
+                            {{ $order->payment?->name ?? 'N/A' }}
                         </p>
                     </div>
                     <div class="flex items-start justify-start gap-2 ">
                         <strong>{{ __('Purchase Date : ') }}</strong>
                         <p class="text-start ">
-                            {{ $order->purchase_date ?? 'N/A' }}
+                            {{  $order->created_at?->format('d_M_Y - H:i') ?? 'N/A' }}
                         </p>
                     </div>
                     <div class="flex items-start justify-start gap-2 ">
-                        <strong>{{ __('Created By : ') }}</strong>
+                        <strong>{{ __('Sale By : ') }}</strong>
                         <p class="text-start ">
-                            {{ $order->created_by?->name ?? 'N/A' }}
+                            {{ $order->user?->name ?? 'N/A' }}
                         </p>
                     </div>
                     <div class="flex items-start justify-start gap-2 ">
@@ -63,6 +87,15 @@
                             {{ $order->updated_by?->name ?? 'N/A' }}
                         </p>
                     </div>
+                    @if ($order->note)
+                    <div class="flex items-start justify-start gap-2 ">
+                        <strong>{{ __('Note : ') }}</strong>
+                        <p class="text-start ">
+                            {{ $order->note ?? 'N/A' }}
+                        </p>
+                    </div>
+                    @endif
+
 
                     <div wire:key='{{ $update_status }}' class="flex items-center gap-2">
                         <strong>{{ __('Status : ') }}</strong>
@@ -70,7 +103,7 @@
                         <button :key={{ rand() }} id="dropdownDefaultButton"
                             data-dropdown-toggle="dropdown-{{ $order->id }}"
                             class="{{ $order->status == 1 ? 'text-green-500' : ($order->status == 0 ? 'text-yellow-700' : 'text-red-500') }} py-2.5 px-5 me-2 text-sm flex gap-1 items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                            {{ $order->status == 1 ? 'Recieved' : 'Not-Recieved' }}
+                            {{ $order->status == 1 ? 'Paid' : 'Hold' }}
                             <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -84,13 +117,13 @@
                                 <li>
                                     <button wire:click="updateStatus({{ $order->id }}, 1)"
                                         class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        Recieved
+                                        Paid
                                     </button>
                                 </li>
                                 <li>
                                     <button wire:click="updateStatus({{ $order->id }}, 0)"
                                         class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        Not-Recieved
+                                        Hold
                                     </button>
                                 </li>
                             </ul>
@@ -144,7 +177,7 @@
                                 <x-table-data class="text-center">
                                     <span>
                                         $
-                                        {{ $item->price  * $item->quantity }}
+                                        {{ ($item->price - ($item->discount / 100) * $item->price)  * $item->quantity }}
                                     </span>
                                 </x-table-data>
 

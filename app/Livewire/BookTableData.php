@@ -38,6 +38,8 @@ class BookTableData extends Component
         } else {
             $this->sortBy = $newSortBy;
         }
+        $this->dispatch('livewire:updated');
+
     }
     public function delete($id)
     {
@@ -60,6 +62,7 @@ class BookTableData extends Component
         $item->delete();
 
         // Flash success message
+        $this->dispatch('livewire:updated');
         session()->flash('success', 'Successfully deleted!');
     }
 
@@ -68,6 +71,8 @@ class BookTableData extends Component
     public function updatedSearch()
     {
         $this->resetPage();
+        $this->dispatch('livewire:updated');
+
     }
 
     public function updateStatus($id, $status) {
@@ -75,8 +80,21 @@ class BookTableData extends Component
         $getedItem->update([
             'status' => $status,
         ]);
+        $this->dispatch('livewire:updatedStatus');
+        // session()->flash('success', 'Update Successfully!');
+    }
+    public function updateForSell($id, $status) {
+        $getedItem = Book::findOrFail($id);
+        $getedItem->update([
+            'is_for_sell' => $status,
+        ]);
+        $this->dispatch('livewire:updatedStatus');
+        // session()->flash('success', 'Update Successfully!');
+    }
 
-        session()->flash('success', 'Update Successfully!');
+    public function updated()
+    {
+        $this->dispatch('livewire:updated');
     }
 
 

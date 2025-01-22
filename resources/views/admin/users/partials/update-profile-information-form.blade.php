@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="mb-6">
+        {{-- <div class="mb-6">
             <div class="flex items-center space-4">
                 <div class="max-w-40">
                     <img id="selected-image" src="#" alt="Selected Image" class="hidden max-w-full pr-4 max-h-40" />
@@ -63,7 +63,7 @@
                     <x-file-input id="dropzone-file" name="image" accept="image/png, image/jpeg, image/gif" onchange="displaySelectedImage(event)" />
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="grid md:grid-cols-2 md:gap-6">
             {{-- Started At --}}
             <div>

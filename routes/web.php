@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,7 @@ Route::group([
     Route::resource('admin/books', BookController::class);
     Route::get('admin/stocks', [PurchaseController::class, 'stocks']);
     Route::resource('admin/purchases', PurchaseController::class);
+    Route::resource('admin/sales', SaleController::class);
     Route::resource('admin/adjustments', AdjustmentController::class);
      Route::resource('admin/orders', OrderController::class );
     Route::get('admin/categories', [BookController::class, 'categories']);

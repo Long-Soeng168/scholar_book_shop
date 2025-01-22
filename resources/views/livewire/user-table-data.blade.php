@@ -104,7 +104,7 @@
                 </x-primary-button>
             @endcan
 
-            <div class="flex items-center w-full space-x-3 md:w-auto">
+            {{-- <div class="flex items-center w-full space-x-3 md:w-auto">
                 <button id="filterDropdownButton"
                     class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     type="button">
@@ -119,7 +119,7 @@
                     Export
                 </button>
 
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="overflow-x-auto">
@@ -127,13 +127,13 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-4 py-3">No</th>
-                    <th scope="col" class="px-4 py-3">Image</th>
+                    {{-- <th scope="col" class="px-4 py-3">Image</th> --}}
                     <th scope="col" class="px-4 py-3">Name</th>
                     <th scope="col" class="px-4 py-3">Email</th>
                     <th scope="col" class="px-4 py-3">Phone</th>
                     <th scope="col" class="px-4 py-3">Roles</th>
                     <th scope="col" class="px-4 py-3">Expired_at</th>
-                    <th scope="col" class="px-4 py-3 text-center">Status</th>
+                    {{-- <th scope="col" class="px-4 py-3 text-center">Status</th> --}}
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -149,7 +149,7 @@
                                 {{ $loop->iteration }}
                             </div>
                         </td>
-                        <th scope="row"
+                        {{-- <th scope="row"
                             class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             @if ($item->image)
                                 <img src="{{ asset('assets/images/users/thumb/' . $item->image) }}"
@@ -160,7 +160,7 @@
                                     class="object-cover w-auto h-10 mr-3 rounded-full aspect-square">
                             @endif
 
-                        </th>
+                        </th> --}}
                         <x-table-data value="{{ $item->name ? $item->name : 'N/A' }}" />
                         <x-table-data value="{{ $item->email ? $item->email : 'N/A' }}" />
                         <x-table-data value="{{ $item->phone ? $item->phone : 'N/A' }}" />
@@ -198,7 +198,7 @@
                         <x-table-data class="{{ $class }}"
                             value="{{ $item->expired_at ? $item->expired_at : 'No Expire' }}" />
 
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             <button data-modal-target="popup-modal-user-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-user-{{ $item->id }}">
                                 @if ($item->status == 1)
@@ -257,7 +257,7 @@
                                 </div>
                             </div>
 
-                        </td>
+                        </td> --}}
 
                         <td class="px-6 py-4">
                             <div class="flex items-start justify-center gap-3" x-data="{ open: false }">
@@ -279,7 +279,7 @@
                                                 @click.away="showPopup = false">
                                                 <div class="max-w-screen-xl px-2 mx-auto lg:px-0">
                                                     <div class="min-[1000px]:flex">
-                                                        <div class="flex flex-col items-center mb-6">
+                                                        {{-- <div class="flex flex-col items-center mb-6">
                                                             <div
                                                                 class="max-w-[200px] w-full lg:w-auto flex flex-col gap-2 px-2 lg:px-0 border rounded-lg overflow-hidden shardow-md">
                                                                 @if ($item->image)
@@ -292,7 +292,7 @@
                                                                         alt="User photo">
                                                                 @endif
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="lg:ml-4">
                                                             <div
                                                                 class="mb-4 text-sm font-semibold tracking-wide text-blue-600 uppercase">
@@ -377,7 +377,7 @@
                                                                         {{ $item->expired_at ? $item->started_at . ' => ' . $item->expired_at : 'No Expire' }}
                                                                     </p>
                                                                 </div>
-                                                                <div class="flex nowrap">
+                                                                {{-- <div class="flex nowrap">
                                                                     <p
                                                                         class="w-[123px] flex-shrink-0 uppercase tracking-wide text-sm text-gray-500 dark:text-gray-300 font-semibold border-r border-gray-600 dark:border-gray-300 pr-5 mr-5">
                                                                         Status
@@ -400,7 +400,7 @@
                                                                             </span>
                                                                         @endif
                                                                     </p>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="flex nowrap">
                                                                     <p
                                                                         class="w-[123px] uppercase tracking-wide text-sm text-gray-500 dark:text-gray-300 font-semibold border-r border-gray-600 dark:border-gray-300 pr-5 mr-5">
@@ -420,7 +420,7 @@
                                                                     </p>
                                                                 </div>
                                                             </div>
-                                                            <div class="py-4">
+                                                            {{-- <div class="py-4">
                                                                 <button @click.prevent="showPopup = !showPopup"
                                                                     type="button"
                                                                     wire:click='updateStatus({{ $item->id }}, -1)'
@@ -433,7 +433,7 @@
                                                                     class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                                                     Approve
                                                                 </button>
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
                                                     </div>
                                                 </div>

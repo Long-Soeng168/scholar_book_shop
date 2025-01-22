@@ -9,13 +9,13 @@ use App\Models\News;
 
 class NewsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view bulletin', ['only' => ['index', 'show']]);
-        $this->middleware('permission:create bulletin', ['only' => ['create', 'store']]);
-        $this->middleware('permission:update bulletin', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:delete bulletin', ['only' => ['destroy']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:view bulletin', ['only' => ['index', 'show']]);
+    //     $this->middleware('permission:create bulletin', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:update bulletin', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:delete bulletin', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      */

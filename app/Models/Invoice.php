@@ -26,4 +26,8 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class, 'userId', 'id');
     }
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_user_id', 'id');
+    }
 }

@@ -164,24 +164,38 @@
                 <div class="flex items-center lg:order-2">
 
                     <div class="flex items-center">
-
                         {{-- <a href="/isbn_requests/create"
                             class="text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                             Request ISBN
                         </a> --}}
+                        @can('use pos')
+                            <a href="{{ env('POS_URL') }}"
+                                class="flex items-center justify-center gap-2 px-4 py-1 mr-2 font-semibold text-white transition duration-300 ease-in-out bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                    fill="none" stroke="#fff" stroke-width="1.25" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-monitor-smartphone">
+                                    <path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8" />
+                                    <path d="M10 19v-3.96 3.15" />
+                                    <path d="M7 19h5" />
+                                    <rect width="6" height="10" x="16" y="12" rx="2" />
+                                </svg>
+                                <span>POS</span>
+                            </a>
+                        @endcan
+
 
                         <button type="button"
                             class="flex items-center mx-3 text-sm bg-white rounded-full dark:bg-gray-300 md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                             id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
-                            @if (auth()->user()->image)
+                            {{-- @if (auth()->user()->image)
                                 <img class="object-cover w-8 h-8 p-0.5 rounded-full"
                                     src="{{ asset('assets/images/users/thumb/' . auth()->user()->image) }}"
                                     alt="user photo" />
-                            @else
-                                <img class="object-cover w-8 h-8 p-0.5 rounded-full"
-                                    src="{{ asset('assets/icons/profile.png') }}" alt="user photo" />
-                            @endif
+                            @else --}}
+                            <img class="object-cover w-8 h-8 p-0.5 rounded-full"
+                                src="{{ asset('assets/icons/profile.png') }}" alt="user photo" />
+                            {{-- @endif --}}
 
                         </button>
                     </div>
@@ -371,48 +385,7 @@
             <div class="h-full px-3 py-5 overflow-y-auto bg-white dark:bg-gray-800 pb-[8rem]">
 
                 <ul>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/people/authors') }}"
-                            class="{{ request()->is('admin/people/authors*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/author.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Authors</span>
-                        </x-sidebar-item>
-                    </li>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/people/publishers') }}"
-                            class="{{ request()->is('admin/people/publishers*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Publishers</span>
-                        </x-sidebar-item>
-                    </li>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/people/customers') }}"
-                            class="{{ request()->is('admin/people/customers*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Customers</span>
-                        </x-sidebar-item>
-                    </li>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/people/suppliers') }}"
-                            class="{{ request()->is('admin/people/suppliers*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/publisher.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Suppliers</span>
-                        </x-sidebar-item>
-                    </li>
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/promotions') }}"
-                            class="{{ request()->is('admin/promotions*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/promotions.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Promotions</span>
-                        </x-sidebar-item>
-                    </li>
-
-                    @if (request()->user()->hasRole(['super-admin', 'admin']))
+                    @can('view product')
                         <li x-data="{
                             open: {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') || request()->is('admin/books*') ? 'true' : 'false' }},
                             init() {
@@ -427,19 +400,20 @@
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
                                 <img src="{{ asset('assets/icons/books.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
-                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Books</span>
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Products</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
-                                    :class="{ 'rotate-180': open }" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    :class="{ 'rotate-180': open }" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
                             </button>
+
                             <ul x-show="open" x-transition class="py-2 ml-2 space-y-2">
                                 <li>
                                     <a href="{{ url('admin/books') }}"
                                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/books*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                                        Books
+                                        Products
                                     </a>
                                 </li>
                                 <li>
@@ -457,8 +431,75 @@
 
 
                             </ul>
-                        </li>
 
+                        </li>
+                    @endcan
+
+
+                    @can('view people')
+                        <li x-data="{
+                            open: {{ request()->is('admin/people*') ? 'true' : 'false' }},
+                            init() {
+                                if ({{ request()->is('admin/people*') ? 'true' : 'false' }}) {
+                                    this.$nextTick(() => this.$refs.users.scrollIntoView({ behavior: 'smooth' }));
+                                }
+                            }
+                        }" x-ref="users" class="pt-1">
+                            <button type="button"
+                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/people*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}"
+                                :class="{ 'bg-slate-100 dark:bg-slate-700': open }"
+                                @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
+                                <img src="{{ asset('assets/icons/people.png') }}" alt="icon"
+                                    class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">People</span>
+                                <svg class="w-3 h-3 transition-transform duration-200 transform"
+                                    :class="{ 'rotate-180': open }" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+                            <ul x-show="open" x-transition class="py-2 ml-2 space-y-2">
+                                <li>
+                                    <a href="{{ url('admin/people/authors') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/people/authors*') ? 'bg-slate-200 capitalize dark:bg-slate-500' : '' }}">
+                                        Authors
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/people/publishers') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/people/publishers*') ? 'bg-slate-200 capitalize dark:bg-slate-500' : '' }}">
+                                        Publishers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/people/customers') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/people/customers*') ? 'bg-slate-200 capitalize dark:bg-slate-500' : '' }}">
+                                        Customers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/people/suppliers') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/people/suppliers*') ? 'bg-slate-200 capitalize dark:bg-slate-500' : '' }}">
+                                        Suppliers
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+                    @can('view promotion')
+                        <li class="mt-2">
+                            <x-sidebar-item href="{{ url('admin/promotions') }}"
+                                class="{{ request()->is('admin/promotions*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                <img src="{{ asset('assets/icons/promotions.png') }}" alt="icon"
+                                    class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                                <span class="ml-3">Promotions</span>
+                            </x-sidebar-item>
+                        </li>
+                    @endcan
+
+                    @can('view stock')
                         <li x-data="{
                             open: {{ request()->is('admin/purchases*') || request()->is('admin/adjustments*') || request()->is('admin/stocks*') ? 'true' : 'false' }},
                             init() {
@@ -473,10 +514,10 @@
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
                                 <img src="{{ asset('assets/icons/book_categories.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
-                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Stocks</span>
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Stock</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
-                                    :class="{ 'rotate-180': open }" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    :class="{ 'rotate-180': open }" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
@@ -504,7 +545,9 @@
 
                             </ul>
                         </li>
+                    @endcan
 
+                    @can('view news')
                         <li x-data="{
                             open: {{ request()->is('admin/bulletins*') || request()->is('admin/bulletins_categories*') ? 'true' : 'false' }},
                             init() {
@@ -521,8 +564,8 @@
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
                                 <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">News</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
-                                    :class="{ 'rotate-180': open }" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    :class="{ 'rotate-180': open }" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 10 6">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                         stroke-width="2" d="m1 1 4 4 4-4" />
                                 </svg>
@@ -540,11 +583,9 @@
                                         Categories
                                     </a>
                                 </li>
-
-
                             </ul>
                         </li>
-                    @endif
+                    @endcan
 
                     @can('view user')
                         <li x-data="{
@@ -595,14 +636,45 @@
                         </li>
                     @endcan
 
-                    <li class="mt-2">
-                        <x-sidebar-item href="{{ url('admin/orders') }}"
-                            class="{{ request()->is('admin/orders*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                            <img src="{{ asset('assets/icons/book.png') }}" alt="icon"
-                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
-                            <span class="ml-3">Orders</span>
-                        </x-sidebar-item>
-                    </li>
+                    @can('view order')
+                        <li class="mt-2">
+                            <x-sidebar-item href="{{ url('admin/orders') }}"
+                                class="{{ request()->is('admin/orders*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="1.25"
+                                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-ordered">
+                                    <path d="M10 12h11" />
+                                    <path d="M10 18h11" />
+                                    <path d="M10 6h11" />
+                                    <path d="M4 10h2" />
+                                    <path d="M4 6h1v4" />
+                                    <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" />
+                                </svg>
+                                <span class="ml-3">Orders</span>
+                            </x-sidebar-item>
+
+                        </li>
+                    @endcan
+
+                    @can('view sale')
+                        <li class="mt-2">
+                            <x-sidebar-item href="{{ url('admin/sales') }}"
+                                class="{{ request()->is('admin/sales*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                    viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="1.25"
+                                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list">
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                    <path d="M12 11h4" />
+                                    <path d="M12 16h4" />
+                                    <path d="M8 11h.01" />
+                                    <path d="M8 16h.01" />
+                                </svg>
+                                <span class="ml-3">Sales</span>
+                            </x-sidebar-item>
+                        </li>
+                    @endcan
+
                 </ul>
 
                 @can('view setting')
@@ -646,6 +718,12 @@
                                     <a href="{{ url('admin/settings/links') }}"
                                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/settings/links*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
                                         Links
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('admin/settings/payments') }}"
+                                        class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/settings/payments*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                                        Payment Methods
                                     </a>
                                 </li>
                                 <li>

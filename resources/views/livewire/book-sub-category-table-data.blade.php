@@ -85,7 +85,7 @@
         <div
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
-            @can('create epublication')
+            @can('create product')
             <x-primary-button data-modal-target="create_modal" data-modal-toggle="create_modal">
                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
@@ -179,23 +179,6 @@
                 </div>
             </div>
             <!-- End Type modal -->
-
-            <div class="flex items-center w-full space-x-3 md:w-auto">
-                <button id="filterDropdownButton"
-                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-file-up">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                        <path d="M12 12v6" />
-                        <path d="m15 15-3-3-3 3" />
-                    </svg>
-                    Export
-                </button>
-
-            </div>
         </div>
     </div>
     <div class="overflow-x-auto">
@@ -218,7 +201,7 @@
                         </div>
                     </th>
                     <th scope="col" class="px-4 py-3">Name KH</th>
-                    <th scope="col" class="px-4 py-3">Category</th> 
+                    <th scope="col" class="px-4 py-3">Category</th>
                     <th scope="col" class="py-3 text-center w-[300px]">Action</th>
                 </tr>
             </thead>
@@ -252,7 +235,7 @@
                                         {{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                            </td> 
+                            </td>
                         @else
                             <x-table-data value="{{ $item->ddc }}" />
                             <x-table-data value="{{ $item->name }}" />
@@ -262,7 +245,7 @@
                                     {{ $item->name_kh ? $item->name_kh : 'N/A' }}
                                 </span>
                             </x-table-data>
-                            <x-table-data value="{{ $item->category?->name ? $item->category?->name : 'N/A' }}" /> 
+                            <x-table-data value="{{ $item->category?->name ? $item->category?->name : 'N/A' }}" />
                         @endif
 
                         <td class="px-6 py-4 ">
@@ -279,7 +262,7 @@
                                         Update
                                     </button>
                                 @else
-                                    @can('delete epublication')
+                                    @can('delete product')
                                     <div class="pb-1" x-data="{ tooltip: false }">
                                         <!-- Modal toggle -->
                                         <div @mouseenter="tooltip = true" @mouseleave="tooltip = false">
@@ -310,7 +293,7 @@
                                     </div>
                                     @endcan
 
-                                    @can('update epublication')
+                                    @can('update product')
                                     <div class="pb-1" x-data="{ tooltip: false }">
                                         <!-- Modal toggle -->
                                         <a

@@ -88,14 +88,14 @@
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
             @can('create role')
-            <x-primary-button data-modal-target="Role_modal" data-modal-toggle="Role_modal">
-                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true">
-                    <path clip-rule="evenodd" fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                </svg>
-                Add Role
-            </x-primary-button>
+                <x-primary-button data-modal-target="Role_modal" data-modal-toggle="Role_modal">
+                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                    </svg>
+                    Add Role
+                </x-primary-button>
             @endcan
 
 
@@ -135,9 +135,8 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <button data-modal-target="Role_modal" data-modal-toggle="Role_modal"
-                                    type="button" wire:click='saveNewRole' wire:target="saveNewRole"
-                                    wire:loading.attr="disabled"
+                                <button data-modal-target="Role_modal" data-modal-toggle="Role_modal" type="button"
+                                    wire:click='saveNewRole' wire:target="saveNewRole" wire:loading.attr="disabled"
                                     class="text-white mt-2 inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <svg class="w-5 h-5 me-1 -ms-1" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -154,7 +153,7 @@
             </div>
             <!-- End Role modal -->
 
-            <div class="flex items-center w-full space-x-3 md:w-auto">
+            {{-- <div class="flex items-center w-full space-x-3 md:w-auto">
                 <button id="filterDropdownButton"
                     class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     type="button">
@@ -169,7 +168,7 @@
                     Export
                 </button>
 
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="overflow-x-auto">
@@ -213,7 +212,7 @@
                             <td></td>
                         @else
                             <x-table-data class="uppercase" value="{{ $item->name }}" />
-                                <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
+                            <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
                         @endif
 
                         <td class="px-6 py-4 ">
@@ -231,89 +230,105 @@
                                     </button>
                                 @else
                                     @can('update role')
-                                    <div class="pb-1" x-data="{ tooltip: false }">
-                                        <!-- Modal toggle -->
-                                        <a href="{{ url('admin/roles/'.$item->id.'/give-permissions') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">
-                                            <div class="text-blue-700" >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-checks"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
-                                            </div>
-                                        </a>
+                                        <div class="pb-1" x-data="{ tooltip: false }">
+                                            <!-- Modal toggle -->
+                                            <a href="{{ url('admin/roles/' . $item->id . '/give-permissions') }}"
+                                                @mouseenter="tooltip = true" @mouseleave="tooltip = false">
+                                                <div class="text-blue-700">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-list-checks">
+                                                        <path d="m3 17 2 2 4-4" />
+                                                        <path d="m3 7 2 2 4-4" />
+                                                        <path d="M13 6h8" />
+                                                        <path d="M13 12h8" />
+                                                        <path d="M13 18h8" />
+                                                    </svg>
+                                                </div>
+                                            </a>
 
-                                        <!-- View tooltip -->
-                                        <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
-                                            x-transition:enter-start="opacity-0 transform scale-90"
-                                            x-transition:enter-end="opacity-100 transform scale-100"
-                                            x-transition:leave="transition ease-in duration-75"
-                                            x-transition:leave-start="opacity-100 transform scale-100"
-                                            x-transition:leave-end="opacity-0 transform scale-90"
-                                            class="absolute z-30 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
-                                            style="display: none;">
-                                            Role's Permissions
+                                            <!-- View tooltip -->
+                                            <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
+                                                x-transition:enter-start="opacity-0 transform scale-90"
+                                                x-transition:enter-end="opacity-100 transform scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="opacity-100 transform scale-100"
+                                                x-transition:leave-end="opacity-0 transform scale-90"
+                                                class="absolute z-30 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
+                                                style="display: none;">
+                                                Role's Permissions
+                                            </div>
                                         </div>
-                                    </div>
                                     @endcan
 
                                     @can('delete role')
-                                    <div class="pb-1" x-data="{ tooltip: false }">
-                                        <!-- Modal toggle -->
-                                        <div @mouseenter="tooltip = true" @mouseleave="tooltip = false">
-                                            <button class="text-red-600" wire:click='delete({{ $item->id }})'
-                                                wire:confirm='Are you sure? You want to delete : {{ $item->name }}'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="lucide lucide-trash">
-                                                    <path d="M3 6h18" />
-                                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                        @if ($item->name != 'super-admin')
+                                            <div class="pb-1" x-data="{ tooltip: false }">
+                                                <!-- Modal toggle -->
+                                                <div @mouseenter="tooltip = true" @mouseleave="tooltip = false">
+                                                    <button class="text-red-600" wire:click='delete({{ $item->id }})'
+                                                        wire:confirm='Are you sure? You want to delete : {{ $item->name }}'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                            height="18" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" class="lucide lucide-trash">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
 
-                                        <!-- View tooltip -->
-                                        <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
-                                            x-transition:enter-start="opacity-0 transform scale-90"
-                                            x-transition:enter-end="opacity-100 transform scale-100"
-                                            x-transition:leave="transition ease-in duration-75"
-                                            x-transition:leave-start="opacity-100 transform scale-100"
-                                            x-transition:leave-end="opacity-0 transform scale-90"
-                                            class="absolute z-30 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
-                                            style="display: none;">
-                                            Delete
-                                        </div>
-                                    </div>
+                                                <!-- View tooltip -->
+                                                <div x-show="tooltip"
+                                                    x-transition:enter="transition ease-out duration-200"
+                                                    x-transition:enter-start="opacity-0 transform scale-90"
+                                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                                    x-transition:leave="transition ease-in duration-75"
+                                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                                    x-transition:leave-end="opacity-0 transform scale-90"
+                                                    class="absolute z-30 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
+                                                    style="display: none;">
+                                                    Delete
+                                                </div>
+                                            </div>
+                                        @endif
                                     @endcan
 
                                     @can('update role')
-                                    <div class="pb-1" x-data="{ tooltip: false }">
-                                        <!-- Modal toggle -->
-                                        <a data-modal-target="edit_Role_modal" data-modal-toggle="edit_Role_modal"
-                                            @mouseenter="tooltip = true" @mouseleave="tooltip = false"
-                                            wire:click='setEdit({{ $item->id }})'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="lucide lucide-file-pen-line">
-                                                <path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" />
-                                                <path d="M8 18h1" />
-                                                <path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" />
-                                            </svg>
-                                        </a>
-                                        <!-- View tooltip -->
-                                        <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
-                                            x-transition:enter-start="opacity-0 transform scale-90"
-                                            x-transition:enter-end="opacity-100 transform scale-100"
-                                            x-transition:leave="transition ease-in duration-75"
-                                            x-transition:leave-start="opacity-100 transform scale-100"
-                                            x-transition:leave-end="opacity-0 transform scale-90"
-                                            class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
-                                            style="display: none;">
-                                            Edit
-                                        </div>
+                                        @if ($item->name != 'super-admin')
+                                            <div class="pb-1" x-data="{ tooltip: false }">
+                                                <!-- Modal toggle -->
+                                                <a data-modal-target="edit_Role_modal" data-modal-toggle="edit_Role_modal"
+                                                    @mouseenter="tooltip = true" @mouseleave="tooltip = false"
+                                                    wire:click='setEdit({{ $item->id }})'>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-file-pen-line">
+                                                        <path
+                                                            d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" />
+                                                        <path d="M8 18h1" />
+                                                        <path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" />
+                                                    </svg>
+                                                </a>
+                                                <!-- View tooltip -->
+                                                <div x-show="tooltip"
+                                                    x-transition:enter="transition ease-out duration-200"
+                                                    x-transition:enter-start="opacity-0 transform scale-90"
+                                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                                    x-transition:leave="transition ease-in duration-75"
+                                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                                    x-transition:leave-end="opacity-0 transform scale-90"
+                                                    class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
+                                                    style="display: none;">
+                                                    Edit
+                                                </div>
 
-                                    </div>
+                                            </div>
+                                        @endif
                                     @endcan
-
                                 @endif
 
                             </div>

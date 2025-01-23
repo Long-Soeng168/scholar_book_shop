@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="p-4">
-        <x-form-header :value="__('Edit Link')" class="p-4" />
+        <x-form-header :value="__('Edit Payment')" class="p-4" />
 
-        @livewire('link-edit', [
+        @livewire('payment-edit', [
             'item' => $item,
         ])
 

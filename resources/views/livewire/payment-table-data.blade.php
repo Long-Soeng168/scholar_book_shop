@@ -50,7 +50,7 @@
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
             @can('create setting')
-            <x-primary-button href="{{ url('admin/settings/links/create') }}">
+            <x-primary-button href="{{ url('admin/settings/payments/create') }}">
                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd"
@@ -96,9 +96,6 @@
                             Name
                         </div>
                     </th>
-
-                    <th scope="col" class="px-4 py-3">Name_kh</th>
-                    <th scope="col" class="px-4 py-3">Link</th>
                     <th scope="col" class="px-4 py-3">Order_Index</th>
                     <th scope="col" class="px-4 py-3">Created_at</th>
                     <th scope="col" class="py-3 text-center">Action</th>
@@ -119,14 +116,6 @@
                             </a>
                         </th>
                         <x-table-data value="{{ $item->name }}" />
-                        <x-table-data value="{{ $item->name_kh }}" />
-                        {{-- <x-table-data value="{{ $item->description }}" /> --}}
-                        <x-table-data>
-                            <span
-                                class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300 whitespace-nowrap">
-                                {{ $item->link }}
-                            </span>
-                        </x-table-data>
                         <x-table-data value="{{ $item->order_index }}" />
                         <x-table-data value="{{ $item->created_at?->format('d-M-Y') }}" />
 
@@ -182,7 +171,7 @@
                                 @can('update setting')
                                 <div class="pb-1" x-data="{ tooltip: false }">
                                     <!-- Modal toggle -->
-                                    <a href="{{ url('admin/settings/links/'.$item->id.'/edit') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">
+                                    <a href="{{ url('admin/settings/payments/'.$item->id.'/edit') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

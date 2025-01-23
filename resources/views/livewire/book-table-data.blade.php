@@ -138,7 +138,7 @@
                     <th scope="col" class="px-4 py-3 text-center">ISBN</th>
                     <th scope="col" class="px-4 py-3">Publisher</th>
                     <th scope="col" class="px-4 py-3">File</th>
-                    <th scope="col" class="px-4 py-3 text-center">For Sale</th>
+                    {{-- <th scope="col" class="px-4 py-3 text-center">For Sale</th> --}}
                     <th scope="col" class="px-4 py-3 text-center">Status</th>
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
@@ -187,7 +187,7 @@
                                 </span>
                             @endif
                         </x-table-data>
-                        <td wire:key='{{ rand() }}' class="text-center">
+                        {{-- <td wire:key='{{ rand() }}' class="text-center">
                             <button data-modal-target="popup-modal-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-{{ $item->id }}">
                                 @if ($item->is_for_sell == 1)
@@ -244,7 +244,7 @@
                                 </div>
                             @endcan
 
-                        </td>
+                        </td> --}}
                         <td wire:key='{{ rand() }}' class="text-center">
                             <button data-modal-target="popup-modal-user-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-user-{{ $item->id }}">

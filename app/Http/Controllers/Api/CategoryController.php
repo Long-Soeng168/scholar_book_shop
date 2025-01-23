@@ -40,7 +40,7 @@ class CategoryController extends Controller
             $query->limit($limit);
         }
 
-        $categories = $query->get();
+        $categories = $query->where('status', 1)->get();
 
         return response()->json($categories);
     }
@@ -53,6 +53,7 @@ class CategoryController extends Controller
                 $query->limit(5); // Limit books to 4
             }])
             ->orderBy('books_count', 'desc')
+            ->where('status', 1)
             ->first(); // Get the category with the most books
 
         return response()->json($category);

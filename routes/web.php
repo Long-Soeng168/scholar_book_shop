@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\PublisherController;
 
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
@@ -88,7 +89,8 @@ Route::group([
     Route::get('settings/about', [MenuController::class, 'about'] );
     Route::resource('settings/features', FeatureController::class );
     Route::resource('settings/links', LinkController::class );
-    Route::resource('settings/databases', DatabaseController::class );
+    Route::resource('settings/payments', PaymentController::class );
+    // Route::resource('settings/databases', DatabaseController::class );
     Route::resource('settings/website_infos', WebsiteInfoController::class );
 });
 /*

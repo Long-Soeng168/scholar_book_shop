@@ -296,9 +296,9 @@
                     </div>
                     <div class="flex gap-4">
                         <div class="flex-1">
-                            <x-input-label for="cost" :value="__('Cost') . ' ($)'" /><span class="text-red-400">*</span>
+                            <x-input-label for="cost" :value="__('Cost') . ' ($)'" />
                             <x-text-input wire:model='cost' id="cost" class="block w-full mt-1" type="number"
-                                name="cost" placeholder='Example : 7$' :value="old('cost')" autocomplete="cost" />
+                                name="cost" placeholder='Example : 4$' :value="old('cost')" autocomplete="cost" />
                             <x-input-error :messages="$errors->get('cost')" class="mt-2" />
                         </div>
                         <div class="flex-1">
@@ -306,6 +306,12 @@
                             <x-text-input wire:model='price' id="price" class="block w-full mt-1" type="number"
                                 name="price" placeholder='Example : 7$' :value="old('price')" autocomplete="price" />
                             <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                        </div>
+                        <div class="flex-1">
+                            <x-input-label for="quantity" :value="__('Quantity')" />
+                            <x-text-input wire:model='quantity' id="quantity" class="block w-full mt-1" type="number"
+                                name="quantity" placeholder='Example : 10' :value="old('quantity')" autocomplete="quantity" />
+                            <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                         </div>
                     </div>
                     <div class="">

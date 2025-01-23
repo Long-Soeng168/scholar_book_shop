@@ -79,6 +79,7 @@ class BookTableData extends Component
         $getedItem = Book::findOrFail($id);
         $getedItem->update([
             'status' => $status,
+           'last_edit_user_id' => request()->user()->id
         ]);
         $this->dispatch('livewire:updatedStatus');
         // session()->flash('success', 'Update Successfully!');

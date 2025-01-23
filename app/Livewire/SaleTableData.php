@@ -69,8 +69,8 @@ class SaleTableData extends Component
     public function updateStatus($id, $status)
     {
         $getedItem = Invoice::findOrFail($id);
-        if($status == $getedItem->status){
-            return ;
+        if ($status == $getedItem->status) {
+            return;
         }
         $getedItem->update([
             'status' => $status,
@@ -102,7 +102,9 @@ class SaleTableData extends Component
     public function render()
     {
 
-        $items = Invoice::orderBy($this->sortBy, $this->sortDir)->orderBy('id', 'desc')
+        $items = Invoice::when($this->search, function ($query) {
+            $query->where('id', 'LIKE', "%$this->search%");
+        })->orderBy($this->sortBy, $this->sortDir)->orderBy('id', 'desc')
             ->paginate($this->perPage);
 
 

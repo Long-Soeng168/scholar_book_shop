@@ -27,6 +27,7 @@ class BookCreate extends Component
     public $format = null;
     public $price = null;
     public $cost = null;
+    public $quantity = 0;
     public $discount = null;
     public $publication_date = null;
     public $year = null;
@@ -116,7 +117,8 @@ class BookCreate extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
-            'cost' => 'required',
+            'cost' => 'nullable',
+            'quantity' => 'nullable',
             'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'image' => 'required|image|max:2048',

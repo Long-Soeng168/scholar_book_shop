@@ -160,7 +160,7 @@
                             @endif
                         </p>
                     </div>
-                    @if ($item->isbn && $item->status == 1)
+                    @if ($item->isbn)
                         <div class="flex nowrap">
                             <p
                                 class="w-[168px] uppercase tracking-wide text-sm text-gray-500 dark:text-gray-300 font-semibold border-r border-gray-600 dark:border-gray-300 pr-5 mr-5 flex-shrink-0">
@@ -172,12 +172,36 @@
                         </div>
                     @endif
 
-                    @if (!request()->user()->hasRole(['admin', 'super-admin']) && $item->status !== 1)
+                    @if ($item->created_by)
+                    <div class="flex nowrap">
+                        <p
+                            class="w-[168px] uppercase tracking-wide text-sm text-gray-500 dark:text-gray-300 font-semibold border-r border-gray-600 dark:border-gray-300 pr-5 mr-5 flex-shrink-0">
+                            {{ __('Created By') }}
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-200">
+                            {{ $item->created_by?->name }}
+                        </p>
+                    </div>
+                    @endif
+
+                    @if ($item->updated_by)
+                    <div class="flex nowrap">
+                        <p
+                            class="w-[168px] uppercase tracking-wide text-sm text-gray-500 dark:text-gray-300 font-semibold border-r border-gray-600 dark:border-gray-300 pr-5 mr-5 flex-shrink-0">
+                            {{ __('Updated By') }}
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-200">
+                            {{ $item->updated_by?->name }}
+                        </p>
+                    </div>
+                    @endif
+
+                    {{-- @if (!request()->user()->hasRole(['admin', 'super-admin']) && $item->status !== 1)
                         <a href="{{ url('isbn_requests/' . $item->id . '/edit') }}"
                             class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5   dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 text-center">
                             Edit and Resubmit
                     </a>
-                    @endif
+                    @endif --}}
 
                 </div>
             </div>

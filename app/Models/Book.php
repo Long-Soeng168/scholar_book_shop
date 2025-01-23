@@ -45,4 +45,13 @@ class Book extends Model
     {
         return $this->hasMany(AdjustmentItem::class, 'product_id', 'id');
     }
+
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'last_edit_user_id', 'id');
+    }
 }

@@ -30,6 +30,7 @@ class BookEdit extends Component
     public $format = null;
     public $price = null;
     public $cost = null;
+    public $quantity = 0;
     public $discount = null;
     public $publication_date = null;
     public $year = null;
@@ -55,6 +56,7 @@ class BookEdit extends Component
         $this->format = $this->item->format;
         $this->price = $this->item->price;
         $this->cost = $this->item->cost;
+        $this->quantity = $this->item->quantity;
         $this->publication_date = $this->item->publication_date;
         $this->edition = $this->item->edition;
         $this->description = $this->item->description;
@@ -146,7 +148,8 @@ class BookEdit extends Component
         $validated = $this->validate([
             'title' => 'required|string|max:255',
             'price' => 'required',
-            'cost' => 'required',
+            'cost' => 'nullable',
+            'quantity' => 'nullable',
             'discount' => 'nullable',
             'language' => 'required|string|max:255',
             'authors' => 'nullable|string|max:255',

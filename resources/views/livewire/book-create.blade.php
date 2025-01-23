@@ -309,8 +309,9 @@
                         </div>
                         <div class="flex-1">
                             <x-input-label for="quantity" :value="__('Quantity')" />
-                            <x-text-input wire:model='quantity' id="quantity" class="block w-full mt-1" type="number"
-                                name="quantity" placeholder='Example : 10' :value="old('quantity')" autocomplete="quantity" />
+                            <x-text-input wire:model='quantity' id="quantity" class="block w-full mt-1"
+                                type="number" name="quantity" placeholder='Example : 10' :value="old('quantity')"
+                                autocomplete="quantity" />
                             <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
                         </div>
                     </div>

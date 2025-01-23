@@ -153,7 +153,7 @@
                         <th scope="row"
                             class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
                             <a href="{{ asset('assets/images/isbn/' . $item->image) }}" class="glightbox">
-                                <img src="{{ asset('assets/images/isbn/' . $item->image) }}" alt="Image"
+                                <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) }}" alt="Image"
                                     class="object-contain h-10 mr-3 aspect-[16/9]">
                             </a>
                         </th>

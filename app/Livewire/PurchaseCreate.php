@@ -18,8 +18,8 @@ class PurchaseCreate extends Component
     public $supplier_id = null;
     public $status = 1;
     public $selectedProducts = [];
-    public $purchase_date = null;
     public $total_amount = 0;
+    public $purchase_date = null;
     public function mount()
     {
         $this->purchase_date = Carbon::today()->toDateString();

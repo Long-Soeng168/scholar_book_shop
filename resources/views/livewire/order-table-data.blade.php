@@ -100,7 +100,7 @@
                     <th scope="col" class="px-4 py-3">Phone</th>
                     <th scope="col" class="px-4 py-3">Note</th>
                     <th scope="col" class="px-4 py-3">Total</th>
-                    <th scope="col" class="px-4 py-3">Status</th>
+                    <th scope="col" class="px-4 py-3 ">Status</th>
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -206,31 +206,6 @@
                                         </div>
                                     </div>
                                 @endcan
-
-                                <!--@can('update order')
-    -->
-                                    <!--<div class="pb-1" x-data="{ tooltip: false }">-->
-                                    <!-- Modal toggle -->
-                                    <!--    <a href="{{ url('admin/settings/links/' . $item->id . '/edit') }}" @mouseenter="tooltip = true" @mouseleave="tooltip = false">-->
-                                    <!--        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"-->
-                                    <!--            viewBox="0 0 24 24" fill="none" stroke="currentColor"-->
-                                    <!--            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"-->
-                                    <!--            class="lucide lucide-file-pen-line">-->
-                                    <!--            <path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" />-->
-                                    <!--            <path d="M8 18h1" />-->
-                                    <!--            <path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z" />-->
-                                    <!--        </svg>-->
-                                    <!--    </a>-->
-                                    <!-- View tooltip -->
-                                    <!--    <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"-->
-                                    <!--        class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"-->
-                                    <!--        style="display: none;">-->
-                                    <!--        Edit-->
-                                    <!--    </div>-->
-                                    <!--</div>-->
-                                    <!--
-@endcan-->
-
                             </div>
                         </td>
                     </tr>

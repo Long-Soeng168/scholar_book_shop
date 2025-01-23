@@ -16,6 +16,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
+        "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^6.4",
         "twilio/sdk": "^8.3",
         "unisharp/laravel-filemanager": "^2.7"

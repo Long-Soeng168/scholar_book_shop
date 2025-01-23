@@ -84,7 +84,28 @@
             </form>
         </div> --}}
         <div>
-            <p class="text-xl font-bold dark:text-white">Purchases</p>
+            <p class="mb-1 text-xl font-bold dark:text-white">Purchases</p>
+            <div class="flex">
+                <div class="flex items-center gap-2">
+                    <label for="start_date" class="text-sm font-semibold text-gray-700 whitespace-nowrap">Start</label>
+                    <div>
+                        <x-text-input wire:model.live='start_date' id="start_date"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            type="date" name="start_date" :value="old('start_date')" autocomplete="start_date" />
+                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="start_date" class="text-sm font-semibold text-gray-700 whitespace-nowrap">End</label>
+                    <div>
+                        <x-text-input wire:model.live='end_date' id="end_date"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            type="date" name="end_date" :value="old('end_date')" autocomplete="end_date" />
+                        <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+                    </div>
+
+                </div>
+            </div>
         </div>
         <div
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
@@ -100,8 +121,8 @@
                 </x-primary-button>
             @endcan
 
-            {{-- <div class="flex items-center w-full space-x-3 md:w-auto">
-                <button id="filterDropdownButton"
+            <div class="flex items-center w-full space-x-3 md:w-auto">
+                <button id="filterDropdownButton" wire:click="export"
                     class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                     type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -115,7 +136,7 @@
                     Export
                 </button>
 
-            </div> --}}
+            </div>
         </div>
     </div>
     <div class="overflow-x-auto">

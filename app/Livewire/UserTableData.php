@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Book;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -29,38 +30,44 @@ class UserTableData extends Component
     #[Url(history: true)]
     public $sortDir = 'DESC';
 
-    public function setFilter($value) {
+    public function setFilter($value)
+    {
         $this->filter = $value;
         $this->resetPage();
     }
 
-    public function setSortBy($newSortBy) {
-        if($this->sortBy == $newSortBy){
+    public function setSortBy($newSortBy)
+    {
+        if ($this->sortBy == $newSortBy) {
             $newSortDir = ($this->sortDir == 'DESC') ? 'ASC' : 'DESC';
             $this->sortDir = $newSortDir;
-        }else{
+        } else {
             $this->sortBy = $newSortBy;
         }
     }
 
     // ResetPage when updated search
-    public function updatedSearch() {
+    public function updatedSearch()
+    {
         $this->dispatch('livewire:updated');
         $this->resetPage();
     }
-    public function updatingPage(){
+    public function updatingPage()
+    {
         $this->dispatch('livewire:updated');
     }
 
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $user = User::findOrFail($id);
         $user->delete();
 
         session()->flash('success', 'Delete Successfully!');
     }
 
-    public function updateStatus($id, $status) {
+    public function updateStatus($id, $status)
+    {
         $user = User::findOrFail($id);
         $user->update([
             'status' => $status,
@@ -69,21 +76,25 @@ class UserTableData extends Component
         session()->flash('success', 'Update Successfully!');
     }
 
-    public function render(){
 
-        $items = User::where(function($query) {
-                            $query->where('name', 'LIKE', "%{$this->search}%")
-                                ->orWhere('gender', 'LIKE', "%{$this->search}%")
-                                ->orWhere('phone', 'LIKE', "%{$this->search}%")
-                                ->orWhere('email', 'LIKE', "%{$this->search}%");
-                        })
-                        ->when($this->filter != '', function($query) {
-                            $query->whereHas('roles', function ($q) {
-                                $q->where('name', $this->filter);
-                            });
-                        })
-                        ->orderBy($this->sortBy, $this->sortDir)
-                        ->paginate($this->perPage);
+
+
+    public function render()
+    {
+
+        $items = User::where(function ($query) {
+            $query->where('name', 'LIKE', "%{$this->search}%")
+                ->orWhere('gender', 'LIKE', "%{$this->search}%")
+                ->orWhere('phone', 'LIKE', "%{$this->search}%")
+                ->orWhere('email', 'LIKE', "%{$this->search}%");
+        })
+            ->when($this->filter != '', function ($query) {
+                $query->whereHas('roles', function ($q) {
+                    $q->where('name', $this->filter);
+                });
+            })
+            ->orderBy($this->sortBy, $this->sortDir)
+            ->paginate($this->perPage);
 
         $categories = Role::latest()->get();
         $selectedCategory = Role::find($this->filter);

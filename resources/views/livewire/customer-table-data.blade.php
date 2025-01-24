@@ -141,6 +141,14 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="phone">
                                 </div>
+                                <div class="col-span-2">
+                                    <label for="Address"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                                    <input wire:key="{{ rand() }}" type="text" name="address"
+                                        id="Address" wire:model='newPublisherAddress'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Address">
+                                </div>
 
                                 <div class="col-span-2 sm:col-span-2">
                                     <label for="category"
@@ -196,6 +204,7 @@
                     </th>
                     <th scope="col" class="px-4 py-3">Gender</th>
                     <th scope="col" class="px-4 py-3">Phone</th>
+                    <th scope="col" class="px-4 py-3">Address</th>
                     <th scope="col" class="px-4 py-3">Created At</th>
                     <th scope="col" class="py-3 text-center w-[300px]">Action</th>
                 </tr>
@@ -232,10 +241,15 @@
                                 <input type="text" wire:model='phone'
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             </td>
+                            <td>
+                                <input type="text" wire:model='address'
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[90%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </td>
                             <td></td>
                         @else
                             <x-table-data class="capitalize" value="{{ $item->gender ? $item->gender : 'N/A' }}" />
                             <x-table-data class="capitalize" value="{{ !empty($item->phone) ? $item->phone : 'N/A' }}" />
+                            <x-table-data class="capitalize" value="{{ !empty($item->address) ? $item->address : 'N/A' }}" />
                             <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') ?? 'N/A' }}" />
                         @endif
 

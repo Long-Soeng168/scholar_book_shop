@@ -56,6 +56,7 @@ class CustomerTableData extends Component
      // ==========Add New Publisher============
      public $newPublisherName = null;
      public $newPublisherPhone = null;
+     public $newPublisherAddress = null;
      public $newPublisherGender = null;
 
      public function saveNewPublisher()
@@ -68,12 +69,13 @@ class CustomerTableData extends Component
              Customer::create([
                  'name' => $this->newPublisherName,
                  'gender' => $this->newPublisherGender,
+                 'address' => $this->newPublisherAddress,
                  'phone' => $this->newPublisherPhone,
              ]);
 
              session()->flash('success', 'Add New Customer successfully!');
 
-             $this->reset(['newPublisherName', 'newPublisherGender', 'newPublisherPhone']);
+             $this->reset(['newPublisherName', 'newPublisherGender', 'newPublisherPhone', 'newPublisherAddress']);
 
          } catch (\Illuminate\Validation\ValidationException $e) {
              session()->flash('error', $e->validator->errors()->all());
@@ -83,6 +85,7 @@ class CustomerTableData extends Component
      public $editId = null;
      public $name;
      public $gender;
+     public $address;
      public $phone;
 
      public function setEdit($id) {
@@ -91,6 +94,7 @@ class CustomerTableData extends Component
         $this->name = $publisher->name;
         $this->gender = $publisher->gender;
         $this->phone = $publisher->phone;
+        $this->address = $publisher->address;
      }
 
      public function cancelUpdatePublisher() {
@@ -98,6 +102,7 @@ class CustomerTableData extends Component
         $this->name = null;
         $this->phone = null;
         $this->gender = null;
+        $this->address = null;
      }
 
      public function updatePublisher($id) {
@@ -111,11 +116,12 @@ class CustomerTableData extends Component
                 'name' => $this->name,
                 'gender' => $this->gender,
                 'phone' => $this->phone,
+                'address' => $this->address,
             ]);
 
             session()->flash('success', 'Customer successfully edited!');
 
-            $this->reset(['name', 'gender', 'editId']);
+            $this->reset(['name', 'gender', 'editId', 'address']);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', $e->validator->errors()->all());

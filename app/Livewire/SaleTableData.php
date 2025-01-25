@@ -133,8 +133,9 @@ class SaleTableData extends Component
                     })
                     ->where('status', 1)
                     ->get()
-                    ->map(function ($invoice) {
+                    ->map(function ($invoice, $index) {
                         return [
+                            'No' => $index + 1,
                             'ID' => $invoice->id,
                             'Customer' => $invoice->customer->name ?? 'N/A', // Related customer name
                             'Subtotal' => number_format($invoice->subtotal, 2) ?? 'N/A', // Format subtotal
@@ -153,6 +154,7 @@ class SaleTableData extends Component
             {
                 // Define the column headings
                 return [
+                    'No',
                     'Invoice ID',
                     'Customer',
                     'Subtotal',

@@ -385,13 +385,13 @@
                         <div class="login__field">
                             <i class="login__icon fas fa-user"></i>
                             <input type="text" class="login__input" placeholder="{{ __('messages.email') }}"
-                                name="email" value="superadmin@gmail.com" {{-- value="{{ old('email') }}" --}}>
+                                name="email" value="" {{-- value="{{ old('email') }}" --}}>
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                         <div class="login__field">
                             <i class="login__icon fas fa-lock"></i>
-                            <input type="password" name="password" class="login__input" name="email"
-                                value="superadmin_user_@password" placeholder="{{ __('messages.password') }}">
+                            <input type="password" name="password" class="login__input" name="email" value=""
+                                placeholder="{{ __('messages.password') }}">
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
                         <button class="button login__submit">

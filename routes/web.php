@@ -135,7 +135,11 @@ Route::group([
 ], function () {
     Route::get('/', function () {
         // return redirect('/isbn_requests');
-        return redirect('admin/books');
+        // return redirect('admin/books');
+        return redirect('admin/dashboard');
+    });
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard.index');
     });
 
 });

@@ -86,7 +86,7 @@
         <div
             class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
 
-            @can('create product')
+            @can('create item')
                 <x-primary-button href="{{ url('admin/books/create') }}">
                     <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true">
@@ -125,9 +125,10 @@
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("title")'>
                         <div class="flex items-center cursor-pointer">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-chevrons-up-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-chevrons-up-down">
                                 <path d="m7 15 5 5 5-5" />
                                 <path d="m7 9 5-5 5 5" />
                             </svg>
@@ -138,6 +139,7 @@
                     <th scope="col" class="px-4 py-3 text-center">ISBN</th>
                     <th scope="col" class="px-4 py-3">Publisher</th>
                     <th scope="col" class="px-4 py-3">File</th>
+                    <th scope="col" class="px-4 py-3">Access</th>
                     {{-- <th scope="col" class="px-4 py-3 text-center">For Sale</th> --}}
                     <th scope="col" class="px-4 py-3 text-center">Status</th>
                     <th scope="col" class="py-3 text-center">Action</th>
@@ -201,7 +203,7 @@
                                 @endif
                             </button>
 
-                            @can('update product')
+                            @can('update item')
                                 <div id="popup-modal-{{ $item->id }}" tabindex="-1"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative w-full max-w-md max-h-full p-4">
@@ -246,6 +248,64 @@
 
                         </td> --}}
                         <td wire:key='{{ rand() }}' class="text-center">
+                            <button data-modal-target="popup-modal-free-status-{{ $item->id }}"
+                                data-modal-toggle="popup-modal-free-status-{{ $item->id }}">
+                                @if ($item->is_free == 1)
+                                    <span class="w-4 px-4 py-3 font-semibold text-green-700 whitespace-nowrap">
+                                        Free Assess
+                                    </span>
+                                @else
+                                    <span class="w-4 px-4 py-3 font-semibold text-yellow-600 whitespace-nowrap">
+                                        Not-Free
+                                    </span>
+                                @endif
+                            </button>
+
+                            @can('update item')
+                                <div id="popup-modal-free-status-{{ $item->id }}" tabindex="-1"
+                                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative w-full max-w-md max-h-full p-4">
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <button type="button"
+                                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                data-modal-hide="popup-modal-free-status-{{ $item->id }}">
+                                                <svg class="w-3 h-3" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                            </button>
+                                            <div class="p-4 text-center md:p-5">
+                                                <svg class="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-200"
+                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 20 20">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                    Update Status</strong>
+                                                </h3>
+                                                <button data-modal-hide="popup-modal-free-status-{{ $item->id }}"
+                                                    type="button" wire:click='updateIsFree({{ $item->id }}, 0)'
+                                                    class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                    Not-Free
+                                                </button>
+                                                <button data-modal-hide="popup-modal-free-status-{{ $item->id }}"
+                                                    type="button" wire:click='updateIsFree({{ $item->id }}, 1)'
+                                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                    Free Access
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endcan
+                        </td>
+                        <td wire:key='{{ rand() }}' class="text-center">
+
                             <button data-modal-target="popup-modal-user-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-user-{{ $item->id }}">
                                 @if ($item->status == 1)
@@ -259,7 +319,7 @@
                                 @endif
                             </button>
 
-                            @can('update product')
+                            @can('update item')
                                 <div id="popup-modal-user-{{ $item->id }}" tabindex="-1"
                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                     <div class="relative w-full max-w-md max-h-full p-4">
@@ -328,7 +388,7 @@
                                     </div>
                                 </div>
 
-                                @can('delete product')
+                                @can('delete item')
                                     <div class="pb-1" x-data="{ tooltip: false }">
                                         <!-- Modal toggle -->
                                         <a wire:click="delete({{ $item->id }})"
@@ -354,7 +414,7 @@
                                     </div>
                                 @endcan
 
-                                @can('update product')
+                                @can('update item')
                                     <div class="pb-1" x-data="{ tooltip: false }">
                                         <!-- Modal toggle -->
                                         <a href="{{ url('admin/books/' . $item->id . '/edit') }}"

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>One Digital Library</title>
+    <title>Admin Website</title>
 
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
@@ -385,7 +385,15 @@
             <div class="h-full px-3 py-5 overflow-y-auto bg-white dark:bg-gray-800 pb-[8rem]">
 
                 <ul>
-                    @can('view product')
+                    <li class="mt-2">
+                        <x-sidebar-item href="{{ url('admin/dashboard') }}"
+                            class="{{ request()->is('admin/dashboard*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
+                            <img src="{{ asset('assets/icons/dashboard.png') }}" alt="icon"
+                                class="object-contain w-8 h-8 p-0.5 bg-white dark:bg-gray-200 rounded">
+                            <span class="ml-3">Dashboard</span>
+                        </x-sidebar-item>
+                    </li>
+                    @can('view item')
                         <li x-data="{
                             open: {{ request()->is('admin/categories*') || request()->is('admin/sub_categories*') || request()->is('admin/books*') ? 'true' : 'false' }},
                             init() {
@@ -400,7 +408,7 @@
                                 @click="open = !open; if (open) $nextTick(() => $refs.users.scrollIntoView({ behavior: 'smooth' }))">
                                 <img src="{{ asset('assets/icons/books.png') }}" alt="icon"
                                     class="object-contain w-8 h-8 bg-white rounded dark:bg-gray-200">
-                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Products</span>
+                                <span class="flex-1 text-left ms-3 rtl:text-right whitespace-nowrap">Items</span>
                                 <svg class="w-3 h-3 transition-transform duration-200 transform"
                                     :class="{ 'rotate-180': open }" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 10 6">
@@ -413,7 +421,7 @@
                                 <li>
                                     <a href="{{ url('admin/books') }}"
                                         class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ request()->is('admin/books*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                                        Products
+                                        Items
                                     </a>
                                 </li>
                                 <li>

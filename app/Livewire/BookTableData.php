@@ -94,6 +94,16 @@ class BookTableData extends Component
         // session()->flash('success', 'Update Successfully!');
     }
 
+    public function updateIsFree($id, $status)
+    {
+        $getedItem = Book::findOrFail($id);
+        $getedItem->update([
+            'is_free' => $status,
+        ]);
+        $this->dispatch('livewire:updatedStatus');
+        // session()->flash('success', 'Update Successfully!');
+    }
+
     public function updated()
     {
         $this->dispatch('livewire:updated');

@@ -133,7 +133,7 @@
                 <strong class="text-lg font-semibold">Preview:</strong>
                 <div class="flex flex-wrap gap-4 mt-2">
                     @foreach ($images as $index => $image)
-                        <div class="relative group">
+                        <div class="relative group" wire:key='currentimage-{{ $image->id }}'>
                             <img src="{{ $image->temporaryUrl() }}" alt="Preview Image"
                                 class="object-contain max-w-full border rounded-lg shadow-md max-h-40" />
                             <button wire:click.prevent="removeImage({{ $index }})"

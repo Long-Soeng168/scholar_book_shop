@@ -98,6 +98,7 @@
                                         <th scope="col" class="px-4 py-3 text-center">ISBN</th>
                                         <th scope="col" class="px-4 py-3">Author</th>
                                         <th scope="col" class="px-4 py-3">Publisher</th>
+                                        <th scope="col" class="px-4 py-3">Category</th>
                                         <th scope="col" class="py-3 text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -137,6 +138,8 @@
                                                 value="{{ $item->author?->name ?? 'N/A' }}" />
                                             <x-table-data class="text-center"
                                                 value="{{ $item->publisher?->name ?? 'N/A' }}" />
+                                            <x-table-data class="text-center"
+                                                value="{{ $item->category?->name ?? 'N/A' }}" />
 
 
                                             <td class="relative px-6 py-4">

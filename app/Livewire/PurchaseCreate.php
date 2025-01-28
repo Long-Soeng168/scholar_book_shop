@@ -152,13 +152,16 @@ class PurchaseCreate extends Component
 
         $suppliers = Supplier::orderBy('name')->get();
 
-        $items = Book::with('publisher', 'author')
+        $items = Book::with('publisher', 'author', 'category')
             ->where(function ($query) {
                 $query->where('title', 'LIKE', "%$this->search%")
                     ->orWhere('internal_reference', 'LIKE', "%$this->search%")
                     ->orWhere('isbn', 'LIKE', "%$this->search%")
                     ->orWhereHas('publisher', function ($q) {
                         $q->where('name', 'LIKE', "%$this->search%");
+                    })
+                    ->orWhereHas('category', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%")->orWhere('name_kh', 'LIKE', "%$this->search%");
                     })
                     ->orWhereHas('author', function ($q) {
                         $q->where('name', 'LIKE', "%$this->search%");

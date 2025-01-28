@@ -71,35 +71,160 @@
                 <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
                     {{-- Start Products Select --}}
                     <div class="relative w-full col-span-2 group">
-                        <x-input-label for="product" :value="__('Product')" />
-                        <div class="flex flex-1 col-span-2 gap-1 mt-1" wire:ignore>
-                            <div class="flex justify-start flex-1 h-full">
-                                <x-select-option class="product-select" id="product" name="product_id">
-                                    <option wire:key='product' value="">Select Product...</option>
-                                    @forelse ($products as $product)
-                                        <option wire:key='{{ $product->id }}' value="{{ $product->id }}">
-                                            {{ $product->title }}
-                                        </option>
+                        {{-- Start Select Products --}}
+                        <div>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="simple-search" wire:model.live.debounce.300ms='search'
+                                    class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Search...">
+                            </div>
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3">No</th>
+                                        <th scope="col" class="px-4 py-3">Image</th>
+                                        <th scope="col" class="px-4 py-3">Title</th>
+                                        <th scope="col" class="px-4 py-3">Current Quantity</th>
+                                        <th scope="col" class="px-4 py-3">Unit Cost</th>
+                                        <th scope="col" class="px-4 py-3 text-center">ISBN</th>
+                                        <th scope="col" class="px-4 py-3">Author</th>
+                                        <th scope="col" class="px-4 py-3">Publisher</th>
+                                        <th scope="col" class="py-3 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($items as $item)
+                                        @php
+                                            $selectedIds = array_map(function ($value) {
+                                                return $value['id'];
+                                            }, $selectedProducts);
+                                        @endphp
+                                        {{-- @if (in_array($item->id, $selectedIds))
+                    <p>{{ $item->id }} exists</p>
+                @else
+                    <p>{{ $item->id }} does not exist</p>
+                @endif --}}
+                                        <tr wire:key='{{ $item->id }}'
+                                            class="border-b {{ in_array($item->id, $selectedIds) ? 'bg-gray-200 hover:bg-gray-300' : '' }} dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <td class="w-4 px-4 py-3">
+                                                {{ $loop->iteration }}
+
+                                            </td>
+
+                                            <th scope="row"
+                                                class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                                <a href="{{ asset('assets/images/isbn/' . $item->image) ?? 'N/A' }}"
+                                                    class="glightbox">
+                                                    <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) ?? 'N/A' }}"
+                                                        alt="Image" class="object-contain h-10 mr-3 aspect-[16/9]">
+                                                </a>
+                                            </th>
+                                            <x-table-data value="{{ $item->title ?? 'N/A' }}" />
+                                            <x-table-data value="{{ $item->quantity ?? '0' }}" />
+                                            <x-table-data value="$ {{ $item->cost ?? 'N/A' }}"
+                                                class="text-red-400 whitespace-nowrap" />
+                                            <x-table-data value="{{ $item->isbn ?? 'N/A' }}" />
+                                            <x-table-data class="text-center"
+                                                value="{{ $item->author?->name ?? 'N/A' }}" />
+                                            <x-table-data class="text-center"
+                                                value="{{ $item->publisher?->name ?? 'N/A' }}" />
+
+
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-start justify-center gap-3 cursor-pointer">
+                                                    @can('update item')
+                                                        <div class="pb-1 " x-data="{ tooltip: false }">
+                                                            <!-- Modal toggle -->
+                                                            <a wire:click='handleSelectProduct({{ $item->id }})'
+                                                                @mouseenter="tooltip = true"
+                                                                @mouseleave="tooltip = false">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                                                    height="28" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="lucide lucide-plus-circle">
+                                                                    <circle cx="12" cy="12" r="10" />
+                                                                    <path d="M8 12h8" />
+                                                                    <path d="M12 8v8" />
+                                                                </svg>
+                                                            </a>
+                                                            <!-- View tooltip -->
+                                                            <div x-show="tooltip"
+                                                                x-transition:enter="transition ease-out duration-200"
+                                                                class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap right-0"
+                                                                style="display: none;">
+                                                                Add Purchase Item
+                                                            </div>
+                                                        </div>
+                                                    @endcan
+                                                </div>
+                                            </td>
+
+                                        </tr>
                                     @empty
-                                        <option wire:key='noproduct' value=""> --No Product--</option>
+                                        <tr>
+                                            <td class="px-4 py-4">No Data...</td>
+                                        </tr>
                                     @endforelse
-                                </x-select-option>
+
+
+                                </tbody>
+                            </table>
+                            <div class="p-4">
+                                <div class="max-w-[200px] my-2 flex gap-2 items-center">
+                                    <label for="countries"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">Record
+                                        per
+                                        page : </label>
+                                    <select id="countries" wire:model.live='perPage'
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="70">70</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <div>{{ $items->links() }}</div>
                             </div>
                         </div>
+                        {{-- End Select Products --}}
                         <div>
-                            <table class="w-full border border-collapse border-gray-300 table-auto dark:border-gray-600">
+                            <table
+                                class="w-full border border-collapse border-gray-300 table-auto dark:border-gray-600">
                                 <thead>
                                     <tr class="bg-gray-200 dark:bg-gray-700">
-                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Title</th>
-                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Quantity</th>
-                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Action Type</th>
-                                        <th class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">Action</th>
+                                        <th
+                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
+                                            Title</th>
+                                        <th
+                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
+                                            Quantity</th>
+                                        <th
+                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
+                                            Action Type</th>
+                                        <th
+                                            class="px-4 py-2 text-left border border-gray-300 dark:border-gray-600 dark:text-gray-200">
+                                            Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($selectedProducts as $index => $item)
-                                        <tr wire:key="{{ $item['id'] }}" class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            <td class="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-gray-200">{{ $item['title'] }}</td>
+                                        <tr wire:key="{{ $item['id'] }}"
+                                            class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <td
+                                                class="px-4 py-2 border border-gray-300 dark:border-gray-600 dark:text-gray-200">
+                                                {{ $item['title'] }}</td>
                                             <td class="px-4 py-2 border border-gray-300 dark:border-gray-600">
                                                 <input type="number"
                                                     wire:change="updateProduct({{ $item['id'] }}, 'quantity', $event.target.value)"
@@ -110,11 +235,16 @@
                                                 <select name="action" id="action"
                                                     wire:change="updateProduct({{ $item['id'] }}, 'action', $event.target.value)"
                                                     class="w-full px-2 py-1 border rounded focus:ring focus:ring-blue-300 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500">
-                                                    <option value="add" {{ $item['action'] == 'add' ? 'selected' : '' }}>Add (+)</option>
-                                                    <option value="minus" {{ $item['action'] == 'minus' ? 'selected' : '' }}>Minus (-)</option>
+                                                    <option value="add"
+                                                        {{ $item['action'] == 'add' ? 'selected' : '' }}>Add (+)
+                                                    </option>
+                                                    <option value="minus"
+                                                        {{ $item['action'] == 'minus' ? 'selected' : '' }}>Minus (-)
+                                                    </option>
                                                 </select>
                                             </td>
-                                            <td class="px-4 py-2 font-semibold border border-gray-200 dark:border-gray-600">
+                                            <td
+                                                class="px-4 py-2 font-semibold border border-gray-200 dark:border-gray-600">
                                                 <button type="button" wire:key='removeProduct-{{ $index }}'
                                                     wire:click="removeProduct({{ $index }})"
                                                     class="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">Remove</button>

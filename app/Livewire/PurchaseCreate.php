@@ -10,10 +10,26 @@ use App\Models\PurchaseItem;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Image;
+use Livewire\WithPagination;
+use Livewire\Attributes\Url;
+
 
 class PurchaseCreate extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
+    #[Url(history: true)]
+    public $search = '';
+
+    #[Url(history: true)]
+    public $perPage = 5;
+
+    #[Url(history: true)]
+    public $sortBy = 'id';
+
+    #[Url(history: true)]
+    public $sortDir = 'DESC';
     public $product_id = [];
     public $supplier_id = null;
     public $status = 1;
@@ -35,7 +51,7 @@ class PurchaseCreate extends Component
                 array_unshift($this->selectedProducts, [
                     'id' => $product->id,
                     'title' => $product->title,
-                    'quantity' => 1, // Default value
+                    'quantity' => 1,
                     'price' => $product->cost > 0 ? $product->cost : 0,
                 ]);
             }
@@ -69,7 +85,11 @@ class PurchaseCreate extends Component
 
         // session()->flash('success', 'Product updated successfully!');
     }
-
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->dispatch('livewire:updated');
+    }
 
     public function save()
     {
@@ -128,14 +148,28 @@ class PurchaseCreate extends Component
 
     public function render()
     {
-        $products = Book::orderBy('id', 'desc')->get();
         // dd($selectedProducts);
 
         $suppliers = Supplier::orderBy('name')->get();
 
+        $items = Book::with('publisher', 'author')
+            ->where(function ($query) {
+                $query->where('title', 'LIKE', "%$this->search%")
+                    ->orWhere('internal_reference', 'LIKE', "%$this->search%")
+                    ->orWhere('isbn', 'LIKE', "%$this->search%")
+                    ->orWhereHas('publisher', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    })
+                    ->orWhereHas('author', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    });
+            })
+            ->orderBy($this->sortBy, $this->sortDir)
+            ->paginate($this->perPage);
+
         return view('livewire.purchase-create', [
-            'products' => $products,
             'suppliers' => $suppliers,
+            'items' => $items,
         ]);
     }
 }

@@ -170,10 +170,10 @@ class PurchaseTableData extends Component
 
         $items = Purchase::orderBy($this->sortBy, $this->sortDir)
             ->when($this->start_date, function ($query) {
-                $query->where('purchase_date', '>', $this->start_date);
+                $query->where('purchase_date', '>=', $this->start_date);
             })
             ->when($this->end_date, function ($query) {
-                $query->where('purchase_date', '<', $this->end_date);
+            $query->where('purchase_date', '<=', $this->end_date);
             })
             ->orderBy('id', 'desc')
             ->paginate($this->perPage);

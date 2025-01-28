@@ -9,10 +9,26 @@ use Livewire\WithFileUploads;
 use App\Models\Book;
 use Carbon\Carbon;
 use Image;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 
 class AdjustmentCreate extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
+    #[Url(history: true)]
+    public $search = '';
+
+    #[Url(history: true)]
+    public $perPage = 5;
+
+    #[Url(history: true)]
+    public $sortBy = 'id';
+
+    #[Url(history: true)]
+    public $sortDir = 'DESC';
+
     public $selectedProducts = [];
     public $adjustment_date = null;
     public function mount()
@@ -104,14 +120,31 @@ class AdjustmentCreate extends Component
     {
         $this->dispatch('livewire:updated');
     }
-
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->dispatch('livewire:updated');
+    }
 
     public function render()
     {
-        $products = Book::orderBy('id', 'desc')->get();
+        $items = Book::with('publisher', 'author')
+            ->where(function ($query) {
+                $query->where('title', 'LIKE', "%$this->search%")
+                    ->orWhere('internal_reference', 'LIKE', "%$this->search%")
+                    ->orWhere('isbn', 'LIKE', "%$this->search%")
+                    ->orWhereHas('publisher', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    })
+                    ->orWhereHas('author', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    });
+            })
+            ->orderBy($this->sortBy, $this->sortDir)
+            ->paginate($this->perPage);
 
         return view('livewire.adjustment-create', [
-            'products' => $products,
+            'items' => $items,
         ]);
     }
 }

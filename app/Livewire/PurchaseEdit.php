@@ -10,10 +10,26 @@ use App\Models\PurchaseItem;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Image;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 
 class PurchaseEdit extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
+    #[Url(history: true)]
+    public $search = '';
+
+    #[Url(history: true)]
+    public $perPage = 5;
+
+    #[Url(history: true)]
+    public $sortBy = 'id';
+
+    #[Url(history: true)]
+    public $sortDir = 'DESC';
+
     public $purchase_item;
     public $product_id = [];
     public $supplier_id = null;
@@ -92,6 +108,11 @@ class PurchaseEdit extends Component
 
         // session()->flash('success', 'Product updated successfully!');
     }
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->dispatch('livewire:updated');
+    }
 
 
     public function save()
@@ -147,7 +168,6 @@ class PurchaseEdit extends Component
         session()->flash('success', 'Purchase saved successfully!');
         $this->reset(['selectedProducts']);
         return redirect('/admin/purchases');
-
     }
 
 
@@ -161,13 +181,27 @@ class PurchaseEdit extends Component
 
     public function render()
     {
-        $products = Book::orderBy('id', 'desc')->get();
         // dd($selectedProducts);
 
         $suppliers = Supplier::orderBy('name')->get();
 
+        $items = Book::with('publisher', 'author')
+            ->where(function ($query) {
+                $query->where('title', 'LIKE', "%$this->search%")
+                    ->orWhere('internal_reference', 'LIKE', "%$this->search%")
+                    ->orWhere('isbn', 'LIKE', "%$this->search%")
+                    ->orWhereHas('publisher', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    })
+                    ->orWhereHas('author', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    });
+            })
+            ->orderBy($this->sortBy, $this->sortDir)
+            ->paginate($this->perPage);
+
         return view('livewire.purchase-create', [
-            'products' => $products,
+            'items' => $items,
             'suppliers' => $suppliers,
         ]);
     }

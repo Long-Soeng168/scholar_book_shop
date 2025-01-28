@@ -155,7 +155,7 @@
                                                                 <path d="M12 8v8" />
                                                             </svg>
                                                         </a>
-                                                        <span class="absolute z-50 flex -top-1 -right-2"
+                                                        <span class="absolute top-0 z-50 flex -right-2"
                                                             wire:target="handleSelectProduct({{ $item->id }})"
                                                             wire:loading>
                                                             <img class="inline w-8 h-8 text-white me-2 animate-spin"

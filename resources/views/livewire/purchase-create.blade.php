@@ -140,32 +140,29 @@
                                                 value="{{ $item->publisher?->name ?? 'N/A' }}" />
 
 
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-start justify-center gap-3 cursor-pointer">
-                                                    @can('update item')
-                                                        <div class="pb-1 " x-data="{ tooltip: false }">
-                                                            <!-- Modal toggle -->
-                                                            <a wire:click='handleSelectProduct({{ $item->id }})'
-                                                                @mouseenter="tooltip = true"
-                                                                @mouseleave="tooltip = false">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="28"
-                                                                    height="28" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="lucide lucide-plus-circle">
-                                                                    <circle cx="12" cy="12" r="10" />
-                                                                    <path d="M8 12h8" />
-                                                                    <path d="M12 8v8" />
-                                                                </svg>
-                                                            </a>
-                                                            <!-- View tooltip -->
-                                                            <div x-show="tooltip"
-                                                                x-transition:enter="transition ease-out duration-200"
-                                                                class="absolute z-[9999] inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap right-0"
-                                                                style="display: none;">
-                                                                Add Purchase Item
-                                                            </div>
-                                                        </div>
+                                            <td class="relative px-6 py-4">
+                                                <div x-data="{ tooltip: false }"
+                                                    class="flex items-start justify-center gap-3 cursor-pointer ">
+                                                    @can('update stock')
+                                                        <a wire:click='handleSelectProduct({{ $item->id }})'
+                                                            class="transition-all duration-300 hover:scale-110">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                                                height="28" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="lucide lucide-plus-circle">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <path d="M8 12h8" />
+                                                                <path d="M12 8v8" />
+                                                            </svg>
+                                                        </a>
+                                                        <span class="absolute z-50 flex -top-1 -right-2"
+                                                            wire:target="handleSelectProduct({{ $item->id }})"
+                                                            wire:loading>
+                                                            <img class="inline w-8 h-8 text-white me-2 animate-spin"
+                                                                src="{{ asset('assets/images/reload.png') }}"
+                                                                alt="reload-icon">
+                                                        </span>
                                                     @endcan
                                                 </div>
                                             </td>

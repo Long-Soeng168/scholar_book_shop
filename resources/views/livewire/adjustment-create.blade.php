@@ -143,18 +143,30 @@
                                                 <div x-data="{ tooltip: false }"
                                                     class="flex items-start justify-center gap-3 cursor-pointer ">
                                                     @can('update stock')
-                                                        <a wire:click='handleSelectProduct({{ $item->id }})'
-                                                            class="transition-all duration-300 hover:scale-110">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="28"
-                                                                height="28" viewBox="0 0 24 24" fill="none"
+                                                        @if (in_array($item->id, $selectedIds))
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
                                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                                class="lucide lucide-plus-circle">
-                                                                <circle cx="12" cy="12" r="10" />
-                                                                <path d="M8 12h8" />
-                                                                <path d="M12 8v8" />
+                                                                class="lucide lucide-circle-check-big">
+                                                                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                                                <path d="m9 11 3 3L22 4" />
                                                             </svg>
-                                                        </a>
+                                                        @else
+                                                            <a wire:click='handleSelectProduct({{ $item->id }})'
+                                                                class="transition-all duration-300 hover:scale-110">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                                                    height="28" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="lucide lucide-plus-circle">
+                                                                    <circle cx="12" cy="12" r="10" />
+                                                                    <path d="M8 12h8" />
+                                                                    <path d="M12 8v8" />
+                                                                </svg>
+                                                            </a>
+                                                        @endif
+
                                                         <span class="absolute top-0 z-50 flex -right-2"
                                                             wire:target="handleSelectProduct({{ $item->id }})"
                                                             wire:loading>

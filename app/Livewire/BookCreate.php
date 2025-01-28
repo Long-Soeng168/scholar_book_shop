@@ -37,6 +37,7 @@ class BookCreate extends Component
 
     public $isbn = null;
     public $tsin = null;
+    public $internal_reference = null;
     public $language = 'khmer';
 
     public $category_id = null;
@@ -121,7 +122,7 @@ class BookCreate extends Component
             'quantity' => 'nullable',
             'discount' => 'nullable',
             'language' => 'required|string|max:255',
-            'image' => 'required|image|max:2048',
+            'image' => 'nullable|image|max:2048',
             'file' => 'nullable|file|max:51200',
             'authors' => 'nullable|string|max:255',
             'number_of_pages' => 'nullable|int',
@@ -132,6 +133,7 @@ class BookCreate extends Component
             'description' => 'nullable|string',
             'isbn' => 'nullable|string|max:255',
             'tsin' => 'nullable|string|max:255',
+            'internal_reference' => 'nullable|string|max:255',
             'author_id' => 'nullable',
             'publisher_id' => 'nullable',
             'category_id' => 'nullable',

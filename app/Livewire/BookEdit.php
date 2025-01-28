@@ -39,6 +39,7 @@ class BookEdit extends Component
     public $description = null;
     public $isbn = null;
     public $tsin = null;
+    public $internal_reference = null;
     public $language = 'khmer';
 
     public $category_id = null;
@@ -62,6 +63,7 @@ class BookEdit extends Component
         $this->description = $this->item->description;
         $this->isbn = $this->item->isbn;
         $this->tsin = $this->item->tsin;
+        $this->internal_reference = $this->item->internal_reference;
         $this->language = $this->item->language;
         $this->category_id = $this->item->category_id;
         $this->sub_category_id = $this->item->sub_category_id;
@@ -161,6 +163,7 @@ class BookEdit extends Component
             'description' => 'nullable|string',
             'isbn' => 'nullable|string|max:255',
             'tsin' => 'nullable|string|max:255',
+            'internal_reference' => 'nullable|string|max:255',
             'author_id' => 'nullable',
             'publisher_id' => 'nullable',
             'category_id' => 'nullable',

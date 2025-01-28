@@ -280,12 +280,19 @@
                             autocomplete="isbn" />
                         <x-input-error :messages="$errors->get('isbn')" class="mt-2" />
                     </div>
-                    <div>
+                    {{-- <div>
                         <x-input-label wire:model='tsin' for="tsin" :value="__('messages.tsin')" />
                         <x-text-input wire:model='tsin' id="tsin" class="block w-full mt-1" type="text"
                             name="tsin" placeholder='Example: 9780596520687' :value="old('tsin')"
                             autocomplete="tsin" />
                         <x-input-error :messages="$errors->get('tsin')" class="mt-2" />
+                    </div> --}}
+                    <div>
+                        <x-input-label wire:model='internal_reference' for="internal_reference" :value="__('Internal Reference')" />
+                        <x-text-input wire:model='internal_reference' id="internal_reference"
+                            class="block w-full mt-1" type="text" name="internal_reference" placeholder='Example : MK-123'
+                            :value="old('internal_reference')" autocomplete="internal_reference" />
+                        <x-input-error :messages="$errors->get('internal_reference')" class="mt-2" />
                     </div>
                     <div class="">
                         <x-input-label for="numberOfPages" :value="__('messages.numberOfPages')" />
@@ -534,6 +541,11 @@
                 </div>
             </section>
 
+            <div class="mb-5" wire:ignore>
+                <x-input-label for="description" :value="__('Description')" />
+                <textarea id="description" name="description">{{ $description }}</textarea>
+            </div>
+
 
             <!-- ISBN Allocation Section -->
             {{-- <section class="mt-8">
@@ -591,6 +603,22 @@
                 initFlowbite();
             });
         });
+
+        let options = {
+            filebrowserImageBrowseUrl: "{{ asset('laravel-filemanager?type=Images') }}",
+            filebrowserImageUploadUrl: "{{ asset('laravel-filemanager/upload?type=Images&_token=') }}",
+            filebrowserBrowseUrl: "{{ asset('laravel-filemanager?type=Files') }}",
+            filebrowserUploadUrl: "{{ asset('laravel-filemanager/upload?type=Files&_token=') }}"
+        };
+
+        $(document).ready(function() {
+            const editor = CKEDITOR.replace('description', options);
+            editor.on('change', function(event) {
+                console.log(event.editor.getData())
+                @this.set('description', event.editor.getData(), false);
+            })
+        })
+
 
         function initSelect2() {
             $(document).ready(function() {

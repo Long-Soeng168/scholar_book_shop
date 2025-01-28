@@ -116,6 +116,8 @@ Route::group([
 ], function () {
     Route::resource('isbn_requests', IsbnRequestController::class);
     Route::resource('admin/books', BookController::class);
+    Route::get('admin/books_images/{id}', [BookController::class, 'images']);
+
     Route::get('admin/stocks', [PurchaseController::class, 'stocks']);
     Route::resource('admin/purchases', PurchaseController::class);
     Route::resource('admin/sales', SaleController::class);

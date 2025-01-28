@@ -16,7 +16,7 @@ class SlideCreate extends Component
     // public $pdf;
 
     public $name = null;
-    public $position = null;
+    public $position = 'top';
     public $order_index = null;
     public $link = null;
 

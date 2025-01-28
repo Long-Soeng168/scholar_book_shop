@@ -130,10 +130,9 @@
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("name")'>
                         <div class="flex items-center cursor-pointer">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-chevrons-up-down">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-chevrons-up-down">
                                 <path d="m7 15 5 5 5-5" />
                                 <path d="m7 9 5-5 5 5" />
                             </svg>
@@ -142,6 +141,7 @@
                     </th>
 
                     <th scope="col" class="px-4 py-3">Category</th>
+                    <th scope="col" class="px-4 py-3">Total View</th>
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -161,6 +161,7 @@
                         </th>
                         <x-table-data value="{{ $item->name }}" />
                         <x-table-data value="{{ $item->newsCategory?->name ? $item->newsCategory?->name : 'N/A' }}" />
+                        <x-table-data value="{{ $item->view_count }}" />
 
                         <td class="px-6 py-4">
                             <div class="flex items-start justify-center gap-3">

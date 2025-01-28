@@ -4,7 +4,7 @@
     <div class="p-4">
         <x-form-header :value="__('Add Images')" class="p-4" />
 
-        @livewire('publication-image', [
+        @livewire('book-image', [
             'item' => $item,
         ])
 

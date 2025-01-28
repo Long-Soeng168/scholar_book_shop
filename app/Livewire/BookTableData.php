@@ -182,10 +182,18 @@ class BookTableData extends Component
     public function render()
     {
 
-        $items = Book::where('title', 'LIKE', "%$this->search%")
-            // ->when(!request()->user()->hasRole(['admin', 'super-admin']), function ($query) {
-            //     $query->where('publisher_id', request()->user()->id);
-            // })
+        $items = Book::with('publisher', 'author')
+            ->where(function ($query) {
+                $query->where('title', 'LIKE', "%$this->search%")
+                    ->orWhere('internal_reference', 'LIKE', "%$this->search%")
+                    ->orWhere('isbn', 'LIKE', "%$this->search%")
+                    ->orWhereHas('publisher', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    })
+                    ->orWhereHas('author', function ($q) {
+                        $q->where('name', 'LIKE', "%$this->search%");
+                    });
+            })
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 

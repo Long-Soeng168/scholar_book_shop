@@ -84,8 +84,9 @@
                 <x-input-label for="position" :value="__('messages.position')" />
                 <x-select-option wire:model='position' class="block w-full mt-1" id="position"
                     name='pistion'>
-                    <option value="top">{{ __('messages.top') }}</option>
-                    <option value="bottom">{{ __('messages.bottom') }}</option>
+                    <option value="top">{{ __('Top (2100 x 700 pixel)') }}</option>
+                    <option value="bottom">{{ __('Bottom (1600 x 900 pixel)') }}</option>
+                    <option value="product_detail">{{ __('Product Detail (2100 x 200 pixel)') }}</option>
                 </x-select-option>
                 <x-input-error :messages="$errors->get('position')" class="mt-2" />
             </div>
@@ -110,7 +111,7 @@
                 @endif
                 <div class="flex flex-col flex-1">
                     <label class='mb-4 text-sm font-medium text-gray-600 dark:text-white'>
-                        Upload Image (Max: 2MB) (Recommend : 30x8 or 1200x320 pixels) <span class="text-red-500">*</span>
+                        Upload Image (Max: 2MB) <span class="text-red-500">*</span>
                     </label>
                     <div class="relative flex items-center justify-center w-full -mt-3 overflow-hidden">
                         <label for="dropzone-file"

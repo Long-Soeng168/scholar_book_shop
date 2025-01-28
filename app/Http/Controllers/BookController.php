@@ -42,5 +42,13 @@ class BookController extends Controller
         return view('admin.books.sub_category');
     }
 
+    public function images($id)
+    {
+        $item = Book::findOrFail($id);
+        return view('admin.books.image', [
+            'item' => $item,
+        ]);
+    }
+
 
 }

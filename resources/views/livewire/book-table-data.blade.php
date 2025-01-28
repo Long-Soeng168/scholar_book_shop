@@ -122,6 +122,7 @@
                 <tr>
                     <th scope="col" class="px-4 py-3">No</th>
                     <th scope="col" class="px-4 py-3">Image</th>
+                    <th scope="col" class="px-4 py-3">File</th>
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("title")'>
                         <div class="flex items-center cursor-pointer">
 
@@ -135,13 +136,15 @@
                             Title
                         </div>
                     </th>
+                    <th scope="col" class="px-4 py-3">Internal Reference</th>
                     <th scope="col" class="px-4 py-3">Price</th>
                     <th scope="col" class="px-4 py-3 text-center">ISBN</th>
+                    <th scope="col" class="px-4 py-3">Author</th>
                     <th scope="col" class="px-4 py-3">Publisher</th>
-                    <th scope="col" class="px-4 py-3">File</th>
-                    <th scope="col" class="px-4 py-3">Access</th>
+                    {{-- <th scope="col" class="px-4 py-3">Access</th> --}}
                     {{-- <th scope="col" class="px-4 py-3 text-center">For Sale</th> --}}
                     <th scope="col" class="px-4 py-3 text-center">Status</th>
+                    <th scope="col" class="px-4 py-3 text-center">Total View</th>
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
             </thead>
@@ -154,15 +157,11 @@
                         </td>
                         <th scope="row"
                             class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
-                            <a href="{{ asset('assets/images/isbn/' . $item->image) }}" class="glightbox">
-                                <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) }}" alt="Image"
+                            <a href="{{ asset('assets/images/isbn/' . $item->image) ?? 'N/A' }}" class="glightbox">
+                                <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) ?? 'N/A' }}" alt="Image"
                                     class="object-contain h-10 mr-3 aspect-[16/9]">
                             </a>
                         </th>
-                        <x-table-data value="{{ $item->title }}" />
-                        <x-table-data value="$ {{ $item->price }}" class="text-red-400 whitespace-nowrap" />
-                        <x-table-data value="{{ $item->isbn }}" />
-                        <x-table-data class="text-center" value="{{ $item->publisher?->name }}" />
                         <x-table-data>
                             @if ($item->file != null)
                                 <span class="w-4 px-4 py-3 font-semibold text-green-700">
@@ -189,6 +188,14 @@
                                 </span>
                             @endif
                         </x-table-data>
+                        <x-table-data value="{{ $item->title ?? 'N/A' }}" />
+                        <x-table-data value="{{ $item->internal_reference ?? 'N/A' }}" />
+                        <x-table-data value="$ {{ $item->price ?? 'N/A' }}" class="text-red-400 whitespace-nowrap" />
+                        <x-table-data value="{{ $item->isbn ?? 'N/A' }}" />
+                        <x-table-data class="text-center" value="{{ $item->author?->name ?? 'N/A' }}" />
+                        <x-table-data class="text-center" value="{{ $item->publisher?->name ?? 'N/A' }}" />
+
+
                         {{-- <td wire:key='{{ rand() }}' class="text-center">
                             <button data-modal-target="popup-modal-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-{{ $item->id }}">
@@ -247,7 +254,7 @@
                             @endcan
 
                         </td> --}}
-                        <td wire:key='{{ rand() }}' class="text-center">
+                        {{-- <td wire:key='{{ rand() }}' class="text-center">
                             <button data-modal-target="popup-modal-free-status-{{ $item->id }}"
                                 data-modal-toggle="popup-modal-free-status-{{ $item->id }}">
                                 @if ($item->is_free == 1)
@@ -303,7 +310,7 @@
                                     </div>
                                 </div>
                             @endcan
-                        </td>
+                        </td> --}}
                         <td wire:key='{{ rand() }}' class="text-center">
 
                             <button data-modal-target="popup-modal-user-{{ $item->id }}"
@@ -363,14 +370,15 @@
                             @endcan
 
                         </td>
+                        <x-table-data class="text-center" value="{{ $item->view_count }}" />
 
                         <td class="px-6 py-4">
                             <div class="flex items-start justify-center gap-3">
 
                                 <div class="pb-1" x-data="{ tooltip: false }">
                                     <!-- Modal toggle -->
-                                    <a href="{{ url('/admin/books/' . $item->id) }}" @mouseenter="tooltip = true"
-                                        @mouseleave="tooltip = false">
+                                    <a href="{{ 'https://www.scholarkh.com/en/products/' . $item->id }}"
+                                        @mouseenter="tooltip = true" @mouseleave="tooltip = false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -387,6 +395,36 @@
                                         View
                                     </div>
                                 </div>
+
+                                @can('update item')
+                                    <div class="pb-1" x-data="{ tooltip: false }">
+                                        <!-- Modal toggle -->
+                                        <a href="{{ url('admin/books_images/' . $item->id) }}"
+                                            @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="relative">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="lucide lucide-plus-circle">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <path d="M8 12h8" />
+                                                <path d="M12 8v8" />
+                                            </svg>
+                                            <!-- View tooltip -->
+                                            <div x-show="tooltip" x-transition:enter="transition ease-out duration-200"
+                                                x-transition:enter-start="opacity-0 transform scale-90"
+                                                x-transition:enter-end="opacity-100 transform scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="opacity-100 transform scale-100"
+                                                x-transition:leave-end="opacity-0 transform scale-90"
+                                                class="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 whitespace-nowrap"
+                                                style="display: none;">
+                                                Add Image
+                                            </div>
+                                        </a>
+
+
+                                    </div>
+                                @endcan
 
                                 @can('delete item')
                                     <div class="pb-1" x-data="{ tooltip: false }">
@@ -439,6 +477,7 @@
 
                             </div>
                         </td>
+
                     </tr>
                 @empty
                     <tr>

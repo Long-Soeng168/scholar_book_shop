@@ -56,23 +56,25 @@ class AuthorTableData extends Component
 
      // ==========Add New Author============
      public $newAuthorName = null;
+     public $newAuthorPhone = null;
      public $newAuthorGender = null;
 
      public function saveNewAuthor()
      {
          try {
              $validated = $this->validate([
-                 'newAuthorName' => 'required|string|max:255|unique:authors,name',
+                 'newAuthorName' => 'required|string|max:255',
              ]);
 
              Author::create([
                  'name' => $this->newAuthorName,
                  'gender' => $this->newAuthorGender,
+                 'phone' => $this->newAuthorPhone,
              ]);
 
              session()->flash('success', 'Add New Author successfully!');
 
-             $this->reset(['newAuthorName', 'newAuthorGender']);
+             $this->reset(['newAuthorName', 'newAuthorGender', 'newAuthorPhone']);
 
          } catch (\Illuminate\Validation\ValidationException $e) {
              session()->flash('error', $e->validator->errors()->all());
@@ -82,35 +84,39 @@ class AuthorTableData extends Component
      public $editId = null;
      public $name;
      public $gender;
+     public $phone;
 
      public function setEdit($id) {
         $author = Author::find($id);
         $this->editId = $id;
         $this->name = $author->name;
         $this->gender = $author->gender;
+        $this->phone = $author->phone;
      }
 
      public function cancelUpdateAuthor() {
         $this->editId = null;
         $this->name = null;
         $this->gender = null;
+        $this->phone = null;
      }
 
      public function updateAuthor($id) {
         try {
             $validated = $this->validate([
-                'name' => 'required|string|max:255|unique:authors,name,' . $id,
+                'name' => 'required|string|max:255',
             ]);
 
             $author = Author::find($id);
             $author->update([
                 'name' => $this->name,
                 'gender' => $this->gender,
+                'phone' => $this->phone,
             ]);
 
             session()->flash('success', 'Author successfully edited!');
 
-            $this->reset(['name', 'gender', 'editId']);
+            $this->reset(['name', 'gender', 'editId', 'phone']);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             session()->flash('error', $e->validator->errors()->all());

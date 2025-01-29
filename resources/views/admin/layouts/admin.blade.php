@@ -154,7 +154,7 @@
                     <a href="{{ url('isbn_requests') }}" class="flex items-center justify-center mr-4">
                         @if ($websiteInfo->image)
                             <img src="{{ asset('assets/images/website_infos/logo192.png') }}" class="h-8 mr-3"
-                                alt="Flowbite Logo" />
+                                alt="Logo" />
                         @endif
                         <span
                             class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{ $websiteInfo->name }}</span>
@@ -376,7 +376,7 @@
                 class="flex items-center justify-center p-3.5 border-b dark:border-b-slate-600">
                 @if ($websiteInfo->image)
                     <img src="{{ asset('assets/images/website_infos/logo192.png') }}"
-                        class="object-cover h-8 mr-3 rounded-full aspect-square" alt="Flowbite Logo" />
+                        class="object-contain h-8 mr-3 rounded-full aspect-square" alt="Logo" />
                 @endif
                 <span class="self-center text-2xl font-semibold line-clamp-1 dark:text-white">
                     {{ $websiteInfo->name }}

@@ -39,6 +39,8 @@ class BookController extends Controller
             });
         }
 
+
+
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
@@ -74,7 +76,13 @@ class BookController extends Controller
         if ($randomOrder == 1) {
             $query->inRandomOrder();
         } else {
-            $query->orderBy($orderBy, $orderDir);
+            if ($orderBy == 'bestSelling') {
+                $query->withCount('invoice_items')->orderBy('invoice_items_count', $orderDir);
+            } elseif ($orderBy == 'totalView') {
+                $query->orderBy('view_count', $orderDir);
+            } else {
+                $query->orderBy($orderBy, $orderDir);
+            }
         }
 
         // Paginate results with the specified number per page
@@ -129,10 +137,10 @@ class BookController extends Controller
     {
         $limit = $request->limit;
         // First set of 10 books ordered by ID in descending order
-        $first_set = Book::query()->orderBy('order_approved', 'DESC')->where('status', 1)->limit($limit ?? 10)->get();
+        $first_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->where('status', 1)->limit($limit ?? 10)->get();
 
         // Second set of 10 books ordered by ID in descending order, offset by 10
-        $second_set = Book::query()->orderBy('order_approved', 'DESC')->offset(10)->where('status', 1)->limit($limit ?? 10)->get();
+        $second_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->offset(10)->where('status', 1)->limit($limit ?? 10)->get();
 
         return response()->json([
             'first_set' => $first_set,

@@ -45,6 +45,10 @@ class Book extends Model
     {
         return $this->hasMany(BookImage::class, 'book_id', 'id');
     }
+    public function invoice_items()
+    {
+        return $this->hasMany(InvoiceItem::class, 'product_id', 'id');
+    }
     public function purchases()
     {
         return $this->hasMany(PurchaseItem::class, 'product_id', 'id');

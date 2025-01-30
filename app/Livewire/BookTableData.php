@@ -35,6 +35,9 @@ class BookTableData extends Component
     public $sub_category_id = null;
     public $fromYear = null;
     public $toYear = null;
+    public $priceFrom = null;
+    public $priceTo = null;
+    public $orderBy = null;
 
 
 

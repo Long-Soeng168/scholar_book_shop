@@ -192,13 +192,13 @@
 
         <div class="flex-1">
             <x-input-label for="priceFrom" :value="__('Price From')" />
-            <x-text-input wire:model='priceFrom' id="priceFrom" class="block w-full mt-1" type="number"
-                name="priceFrom" placeholder='Example : 7$' :value="old('priceFrom')" autocomplete="priceFrom" />
+            <x-text-input wire:model.live.debounce.300ms='priceFrom' id="priceFrom" class="block w-full mt-1" type="number"
+                name="priceFrom" placeholder='Example : 2$' :value="old('priceFrom')" autocomplete="priceFrom" />
             <x-input-error :messages="$errors->get('priceFrom')" class="mt-2" />
         </div>
         <div class="flex-1">
             <x-input-label for="priceTo" :value="__('Price To')" />
-            <x-text-input wire:model='priceTo' id="priceTo" class="block w-full mt-1" type="number"
+            <x-text-input wire:model.live.debounce.300ms='priceTo' id="priceTo" class="block w-full mt-1" type="number"
                 name="priceTo" placeholder='Example : 7$' :value="old('priceTo')" autocomplete="priceTo" />
             <x-input-error :messages="$errors->get('priceTo')" class="mt-2" />
         </div>
@@ -209,12 +209,12 @@
                 <div class="flex justify-start flex-1">
                     <x-select-option wire:model.live='orderBy' id="orderBy" name="orderBy" class="orderBy-select">
                         <option value="">Select Order</option>
-                        <option value="">Total View (Descending 9->0)</option>
-                        <option value="">Total View (Ascending 0->9)</option>
-                        <option value="">Total Sale (Descending 9->0)</option>
-                        <option value="">Total Sale (Ascending 0->9)</option>
-                        <option value="">Total Price (Descending 9->0)</option>
-                        <option value="">Total Price (Ascending 0->9)</option>
+                        <option value="totalViewDesc">Total View (Descending 9->0)</option>
+                        <option value="totalViewAsc">Total View (Ascending 0->9)</option>
+                        <option value="totalSaleDesc">Total Sale (Descending 9->0)</option>
+                        <option value="totalSaleAsc">Total Sale (Ascending 0->9)</option>
+                        <option value="totalPriceDesc">Total Price (Descending 9->0)</option>
+                        <option value="totalPriceAsc">Total Price (Ascending 0->9)</option>
                     </x-select-option>
                 </div>
             </div>
@@ -229,6 +229,9 @@
             <li>toYear : {{ $toYear }}</li>
             <li>category_id : {{ $category_id }}</li>
             <li>sub_category_id : {{ $sub_category_id }}</li>
+            <li>priceFrom : {{ $priceFrom }}</li>
+            <li>priceTo : {{ $priceTo }}</li>
+            <li>orderBy : {{ $orderBy }}</li>
         </ul>
     </div>
     {{-- End Filter --}}

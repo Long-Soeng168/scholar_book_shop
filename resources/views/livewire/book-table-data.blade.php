@@ -63,6 +63,175 @@
             </div>
         </div>
     @endif
+
+    {{-- Start Filter --}}
+    <div class="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
+        {{-- Start Author Select --}}
+        <div class="relative w-full group">
+            <x-input-label for="author" :value="__('Author')" />
+            <div class="flex flex-1 gap-1 mt-1">
+                <div class="flex justify-start flex-1 min-h-[2.5rem]">
+                    <x-select-option class="author-select" wire:model.live='author_id' id="author" name="author_id">
+                        <option wire:key='author' value="">Select Author...</option>
+                        @forelse ($authorss as $author)
+                            <option wire:key='{{ $author->id }}' value="{{ $author->id }}">
+                                {{ $author->name }}
+                            </option>
+                        @empty
+                            <option wire:key='noauthor' value=""> --No Author--</option>
+                        @endforelse
+                    </x-select-option>
+                </div>
+            </div>
+        </div>
+        {{-- End Author Select --}}
+
+        {{-- Start Publisher Select --}}
+        <div class="relative w-full group">
+            <x-input-label for="publisher" :value="__('Publisher')" />
+            <div class="flex flex-1 gap-1 mt-1 min-h-[2.5rem]">
+                <div class="flex justify-start flex-1">
+                    <x-select-option wire:model.live='publisher_id' id="publisher" name="publisher_id"
+                        class="publisher-select">
+                        <option wire:key='publisher' value="">Select Publisher...</option>
+                        @forelse ($publishers as $publisher)
+                            <option wire:key='{{ $publisher->id }}' value="{{ $publisher->id }}">
+                                {{ $publisher->name }}</option>
+                        @empty
+                            <option wire:key='nopublisher' value=""> --No Publisher--</option>
+                        @endforelse
+                    </x-select-option>
+                </div>
+            </div>
+        </div>
+        {{-- End Publisher Select --}}
+
+        {{-- Start Published From Year --}}
+        <div class="relative z-0 w-full group">
+            <x-input-label for="fromYear" :value="__('Published From Year')" />
+            <div class="flex flex-1 gap-1 mt-1 min-h-[2.5rem]">
+                <div class="flex justify-start flex-1">
+                    <x-select-option wire:model.live='fromYear' id="fromYear" name="fromYear" class="fromYear-select">
+                        <option wire:key='fromYear-select' value="">Select Year...</option>
+
+                        @for ($year = date('Y'); $year >= 1800; $year--)
+                            <option wire:key='{{ $year }}' value="{{ $year }}">
+                                {{ $year }}</option>
+                        @endfor
+                    </x-select-option>
+                </div>
+            </div>
+        </div>
+        {{-- End Published From Year --}}
+
+        {{-- Start Published To Year --}}
+        <div class="relative z-0 w-full group">
+            <x-input-label for="toYear" :value="__('Published To Year')" />
+            <div class="flex flex-1 gap-1 mt-1 min-h-[2.5rem]">
+                <div class="flex justify-start flex-1">
+                    <x-select-option wire:model.live='toYear' id="toYear" name="toYear" class="toYear-select">
+                        <option wire:key='toYear-select' value="">Select Year...</option>
+
+                        @for ($year = date('Y'); $year >= 1800; $year--)
+                            <option wire:key='{{ $year }}' value="{{ $year }}">
+                                {{ $year }}</option>
+                        @endfor
+                    </x-select-option>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid gap-4 md:col-span-2 md:grid-cols-2">
+            {{-- Start Category Select --}}
+            <div class="relative w-full group">
+                <x-input-label for="category_id" :value="__('Category')" />
+                <div class="flex flex-1 gap-1 mt-1">
+                    <div class="flex justify-start flex-1 min-h-[2.5rem]">
+                        <x-select-option wire:model.live='category_id' id="category_id" name="category_id"
+                            class="category-select">
+                            <option wire:key='category' value="">Select Category...</option>
+                            @forelse ($categories as $category)
+                                <option wire:key='{{ $category->id }}' value="{{ $category->id }}">
+                                    {{ $category->name }} {{ ' / ' . $category->name_kh }}
+                                </option>
+                            @empty
+                                <option wire:key='nocateogry' value=""> --No Category--</option>
+                            @endforelse
+                        </x-select-option>
+                    </div>
+                </div>
+                <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
+            </div>
+            {{-- End Category Select --}}
+
+            {{-- Start Sub-Category Select --}}
+            <div class="relative w-full group">
+                <x-input-label for="sub_category_id" :value="__('Sub-Category')" />
+                <div class="flex flex-1 gap-1 mt-1">
+                    <div class="flex justify-start flex-1 min-h-[2.5rem]">
+                        <x-select-option wire:model.live='sub_category_id' id="sub_category_id" name="category_id"
+                            class="sub-category-select">
+                            <option wire:key='sub-category' value="">
+                                {{ $category_id ? 'Select Sub-Category...' : 'Select Category First' }}
+                            </option>
+                            @forelse ($subCategories as $subCategory)
+                                <option wire:key='{{ $subCategory->id }}' value="{{ $subCategory->id }}">
+                                    {{ $subCategory->name }} {{ ' / ' . $subCategory->name_kh }}
+                                </option>
+                            @empty
+                                <option wire:key='nosub-category' value="">--No Category--</option>
+                            @endforelse
+                        </x-select-option>
+                    </div>
+
+                </div>
+                <x-input-error :messages="$errors->get('sub_category_id')" class="mt-2" />
+            </div>
+            {{-- End Sub-Category Select --}}
+        </div>
+
+        <div class="flex-1">
+            <x-input-label for="priceFrom" :value="__('Price From')" />
+            <x-text-input wire:model='priceFrom' id="priceFrom" class="block w-full mt-1" type="number"
+                name="priceFrom" placeholder='Example : 7$' :value="old('priceFrom')" autocomplete="priceFrom" />
+            <x-input-error :messages="$errors->get('priceFrom')" class="mt-2" />
+        </div>
+        <div class="flex-1">
+            <x-input-label for="priceTo" :value="__('Price To')" />
+            <x-text-input wire:model='priceTo' id="priceTo" class="block w-full mt-1" type="number"
+                name="priceTo" placeholder='Example : 7$' :value="old('priceTo')" autocomplete="priceTo" />
+            <x-input-error :messages="$errors->get('priceTo')" class="mt-2" />
+        </div>
+
+        <div class="relative z-0 w-full group">
+            <x-input-label for="orderBy" :value="__('Order By')" />
+            <div class="flex flex-1 gap-1 mt-1 min-h-[2.5rem]">
+                <div class="flex justify-start flex-1">
+                    <x-select-option wire:model.live='orderBy' id="orderBy" name="orderBy" class="orderBy-select">
+                        <option value="">Select Order</option>
+                        <option value="">Total View (Descending 9->0)</option>
+                        <option value="">Total View (Ascending 0->9)</option>
+                        <option value="">Total Sale (Descending 9->0)</option>
+                        <option value="">Total Sale (Ascending 0->9)</option>
+                        <option value="">Total Price (Descending 9->0)</option>
+                        <option value="">Total Price (Ascending 0->9)</option>
+                    </x-select-option>
+                </div>
+            </div>
+        </div>
+        {{-- End Published To Year --}}
+    </div>
+    <div>
+        <ul>
+            <li>author id : {{ $author_id }}</li>
+            <li>publisher id : {{ $publisher_id }}</li>
+            <li>fromYear : {{ $fromYear }}</li>
+            <li>toYear : {{ $toYear }}</li>
+            <li>category_id : {{ $category_id }}</li>
+            <li>sub_category_id : {{ $sub_category_id }}</li>
+        </ul>
+    </div>
+    {{-- End Filter --}}
     <div
         class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
         <div class="w-full md:w-1/2">
@@ -88,8 +257,8 @@
 
             @can('create item')
                 <x-primary-button href="{{ url('admin/books/create') }}">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true">
+                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path clip-rule="evenodd" fill-rule="evenodd"
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                     </svg>
@@ -158,8 +327,8 @@
                         <th scope="row"
                             class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
                             <a href="{{ asset('assets/images/isbn/' . $item->image) ?? 'N/A' }}" class="glightbox">
-                                <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) ?? 'N/A' }}" alt="Image"
-                                    class="object-contain h-10 mr-3 aspect-[16/9]">
+                                <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) ?? 'N/A' }}"
+                                    alt="Image" class="object-contain h-10 mr-3 aspect-[16/9]">
                             </a>
                         </th>
                         <x-table-data>
@@ -544,5 +713,57 @@
 
         // Start checking for URL changes
         checkUrlChange();
+
+        function initSelect2() {
+            $(document).ready(function() {
+                $('.category-select').select2();
+                $('.category-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('category_id', data);
+                });
+
+                $('.sub-category-select').select2();
+                $('.sub-category-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('sub_category_id', data);
+                });
+
+                $('.author-select').select2();
+                $('.author-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('author_id', data);
+                });
+                $('.publisher-select').select2();
+                $('.publisher-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('publisher_id', data);
+                });
+
+                $('.fromYear-select').select2();
+                $('.fromYear-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('fromYear', data);
+                });
+                $('.toYear-select').select2();
+                $('.toYear-select').on('change', function(event) {
+                    let data = $(this).val();
+                    @this.set('toYear', data);
+                });
+            });
+        }
+        initSelect2();
+
+        $(document).ready(function() {
+            document.addEventListener('livewire:updated', event => {
+                console.log('updated'); // Logs 'Livewire component updated' to browser console
+                initSelect2();
+                initFlowbite();
+            });
+        });
     </script>
+@endscript
+
+
+@script
+    <script></script>
 @endscript

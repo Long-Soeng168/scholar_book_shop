@@ -137,10 +137,10 @@ class BookController extends Controller
     {
         $limit = $request->limit;
         // First set of 10 books ordered by ID in descending order
-        $first_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->where('status', 1)->limit($limit ?? 10)->get();
+        $first_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->orderBy('view_count', 'DESC')->where('status', 1)->limit($limit ?? 10)->get();
 
         // Second set of 10 books ordered by ID in descending order, offset by 10
-        $second_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->offset(10)->where('status', 1)->limit($limit ?? 10)->get();
+        $second_set = Book::query()->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')->offset(10)->orderBy('view_count', 'DESC')->where('status', 1)->limit($limit ?? 10)->get();
 
         return response()->json([
             'first_set' => $first_set,

@@ -102,6 +102,26 @@
 
         </div>
         {{-- Start ISBN --}}
+        <div
+            class="flex flex-col items-stretch justify-end flex-shrink-0 w-full mb-2 space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+
+            <div class="flex items-center w-full space-x-3 md:w-auto">
+                <button id="filterDropdownButton" wire:click="export"
+                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-file-up">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                        <path d="M12 12v6" />
+                        <path d="m15 15-3-3-3 3" />
+                    </svg>
+                    Export
+                </button>
+
+            </div>
+        </div>
         <div>
             <div class="overflow-x-auto">
                 <table class="w-full px-2 text-sm text-left text-gray-500 dark:text-gray-400">
@@ -125,7 +145,8 @@
                                 </td>
                                 <th scope="row"
                                     class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
-                                    <a href="{{ asset('assets/images/isbn/' . $item->product?->image) }}" class="glightbox">
+                                    <a href="{{ asset('assets/images/isbn/' . $item->product?->image) }}"
+                                        class="glightbox">
                                         <img src="{{ asset('assets/images/isbn/thumb/' . $item->product?->image) }}"
                                             alt="iMac Front Image" class="object-contain h-10 mr-3 aspect-[16/9]">
                                     </a>
@@ -144,7 +165,7 @@
                                 <x-table-data class="text-center">
                                     <span>
                                         $
-                                        {{ $item->price  * $item->quantity }}
+                                        {{ $item->price * $item->quantity }}
                                     </span>
                                 </x-table-data>
 

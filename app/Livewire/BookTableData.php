@@ -2,11 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\Author;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 use App\Models\Book;
+use App\Models\BookCategory;
+use App\Models\BookSubCategory;
+use App\Models\Publisher;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BookTableData extends Component
@@ -25,11 +29,14 @@ class BookTableData extends Component
     #[Url(history: true)]
     public $sortDir = 'DESC';
 
-    public function setFilter($value)
-    {
-        $this->filter = $value;
-        $this->resetPage();
-    }
+    public $author_id = null;
+    public $publisher_id = null;
+    public $category_id = null;
+    public $sub_category_id = null;
+    public $fromYear = null;
+    public $toYear = null;
+
+
 
     public function setSortBy($newSortBy)
     {
@@ -197,10 +204,17 @@ class BookTableData extends Component
             ->orderBy($this->sortBy, $this->sortDir)
             ->paginate($this->perPage);
 
-
+        $categories = BookCategory::orderBy('name')->get();
+        $subCategories = BookSubCategory::where('category_id', $this->category_id)->orderBy('name')->get();
+        $authorss = Author::orderBy('name')->get();
+        $publishers = Publisher::orderBy('name')->get();
 
         return view('livewire.book-table-data', [
             'items' => $items,
+            'categories' => $categories,
+            'subCategories' => $subCategories,
+            'authorss' => $authorss,
+            'publishers' => $publishers,
         ]);
     }
 }

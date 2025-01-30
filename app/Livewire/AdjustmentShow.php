@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\Book;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdjustmentShow extends Component
 {
@@ -54,6 +55,63 @@ class AdjustmentShow extends Component
         return redirect()->to('admin/purchases/' . $this->purchase->id);
     }
 
+    public function export()
+    {
+        $purchaseId = $this->purchase->id;
+        $purchase = $this->purchase;
+
+        return Excel::download(new class($purchaseId, $purchase) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $purchaseId;
+            private $purchase;
+
+            public function __construct($purchaseId, $purchase)
+            {
+                $this->purchaseId = $purchaseId;
+                $this->purchase = $purchase;
+            }
+
+            public function collection()
+            {
+                // Fetch purchases with related data
+                return AdjustmentItem::where('adjustment_id', $this->purchaseId)
+                    ->get()
+                    ->map(function ($item, $index) {
+                        return [
+                            'No' => $index + 1,
+                            'Title' => $item->product?->title,
+                            'ISBN' => $item->product?->isbn,
+                            'Quantity' => $item->quantity,
+                            'Action' => $item->action == 'minus' ? 'Minus (-)' : 'Add (+)',
+                        ];
+                    });
+            }
+
+            public function headings(): array
+            {
+                // Define the column headings
+                return [
+                    [
+                        'Adjustment Date',
+                        'Created By',
+                        'Updated By',
+                    ],
+                    [
+                        $this->purchase?->adjustment_date ?? 'N/A',
+                        $this->purchase?->created_by?->name ?? 'N/A',
+                        $this->purchase?->updated_by?->name ?? 'N/A',
+                    ],
+                    [],
+                    [
+                        'No',
+                        'Title',
+                        'ISBN',
+                        'Quantity',
+                        'Action',
+                    ]
+                ];
+            }
+        }, 'adjustment.xlsx');
+    }
 
     public function render()
     {

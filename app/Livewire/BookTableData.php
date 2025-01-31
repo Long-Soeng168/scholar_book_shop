@@ -276,6 +276,26 @@ class BookTableData extends Component
         }, 'products.xlsx');
     }
 
+    public $selectedItems = [];
+
+    public function updateMultiStatus($statusValue)
+    {
+        // dd([$this->selectedItems, $this->status]);
+        if (!empty($this->selectedItems)) {
+            $getedItems = Book::whereIn('id', $this->selectedItems)->get();
+            foreach ($getedItems as $value) {
+                // dd($value);
+                $value->update([
+                    'status' => $statusValue,
+                ]);
+            }
+            // dd($getedItems);
+            // session()->flash('message', 'Statuses updated successfully.');
+            $this->reset(['selectedItems']); // Reset selection
+            return redirect('/admin/books')->with(['success'=> 'Statuses updated successfully.']);
+        }
+    }
+
 
     public function render()
     {
@@ -354,7 +374,7 @@ class BookTableData extends Component
         }
 
         // Apply status filter and pagination
-        $items = $query->where('status', 1)->paginate($this->perPage);
+        $items = $query->paginate($this->perPage);
 
         $categories = BookCategory::orderBy('name')->get();
         $subCategories = BookSubCategory::where('category_id', $this->category_id)->orderBy('name')->get();

@@ -295,10 +295,20 @@
         </div>
     </div>
     <div class="overflow-x-auto">
+        <div class="mt-4">
+
+            <button wire:click="updateMultiStatus({{ 1 }})" class="px-3 py-1 text-white bg-blue-500 rounded">
+                Update Public
+            </button>
+            <button wire:click="updateMultiStatus({{ 0 }})" class="px-3 py-1 text-white bg-blue-500 rounded">
+                Update Not-Public
+            </button>
+        </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="px-4 py-3">No</th>
+                    <th scope="col" class="px-4 py-3">
+                    </th>
                     <th scope="col" class="px-4 py-3">Image</th>
                     <th scope="col" class="px-4 py-3">File</th>
                     <th scope="col" class="px-4 py-3 " wire:click='setSortBy("title")'>
@@ -331,13 +341,16 @@
                     <tr wire:key='{{ $item->id }}'
                         class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td class="w-4 px-4 py-3">
-                            {{ $loop->iteration }}
+                            <input class="w-5 h-5" type="checkbox" wire:model="selectedItems"
+                                value="{{ $item->id }}">
                         </td>
-                        <th scope="row"
-                            class="flex items-center px-4 py-2 font-medium text-gray-900 dark:text-white">
+                        {{-- <td class="w-4 px-4 py-3">
+                            {{ $loop->iteration }}
+                        </td> --}}
+                        <th scope="row" class="f">
                             <a href="{{ asset('assets/images/isbn/' . $item->image) ?? 'N/A' }}" class="glightbox">
                                 <img src="{{ asset('assets/images/isbn/thumb/' . $item->image) ?? 'N/A' }}"
-                                    alt="Image" class="object-contain h-10 mr-3 aspect-[16/9]">
+                                    alt="Image" class="object-contain p-1 mr-3 aspect-[1/1]">
                             </a>
                         </th>
                         <x-table-data>

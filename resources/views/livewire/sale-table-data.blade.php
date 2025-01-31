@@ -129,8 +129,8 @@
                     <th scope="col" class="px-4 py-3 text-center">Date</th>
                     <th scope="col" class="px-4 py-3 text-center">Customer</th>
                     <th scope="col" class="px-4 py-3 text-center">Pay by</th>
-                    <th scope="col" class="px-4 py-3">SubTotal</th>
-                    <th scope="col" class="px-4 py-3 text-center">Total</th>
+                    <th scope="col" class="px-4 py-3 whitespace-nowrap">SubTotal ($)</th>
+                    <th scope="col" class="px-4 py-3 text-center whitespace-nowrap">Total ($)</th>
                     <th scope="col" class="px-4 py-3 text-center">Discount</th>
                     <th scope="col" class="px-4 py-3 text-center">Sale By</th>
                     <th scope="col" class="px-4 py-3 text-center">Updated By</th>
@@ -152,7 +152,7 @@
                         <x-table-data class="text-center" value="{{ $item->payment?->name ?? 'N/A' }}" />
 
                         <x-table-data value="{{ $item->subtotal ?? 'N/A' }}" />
-                        <x-table-data value="$ {{ $item->total ?? 'N/A' }}" class="text-red-400" />
+                        <x-table-data value="{{ $item->total ?? 'N/A' }}" class="text-red-400" />
                         @if ($item->discountType == 'percentage')
                             <x-table-data class="text-center" value="{{ $item->discount . ' %' ?? 'N/A' }}" />
                         @else

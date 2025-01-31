@@ -46,38 +46,42 @@
 
             </form>
         </div>
-        <div
-            class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-
-            <!--@can('create order')
-    -->
-                <!--<x-primary-button href="{{ url('admin/settings/links/create') }}">-->
-                <!--    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"-->
-                <!--        aria-hidden="true">-->
-                <!--        <path clip-rule="evenodd" fill-rule="evenodd"-->
-                <!--            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />-->
-                <!--    </svg>-->
-                <!--    Add-->
-                <!--</x-primary-button>-->
-                <!--
-@endcan-->
-
-            {{-- <div class="flex items-center w-full space-x-3 md:w-auto">
-                <button id="filterDropdownButton"
-                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-file-up">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                        <path d="M12 12v6" />
-                        <path d="m15 15-3-3-3 3" />
-                    </svg>
-                    Export
-                </button>
-
-            </div> --}}
+        <div>
+            <div class="flex gap-2">
+                <div class="flex items-center gap-2">
+                    <label for="start_date" class="text-sm font-semibold text-gray-700 whitespace-nowrap">Start</label>
+                    <div>
+                        <x-text-input wire:model.live='start_date' id="start_date"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            type="date" name="start_date" :value="old('start_date')" autocomplete="start_date" />
+                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="start_date" class="text-sm font-semibold text-gray-700 whitespace-nowrap">End</label>
+                    <div>
+                        <x-text-input wire:model.live='end_date' id="end_date"
+                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            type="date" name="end_date" :value="old('end_date')" autocomplete="end_date" />
+                        <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
+                    </div>
+                </div>
+                <div class="flex items-center w-full space-x-3 md:w-auto">
+                    <button id="filterDropdownButton" wire:click='export'
+                        class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-file-up">
+                            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                            <path d="M12 12v6" />
+                            <path d="m15 15-3-3-3 3" />
+                        </svg>
+                        Export
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="overflow-x-auto">
@@ -100,6 +104,7 @@
                     <th scope="col" class="px-4 py-3">Phone</th>
                     <th scope="col" class="px-4 py-3">Note</th>
                     <th scope="col" class="px-4 py-3">Total</th>
+                    <th scope="col" class="px-4 py-3 ">Order Date</th>
                     <th scope="col" class="px-4 py-3 ">Status</th>
                     <th scope="col" class="py-3 text-center">Action</th>
                 </tr>
@@ -115,6 +120,7 @@
                         <x-table-data value="{{ $item->phone }}" />
                         <x-table-data value="{{ $item->note }}" />
                         <x-table-data value="$ {{ $item->total }}" />
+                        <x-table-data class="capitalize" value="{{ $item->created_at?->format('d-M-Y') }}" />
                         <td class="text-center">
                             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown-{{ $item->id }}"
                                 class="{{ $item->status == 1 ? 'text-green-500' : ($item->status == 0 ? 'text-yellow-700' : 'text-red-500') }} py-2.5 px-5 me-2 mb-2 text-sm flex gap-1 items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">

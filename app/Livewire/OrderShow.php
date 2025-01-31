@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 
 use Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderShow extends Component
 {
@@ -25,7 +26,7 @@ class OrderShow extends Component
     public function updateStatus($itemId, $status)
     {
         // Validate inputs
-        if (!in_array($status, [0, 1], true)) {
+        if (!in_array($status, [0, 1, -1], true)) {
             session()->flash('error', 'Invalid status value.');
             return redirect()->back();
         }
@@ -54,6 +55,72 @@ class OrderShow extends Component
 
         // Redirect to the specific order page
         return redirect()->to('admin/orders/' . $itemId);
+    }
+
+    public function export()
+    {
+        $purchaseId = $this->order->id;
+        $purchase = $this->order;
+
+        return Excel::download(new class($purchaseId, $purchase) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $purchaseId;
+            private $purchase;
+
+            public function __construct($purchaseId, $purchase)
+            {
+                $this->purchaseId = $purchaseId;
+                $this->purchase = $purchase;
+            }
+
+            public function collection()
+            {
+                // Fetch purchases with related data
+                return OrderItem::where('order_id', $this->purchaseId)
+                    ->get()
+                    ->map(function ($item, $index) {
+                        return [
+                            'No' => $index + 1,
+                            'Title' => $item->product?->title,
+                            'ISBN' => $item->product?->isbn,
+                            'Price' => $item->price,
+                            'Discount' => $item->discount,
+                            'Quantity' => $item->quantity,
+                        ];
+                    });
+            }
+
+            public function headings(): array
+            {
+                // Define the column headings
+                return [
+                    [
+                        'Name',
+                        'Phone',
+                        'Note',
+                        'Total',
+                        'Order Date',
+                        'Status',
+                    ],
+                    [
+                        $this->purchase?->name ?? 'N/A',
+                        $this->purchase?->phone ?? 'N/A',
+                        $this->purchase?->note ?? 'N/A',
+                        $this->purchase?->total ?? 'N/A',
+                        $this->purchase?->created_at ?? 'N/A',
+                        $this->purchase?->status == 1 ? 'Completed' : ($this->purchase?->status == 0 ? 'In-Progress' : 'Rejected'),
+                    ],
+                    [],
+                    [
+                        'No',
+                        'Title',
+                        'ISBN',
+                        'Unit Price',
+                        'Discount (%)',
+                        'Quantity',
+                    ]
+                ];
+            }
+        }, 'order.xlsx');
     }
 
 

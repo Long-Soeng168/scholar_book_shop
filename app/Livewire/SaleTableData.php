@@ -176,10 +176,10 @@ class SaleTableData extends Component
             $query->where('id', 'LIKE', "%$this->search%");
         })
             ->when($this->start_date, function ($query) {
-                $query->where('created_at', '>', $this->start_date);
+                $query->where('created_at', '>=', $this->start_date);
             })
             ->when($this->end_date, function ($query) {
-                $query->where('created_at', '<', $this->end_date);
+                $query->where('created_at', '<=', $this->end_date);
             })
             ->orderBy($this->sortBy, $this->sortDir)->orderBy('id', 'desc')
             ->paginate($this->perPage);

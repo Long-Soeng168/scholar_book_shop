@@ -65,7 +65,7 @@
     @endif
 
     {{-- Start Filter --}}
-    <div class="grid grid-cols-2 gap-4 p-4 md:grid-cols-4">
+    <div class="grid grid-cols-2 gap-4 p-4 bg-gray-200 md:grid-cols-4 dark:bg-gray-600">
         {{-- Start Author Select --}}
         <div class="relative w-full group">
             <x-input-label for="author" :value="__('Author')" />
@@ -192,14 +192,16 @@
 
         <div class="flex-1">
             <x-input-label for="priceFrom" :value="__('Price From')" />
-            <x-text-input wire:model.live.debounce.300ms='priceFrom' id="priceFrom" class="block w-full mt-1" type="number"
-                name="priceFrom" placeholder='Example : 2$' :value="old('priceFrom')" autocomplete="priceFrom" />
+            <x-text-input wire:model.live.debounce.300ms='priceFrom' id="priceFrom" class="block w-full mt-1"
+                type="number" name="priceFrom" placeholder='Example : 2$' :value="old('priceFrom')"
+                autocomplete="priceFrom" />
             <x-input-error :messages="$errors->get('priceFrom')" class="mt-2" />
         </div>
         <div class="flex-1">
             <x-input-label for="priceTo" :value="__('Price To')" />
-            <x-text-input wire:model.live.debounce.300ms='priceTo' id="priceTo" class="block w-full mt-1" type="number"
-                name="priceTo" placeholder='Example : 7$' :value="old('priceTo')" autocomplete="priceTo" />
+            <x-text-input wire:model.live.debounce.300ms='priceTo' id="priceTo" class="block w-full mt-1"
+                type="number" name="priceTo" placeholder='Example : 7$' :value="old('priceTo')"
+                autocomplete="priceTo" />
             <x-input-error :messages="$errors->get('priceTo')" class="mt-2" />
         </div>
 
@@ -213,16 +215,38 @@
                         <option value="totalViewAsc">Total View (Ascending 0->9)</option>
                         <option value="totalSaleDesc">Total Sale (Descending 9->0)</option>
                         <option value="totalSaleAsc">Total Sale (Ascending 0->9)</option>
-                        <option value="totalPriceDesc">Total Price (Descending 9->0)</option>
-                        <option value="totalPriceAsc">Total Price (Ascending 0->9)</option>
+                        <option value="totalPriceDesc">Price (Descending 9->0)</option>
+                        <option value="totalPriceAsc">Price (Ascending 0->9)</option>
                     </x-select-option>
                 </div>
             </div>
         </div>
+        <div class="flex-1">
+            <x-input-label for="limit" :value="__('Limit Export')" />
+            <x-text-input wire:model.live.debounce.300ms='limit' id="limit" class="block w-full mt-1"
+                type="number" name="limit" placeholder='Example : 50' :value="old('limit')" autocomplete="limit" />
+            <x-input-error :messages="$errors->get('limit')" class="mt-2" />
+        </div>
+        <div class="flex items-end h-full ">
+            <button id="filterDropdownButton" wire:loading.attr="disabled" wire:target="export" wire:click="export"
+                class="flex items-center justify-center px-4 py-2.5 text-base font-medium text-gray-900 bg-white border border-gray-200 rounded-lg w-full focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-file-up">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                    <path d="M12 12v6" />
+                    <path d="m15 15-3-3-3 3" />
+                </svg>
+                Export
+            </button>
+
+        </div>
         {{-- End Published To Year --}}
     </div>
-    <div>
-        <ul>
+    {{-- <div>
+        <ul class="flex flex-wrap gap-4">
             <li>author id : {{ $author_id }}</li>
             <li>publisher id : {{ $publisher_id }}</li>
             <li>fromYear : {{ $fromYear }}</li>
@@ -233,7 +257,7 @@
             <li>priceTo : {{ $priceTo }}</li>
             <li>orderBy : {{ $orderBy }}</li>
         </ul>
-    </div>
+    </div> --}}
     {{-- End Filter --}}
     <div
         class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
@@ -268,24 +292,6 @@
                     Add New
                 </x-primary-button>
             @endcan
-
-
-            <div class="flex items-center w-full space-x-3 md:w-auto">
-                <button id="filterDropdownButton" wire:click="export"
-                    class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="lucide lucide-file-up">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                        <path d="M12 12v6" />
-                        <path d="m15 15-3-3-3 3" />
-                    </svg>
-                    Export
-                </button>
-
-            </div>
         </div>
     </div>
     <div class="overflow-x-auto">

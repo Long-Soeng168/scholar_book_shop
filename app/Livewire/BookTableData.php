@@ -38,6 +38,7 @@ class BookTableData extends Component
     public $priceFrom = null;
     public $priceTo = null;
     public $orderBy = null;
+    public $limit = null;
 
 
 
@@ -118,47 +119,132 @@ class BookTableData extends Component
     {
         $this->dispatch('livewire:updated');
     }
-
     public function export()
     {
-        return Excel::download(new class implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+        // Fetch all books without pagination
+        $query = Book::query()->with('publisher', 'author');
+
+        // Apply search filter
+        if ($this->search) {
+            $query->where(function ($sub_query) {
+                $sub_query->where('title', 'LIKE', "%{$this->search}%")
+                    ->orWhere('isbn', 'LIKE', "%{$this->search}%")
+                    ->orWhere('year', 'LIKE', "%{$this->search}%")
+                    ->orWhere('short_description', 'LIKE', "%{$this->search}%")
+                    ->orWhereHas('publisher', function ($q) {
+                        $q->where('name', 'LIKE', "%{$this->search}%");
+                    })
+                    ->orWhereHas('author', function ($q) {
+                        $q->where('name', 'LIKE', "%{$this->search}%");
+                    });
+            });
+        }
+
+        // Apply category filters
+        if ($this->category_id) {
+            $query->where('category_id', $this->category_id);
+        }
+
+        if ($this->sub_category_id) {
+            $query->where('sub_category_id', $this->sub_category_id);
+        }
+
+        // Apply price filters
+        if ($this->priceFrom) {
+            $query->where('price', '>=', $this->priceFrom);
+        }
+
+        if ($this->priceTo) {
+            $query->where('price', '<=', $this->priceTo);
+        }
+
+        // Apply year filters
+        if ($this->fromYear) {
+            $query->where('year', '>=', $this->fromYear);
+        }
+
+        if ($this->toYear) {
+            $query->where('year', '<=', $this->toYear);
+        }
+
+        // Apply author and publisher filters
+        if ($this->author_id) {
+            $query->where('author_id', $this->author_id);
+        }
+
+        if ($this->publisher_id) {
+            $query->where('publisher_id', $this->publisher_id);
+        }
+
+        // Apply ordering logic
+        if ($this->orderBy) {
+            if ($this->orderBy === 'totalSaleDesc') {
+                $query->withCount('invoice_items')->orderBy('invoice_items_count', 'desc');
+            } elseif ($this->orderBy === 'totalSaleAsc') {
+                $query->withCount('invoice_items')->orderBy('invoice_items_count', 'asc');
+            } elseif ($this->orderBy === 'totalViewDesc') {
+                $query->orderBy('view_count', 'desc');
+            } elseif ($this->orderBy === 'totalViewAsc') {
+                $query->orderBy('view_count', 'asc');
+            } elseif ($this->orderBy === 'totalPriceDesc') {
+                $query->orderBy('price', 'desc');
+            } elseif ($this->orderBy === 'totalPriceAsc') {
+                $query->orderBy('price', 'asc');
+            }
+        }
+
+        if ($this->limit) {
+            $query->limit($this->limit);
+        }
+
+
+        // Apply status filter and pagination
+        $items = $query->where('status', 1)->get();
+
+
+        return Excel::download(new class($items) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $items;
+
+            public function __construct($items)
+            {
+                $this->items = $items;
+            }
+
             public function collection()
             {
-                // Fetch books with their related data
-                return Book::with(['publisher', 'author', 'category', 'subCategory', 'created_by', 'updated_by'])
-                    ->get()
-                    ->map(function ($book) {
-                        return [
-                            'ID' => $book->id,
-                            'Title' => $book->title,
-                            'Cost' => $book->cost ?? 'N/A',
-                            'Price' => $book->price ?? 'N/A',
-                            'Discount' => $book->discount ?? 'N/A',
-                            'Quantity' => $book->quantity ?? 'N/A',
-                            'Pages' => $book->number_of_pages ?? 'N/A',
-                            'Year' => $book->year ?? 'N/A',
-                            'Language' => $book->language ?? 'N/A',
-                            'Edition' => $book->edition ?? 'N/A',
-                            'ISBN' => $book->isbn ?? 'N/A',
-                            'Short Description' => $book->short_description ?? 'N/A',
-                            'Image' => $book->image ?? 'N/A',
-                            'File' => $book->file ?? 'N/A',
-                            'Order Approved Count' => $book->order_approved ?? 'N/A',
-                            'Status (1=public)' => $book->status ?? 'N/A',
-                            'Publisher' => $book->publisher->name ?? 'N/A', // Related publisher name
-                            'Author' => $book->author->name ?? 'N/A',       // Related author name
-                            'Category' => $book->category->name ?? 'N/A',   // Related category name
-                            'SubCategory' => $book->subCategory->name ?? 'N/A', // Related sub-category name
-                            'Created By' => $book->created_by->name ?? 'N/A',   // User who created the book
-                            'Updated By' => $book->updated_by->name ?? 'N/A',   // User who last updated the book
-                            'Created At' => $book->created_at,
-                        ];
-                    });
+                return $this->items->map(function ($book) {
+                    return [
+                        'ID' => $book->id,
+                        'Title' => $book->title,
+                        'Cost' => $book->cost ?? 'N/A',
+                        'Price' => $book->price ?? 'N/A',
+                        'Discount' => $book->discount ?? 'N/A',
+                        'Quantity' => $book->quantity ?? 'N/A',
+                        'Pages' => $book->number_of_pages ?? 'N/A',
+                        'Year' => $book->year ?? 'N/A',
+                        'Language' => $book->language ?? 'N/A',
+                        'Edition' => $book->edition ?? 'N/A',
+                        'ISBN' => $book->isbn ?? 'N/A',
+                        'Short Description' => $book->short_description ?? 'N/A',
+                        'Long Description' => $book->description ?? 'N/A',
+                        'Image' => $book->image ?? 'N/A',
+                        'File' => $book->file ?? 'N/A',
+                        'Order Approved Count' => $book->order_approved ?? 'N/A',
+                        'Status (1=public)' => $book->status ?? 'N/A',
+                        'Publisher' => $book->publisher?->name ?? 'N/A',
+                        'Author' => $book->author?->name ?? 'N/A',
+                        'Category' => $book->category?->name ?? 'N/A',
+                        'SubCategory' => $book->subCategory?->name ?? 'N/A',
+                        'Created By' => $book->created_by?->name ?? 'N/A',
+                        'Updated By' => $book->updated_by?->name ?? 'N/A',
+                        'Created At' => $book->created_at,
+                        'View Count' => $book->view_count,
+                    ];
+                });
             }
 
             public function headings(): array
             {
-                // Define the column headings
                 return [
                     'ID',
                     'Title',
@@ -172,6 +258,7 @@ class BookTableData extends Component
                     'Edition',
                     'ISBN',
                     'Short Description',
+                    'Long Description',
                     'Image',
                     'File',
                     'Order Approved Count',
@@ -183,6 +270,7 @@ class BookTableData extends Component
                     'Created By',
                     'Updated By',
                     'Created At',
+                    'View Count'
                 ];
             }
         }, 'products.xlsx');
@@ -192,20 +280,81 @@ class BookTableData extends Component
     public function render()
     {
 
-        $items = Book::with('publisher', 'author')
-            ->where(function ($query) {
-                $query->where('title', 'LIKE', "%$this->search%")
-                    ->orWhere('internal_reference', 'LIKE', "%$this->search%")
-                    ->orWhere('isbn', 'LIKE', "%$this->search%")
+        $query = Book::query()->with('publisher', 'author');
+
+        // Apply search filter
+        if ($this->search) {
+            $query->where(function ($sub_query) {
+                $sub_query->where('title', 'LIKE', "%{$this->search}%")
+                    ->orWhere('isbn', 'LIKE', "%{$this->search}%")
+                    ->orWhere('year', 'LIKE', "%{$this->search}%")
+                    ->orWhere('short_description', 'LIKE', "%{$this->search}%")
                     ->orWhereHas('publisher', function ($q) {
-                        $q->where('name', 'LIKE', "%$this->search%");
+                        $q->where('name', 'LIKE', "%{$this->search}%");
                     })
                     ->orWhereHas('author', function ($q) {
-                        $q->where('name', 'LIKE', "%$this->search%");
+                        $q->where('name', 'LIKE', "%{$this->search}%");
                     });
-            })
-            ->orderBy($this->sortBy, $this->sortDir)
-            ->paginate($this->perPage);
+            });
+        }
+
+        // Apply category filters
+        if ($this->category_id) {
+            $query->where('category_id', $this->category_id);
+        }
+
+        if ($this->sub_category_id) {
+            $query->where('sub_category_id', $this->sub_category_id);
+        }
+
+        // Apply price filters
+        if ($this->priceFrom) {
+            $query->where('price', '>=', $this->priceFrom);
+        }
+
+        if ($this->priceTo) {
+            $query->where('price', '<=', $this->priceTo);
+        }
+
+        // Apply year filters
+        if ($this->fromYear) {
+            $query->where('year', '>=', $this->fromYear);
+        }
+
+        if ($this->toYear) {
+            $query->where('year', '<=', $this->toYear);
+        }
+
+        // Apply author and publisher filters
+        if ($this->author_id) {
+            $query->where('author_id', $this->author_id);
+        }
+
+        if ($this->publisher_id) {
+            $query->where('publisher_id', $this->publisher_id);
+        }
+
+        // Apply ordering logic
+        if ($this->orderBy) {
+            if ($this->orderBy === 'totalSaleDesc') {
+                $query->withCount('invoice_items')->orderBy('invoice_items_count', 'desc');
+            } elseif ($this->orderBy === 'totalSaleAsc') {
+                $query->withCount('invoice_items')->orderBy('invoice_items_count', 'asc');
+            } elseif ($this->orderBy === 'totalViewDesc') {
+                $query->orderBy('view_count', 'desc');
+            } elseif ($this->orderBy === 'totalViewAsc') {
+                $query->orderBy('view_count', 'asc');
+            } elseif ($this->orderBy === 'totalPriceDesc') {
+                $query->orderBy('price', 'desc');
+            } elseif ($this->orderBy === 'totalPriceAsc') {
+                $query->orderBy('price', 'asc');
+            }
+        } else {
+            $query->orderBy($this->sortBy, $this->sortDir);
+        }
+
+        // Apply status filter and pagination
+        $items = $query->where('status', 1)->paginate($this->perPage);
 
         $categories = BookCategory::orderBy('name')->get();
         $subCategories = BookSubCategory::where('category_id', $this->category_id)->orderBy('name')->get();

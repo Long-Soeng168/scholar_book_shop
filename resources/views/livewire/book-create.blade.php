@@ -78,7 +78,7 @@
                     </div>
                     <div class="md:col-span-2">
                         <x-input-label for="short_description" :value="__('Short Description')" />
-                        <textarea wire:model='short_description' class="w-full p-2 mt-1 border rounded bg-gray-50"
+                        <textarea wire:model='short_description' class="w-full p-2 mt-1 border rounded bg-gray-50 dark:bg-gray-600"
                             placeholder="Enter Short Description">{{ $short_description }}</textarea>
                         <x-input-error :messages="$errors->get('short_description')" class="mt-2" />
                     </div>

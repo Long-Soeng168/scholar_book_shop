@@ -141,54 +141,52 @@
             </div>
         </div>
 
-        <div class="grid gap-4 md:col-span-2 md:grid-cols-2">
-            {{-- Start Category Select --}}
-            <div class="relative w-full group">
-                <x-input-label for="category_id" :value="__('Category')" />
-                <div class="flex flex-1 gap-1 mt-1">
-                    <div class="flex justify-start flex-1 min-h-[2.5rem]">
-                        <x-select-option wire:model.live='category_id' id="category_id" name="category_id"
-                            class="category-select">
-                            <option wire:key='category' value="">Select Category...</option>
-                            @forelse ($categories as $category)
-                                <option wire:key='{{ $category->id }}' value="{{ $category->id }}">
-                                    {{ $category->name }} {{ ' / ' . $category->name_kh }}
-                                </option>
-                            @empty
-                                <option wire:key='nocateogry' value=""> --No Category--</option>
-                            @endforelse
-                        </x-select-option>
-                    </div>
-                </div>
-                <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
-            </div>
-            {{-- End Category Select --}}
-
-            {{-- Start Sub-Category Select --}}
-            <div class="relative w-full group">
-                <x-input-label for="sub_category_id" :value="__('Sub-Category')" />
-                <div class="flex flex-1 gap-1 mt-1">
-                    <div class="flex justify-start flex-1 min-h-[2.5rem]">
-                        <x-select-option wire:model.live='sub_category_id' id="sub_category_id" name="category_id"
-                            class="sub-category-select">
-                            <option wire:key='sub-category' value="">
-                                {{ $category_id ? 'Select Sub-Category...' : 'Select Category First' }}
+        {{-- Start Category Select --}}
+        <div class="relative w-full group">
+            <x-input-label for="category_id" :value="__('Category')" />
+            <div class="flex flex-1 gap-1 mt-1">
+                <div class="flex justify-start flex-1 min-h-[2.5rem]">
+                    <x-select-option wire:model.live='category_id' id="category_id" name="category_id"
+                        class="category-select">
+                        <option wire:key='category' value="">Select Category...</option>
+                        @forelse ($categories as $category)
+                            <option wire:key='{{ $category->id }}' value="{{ $category->id }}">
+                                {{ $category->name }} {{ ' / ' . $category->name_kh }}
                             </option>
-                            @forelse ($subCategories as $subCategory)
-                                <option wire:key='{{ $subCategory->id }}' value="{{ $subCategory->id }}">
-                                    {{ $subCategory->name }} {{ ' / ' . $subCategory->name_kh }}
-                                </option>
-                            @empty
-                                <option wire:key='nosub-category' value="">--No Category--</option>
-                            @endforelse
-                        </x-select-option>
-                    </div>
-
+                        @empty
+                            <option wire:key='nocateogry' value=""> --No Category--</option>
+                        @endforelse
+                    </x-select-option>
                 </div>
-                <x-input-error :messages="$errors->get('sub_category_id')" class="mt-2" />
             </div>
-            {{-- End Sub-Category Select --}}
+            <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
         </div>
+        {{-- End Category Select --}}
+
+        {{-- Start Sub-Category Select --}}
+        <div class="relative w-full group">
+            <x-input-label for="sub_category_id" :value="__('Sub-Category')" />
+            <div class="flex flex-1 gap-1 mt-1">
+                <div class="flex justify-start flex-1 min-h-[2.5rem]">
+                    <x-select-option wire:model.live='sub_category_id' id="sub_category_id" name="category_id"
+                        class="sub-category-select">
+                        <option wire:key='sub-category' value="">
+                            {{ $category_id ? 'Select Sub-Category...' : 'Select Category First' }}
+                        </option>
+                        @forelse ($subCategories as $subCategory)
+                            <option wire:key='{{ $subCategory->id }}' value="{{ $subCategory->id }}">
+                                {{ $subCategory->name }} {{ ' / ' . $subCategory->name_kh }}
+                            </option>
+                        @empty
+                            <option wire:key='nosub-category' value="">--No Category--</option>
+                        @endforelse
+                    </x-select-option>
+                </div>
+
+            </div>
+            <x-input-error :messages="$errors->get('sub_category_id')" class="mt-2" />
+        </div>
+        {{-- End Sub-Category Select --}}
 
         <div class="flex-1">
             <x-input-label for="priceFrom" :value="__('Price From')" />
@@ -295,19 +293,16 @@
         </div>
     </div>
     <div class="overflow-x-auto">
-        <div class="mt-4">
-
-            <button wire:click="updateMultiStatus({{ 1 }})" class="px-3 py-1 text-white bg-blue-500 rounded">
-                Update Public
-            </button>
-            <button wire:click="updateMultiStatus({{ 0 }})" class="px-3 py-1 text-white bg-blue-500 rounded">
-                Update Not-Public
-            </button>
-        </div>
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-4 py-3">
+                        <span>
+                            <button wire:key='{{ rand() }}'
+                                wire:click='setSelectAll(@json($products->pluck('id')))'>
+                                Select All
+                            </button>
+                        </span>
                     </th>
                     <th scope="col" class="px-4 py-3">Image</th>
                     <th scope="col" class="px-4 py-3">File</th>
@@ -337,12 +332,12 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($items as $item)
+                @forelse ($products as $item)
                     <tr wire:key='{{ $item->id }}'
                         class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <td class="w-4 px-4 py-3">
-                            <input class="w-5 h-5" type="checkbox" wire:model="selectedItems"
-                                value="{{ $item->id }}">
+                            <input wire:key='{{ rand() }}' class="w-5 h-5" type="checkbox"
+                                wire:model="selectedItems" value="{{ $item->id }}">
                         </td>
                         {{-- <td class="w-4 px-4 py-3">
                             {{ $loop->iteration }}
@@ -680,6 +675,57 @@
             </tbody>
         </table>
 
+        @can('update item')
+            <button id="dropdownDefaultButtonMultiAction" data-dropdown-toggle="dropdownMultiAction" type="button"
+                class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 flex gap-2 items-center m-2 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                Action Selected Items<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+
+
+
+            <!-- DropdownMultiAction menu -->
+            <div id="dropdownMultiAction"
+                class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 border border-black rounded-lg shadow dark:text-gray-700 bg-gray-50 dark:text-gray-200"
+                    aria-labelledby="dropdownDefaultButtonMultiAction">
+                    <li>
+                        <button
+                            class="block w-full px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                            wire:click="updateMultiStatus({{ 1 }})">
+                            Set Public
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            class="block w-full px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                            wire:click="updateMultiStatus({{ 0 }})">
+                            Set Not-Public
+                        </button>
+                    </li>
+                    <li>
+                        <button wire:click="exportMutiItems()"
+                            class="block w-full px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                            Export Items
+                        </button>
+                    </li>
+                    <li>
+                        <button wire:click="deleteMultiItems()"
+                            wire:confirm="Are you sure? you want to delete all selected Items."
+                            class="block w-full px-4 py-2 text-red-500 hover:bg-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                            Delete Items
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+        @endcan
+
+
+
         <div class="p-4">
             <div class="max-w-[200px] my-2 flex gap-2 items-center">
                 <label for="countries"
@@ -695,7 +741,7 @@
                     <option value="100">100</option>
                 </select>
             </div>
-            <div>{{ $items->links() }}</div>
+            <div>{{ $products->links() }}</div>
         </div>
     </div>
 </div>

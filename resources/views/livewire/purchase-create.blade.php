@@ -71,7 +71,7 @@
             <section class="mt-8">
                 <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 ">
                     {{-- Start Products Select --}}
-                    <div class="relative w-full col-span-2 group">
+                    <div class="relative w-full col-span-2 overflow-x-scroll group">
                         {{-- Start Select Products --}}
                         <div>
                             <div class="relative w-full">
@@ -87,7 +87,7 @@
                                     class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Search...">
                             </div>
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <table class="w-full overflow-x-scroll text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -116,7 +116,7 @@
                                             <p>{{ $item->id }} does not exist</p>
                                         @endif --}}
                                         <tr wire:key='{{ $item->id }}'
-                                            class="border-b {{ in_array($item->id, $selectedIds) ? 'bg-gray-200 hover:bg-gray-300' : '' }} dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            class="border-b {{ in_array($item->id, $selectedIds) ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-600' : '' }} dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <td class="w-4 px-4 py-3">
                                                 {{ $loop->iteration }}
 
@@ -215,7 +215,7 @@
 
                         <div class="mt-8">
                             <table
-                                class="w-full border border-collapse border-gray-300 table-auto dark:border-gray-600">
+                                class="w-full overflow-auto border border-collapse border-gray-300 table-auto dark:border-gray-600">
                                 <thead>
                                     <tr class="bg-gray-200 dark:bg-gray-700">
                                         <th

@@ -41,7 +41,6 @@ class BookTableData extends Component
     public $limit = null;
 
 
-
     public function setSortBy($newSortBy)
     {
         if ($this->sortBy == $newSortBy) {
@@ -199,7 +198,7 @@ class BookTableData extends Component
 
 
         // Apply status filter and pagination
-        $items = $query->where('status', 1)->get();
+        $items = $query->get();
 
 
         return Excel::download(new class($items) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
@@ -230,7 +229,6 @@ class BookTableData extends Component
                         'Image' => $book->image ?? 'N/A',
                         'File' => $book->file ?? 'N/A',
                         'Order Approved Count' => $book->order_approved ?? 'N/A',
-                        'Status (1=public)' => $book->status ?? 'N/A',
                         'Publisher' => $book->publisher?->name ?? 'N/A',
                         'Author' => $book->author?->name ?? 'N/A',
                         'Category' => $book->category?->name ?? 'N/A',
@@ -239,6 +237,7 @@ class BookTableData extends Component
                         'Updated By' => $book->updated_by?->name ?? 'N/A',
                         'Created At' => $book->created_at,
                         'View Count' => $book->view_count,
+                        'Status' => $book->status == 1 ? 'Public' : 'Not-Public',
                     ];
                 });
             }
@@ -262,7 +261,6 @@ class BookTableData extends Component
                     'Image',
                     'File',
                     'Order Approved Count',
-                    'Status (1=public)',
                     'Publisher',
                     'Author',
                     'Category',
@@ -270,7 +268,8 @@ class BookTableData extends Component
                     'Created By',
                     'Updated By',
                     'Created At',
-                    'View Count'
+                    'View Count',
+                    'Status'
                 ];
             }
         }, 'products.xlsx');
@@ -278,6 +277,99 @@ class BookTableData extends Component
 
     public $selectedItems = [];
 
+    public function exportMutiItems()
+    {
+        if (!empty($this->selectedItems)) {
+            $getedItems = Book::whereIn('id', $this->selectedItems)->get();
+            $this->reset(['selectedItems']);
+            return Excel::download(new class($getedItems) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+                private $getedItems;
+
+                public function __construct($getedItems)
+                {
+                    $this->getedItems = $getedItems;
+                }
+
+                public function collection()
+                {
+                    return $this->getedItems->map(function ($book) {
+                        return [
+                            'ID' => $book->id,
+                            'Title' => $book->title,
+                            'Cost' => $book->cost ?? 'N/A',
+                            'Price' => $book->price ?? 'N/A',
+                            'Discount' => $book->discount ?? 'N/A',
+                            'Quantity' => $book->quantity ?? 'N/A',
+                            'Pages' => $book->number_of_pages ?? 'N/A',
+                            'Year' => $book->year ?? 'N/A',
+                            'Language' => $book->language ?? 'N/A',
+                            'Edition' => $book->edition ?? 'N/A',
+                            'ISBN' => $book->isbn ?? 'N/A',
+                            'Short Description' => $book->short_description ?? 'N/A',
+                            'Long Description' => $book->description ?? 'N/A',
+                            'Image' => $book->image ?? 'N/A',
+                            'File' => $book->file ?? 'N/A',
+                            'Order Approved Count' => $book->order_approved ?? 'N/A',
+                            'Publisher' => $book->publisher?->name ?? 'N/A',
+                            'Author' => $book->author?->name ?? 'N/A',
+                            'Category' => $book->category?->name ?? 'N/A',
+                            'SubCategory' => $book->subCategory?->name ?? 'N/A',
+                            'Created By' => $book->created_by?->name ?? 'N/A',
+                            'Updated By' => $book->updated_by?->name ?? 'N/A',
+                            'Created At' => $book->created_at,
+                            'View Count' => $book->view_count,
+                            'Status' => $book->status == 1 ? 'Public' : 'Not-Public',
+                        ];
+                    });
+                }
+
+                public function headings(): array
+                {
+                    return [
+                        'ID',
+                        'Title',
+                        'Cost',
+                        'Price',
+                        'Discount',
+                        'Quantity',
+                        'Pages',
+                        'Year',
+                        'Language',
+                        'Edition',
+                        'ISBN',
+                        'Short Description',
+                        'Long Description',
+                        'Image',
+                        'File',
+                        'Order Approved Count',
+                        'Publisher',
+                        'Author',
+                        'Category',
+                        'SubCategory',
+                        'Created By',
+                        'Updated By',
+                        'Created At',
+                        'View Count',
+                        'Status'
+                    ];
+                }
+            }, 'selected_items_export.xlsx');
+        }
+    }
+    public function deleteMultiItems()
+    {
+        if (!empty($this->selectedItems)) {
+            $getedItems = Book::whereIn('id', $this->selectedItems)->get();
+            foreach ($getedItems as $value) {
+                // dd($value);
+                $value->delete();
+            }
+            // dd($getedItems);
+            // session()->flash('message', 'Statuses updated successfully.');
+            $this->reset(['selectedItems']);
+            return redirect('/admin/books')->with(['success' => 'Deleted items successfully.']);
+        }
+    }
     public function updateMultiStatus($statusValue)
     {
         // dd([$this->selectedItems, $this->status]);
@@ -292,8 +384,14 @@ class BookTableData extends Component
             // dd($getedItems);
             // session()->flash('message', 'Statuses updated successfully.');
             $this->reset(['selectedItems']); // Reset selection
-            return redirect('/admin/books')->with(['success'=> 'Statuses updated successfully.']);
+            return redirect('/admin/books')->with(['success' => 'Statuses updated successfully.']);
         }
+    }
+
+
+    public function setSelectAll($productIds)
+    {
+        $this->selectedItems = $productIds;
     }
 
 
@@ -374,7 +472,7 @@ class BookTableData extends Component
         }
 
         // Apply status filter and pagination
-        $items = $query->paginate($this->perPage);
+        $products = $query->paginate($this->perPage);
 
         $categories = BookCategory::orderBy('name')->get();
         $subCategories = BookSubCategory::where('category_id', $this->category_id)->orderBy('name')->get();
@@ -382,7 +480,7 @@ class BookTableData extends Component
         $publishers = Publisher::orderBy('name')->get();
 
         return view('livewire.book-table-data', [
-            'items' => $items,
+            'products' => $products,
             'categories' => $categories,
             'subCategories' => $subCategories,
             'authorss' => $authorss,

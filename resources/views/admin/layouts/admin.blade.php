@@ -648,7 +648,7 @@
                         <li class="mt-2">
                             <x-sidebar-item href="{{ url('admin/orders') }}"
                                 class="{{ request()->is('admin/orders*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                <svg class="bg-white rounded dark:bg-gray-200" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                     viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="1.25"
                                     stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-ordered">
                                     <path d="M10 12h11" />
@@ -668,9 +668,10 @@
                         <li class="mt-2">
                             <x-sidebar-item href="{{ url('admin/sales') }}"
                                 class="{{ request()->is('admin/sales*') ? 'bg-slate-200 dark:bg-slate-500' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                    viewBox="0 0 24 24" fill="none" stroke="#121212" stroke-width="1.25"
-                                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list">
+                                <svg class="bg-white rounded dark:bg-gray-200" xmlns="http://www.w3.org/2000/svg"
+                                    width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#121212"
+                                    stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+                                    class="lucide lucide-clipboard-list">
                                     <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
                                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
                                     <path d="M12 11h4" />

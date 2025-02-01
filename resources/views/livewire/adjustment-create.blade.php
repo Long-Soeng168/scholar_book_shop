@@ -70,7 +70,7 @@
             <section class="mt-8">
                 <div class="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
                     {{-- Start Products Select --}}
-                    <div class="relative w-full col-span-2 group">
+                    <div class="relative w-full col-span-2 overflow-auto group">
                         {{-- Start Select Products --}}
                         <div>
                             <div class="relative w-full">

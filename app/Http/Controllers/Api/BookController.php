@@ -240,7 +240,7 @@ class BookController extends Controller
      */
     public function show(string $id)
     {
-        $book =  Book::with('images', 'author', 'publisher', 'category', 'subCategory')->where('status', 1)->findOrFail($id);
+        $book =  Book::with('images', 'brand', 'category', 'subCategory')->where('status', 1)->findOrFail($id);
         $book->update([
             'view_count' => $book->view_count + 1,
         ]);
